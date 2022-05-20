@@ -10,5 +10,8 @@
   "devDependencies": {
     "typescript": "^4.5.4",
     "vite": "^2.9.9"
+  },
+  "dependencies": {
+    "vite-plugin-checker": "^0.4.6"
   }
 }

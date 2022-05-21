@@ -15,10 +15,10 @@ class Typewriter {
 
   constructor(parent: HTMLElement, { loop = false, typeSpeed = 100, deleteSpeed = 100 }: TypewriterOptions = {}) {
     this.element = document.createElement('div');
+    parent.append(this.element);
     this.loop = loop;
     this.typeSpeed = typeSpeed;
     this.deleteSpeed = deleteSpeed;
-    parent.append(this.element);
   }
 
   #addQueue(callback: (resolve: () => void) => void) {
@@ -62,14 +62,20 @@ class Typewriter {
   }
 
   deleteAll(deleteSpeed = this.deleteSpeed) {
-    console.log(deleteSpeed);
-
+    this.#addQueue((resolve) => {
+      const interval = setInterval(() => {
+        this.element.innerText = this.element.innerText.substring(0, this.element.innerText.length - 1);
+        if (!this.element.innerText.length) {
+          resolve();
+          clearInterval(interval);
+        }
+      }, deleteSpeed);
+    });
     return this;
   }
 
   pauseFor(duration: number) {
-    console.log(duration);
-
+    this.#addQueue((resolve) => setTimeout(resolve, duration));
     return this;
   }
 

@@ -62,15 +62,18 @@ class Typewriter {
   }
 
   deleteAll(deleteSpeed = this.deleteSpeed) {
-    this.#addQueue((resolve) => {
-      const interval = setInterval(() => {
-        this.element.innerText = this.element.innerText.substring(0, this.element.innerText.length - 1);
-        if (!this.element.innerText.length) {
-          resolve();
-          clearInterval(interval);
-        }
-      }, deleteSpeed);
-    });
+    this.#addQueue((resolve) => this.#deleteAllInner(deleteSpeed, resolve));
+    return this;
+  }
+
+  async #deleteAllInner(deleteSpeed?: number, resolve?: () => void) {
+    const interval = setInterval(() => {
+      this.element.innerText = this.element.innerText.substring(0, this.element.innerText.length - 1);
+      if (!this.element.innerText.length) {
+        if (resolve) resolve();
+        clearInterval(interval);
+      }
+    }, deleteSpeed);
     return this;
   }
 
@@ -91,6 +94,10 @@ class Typewriter {
 
   async start() {
     for (let callback of this.#queue) await callback();
+    if (this.loop) {
+      await this.#deleteAllInner();
+      this.start();
+    }
     return this;
   }
 }

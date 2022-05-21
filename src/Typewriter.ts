@@ -15,34 +15,43 @@ class Typewriter {
 
   constructor(parent: HTMLElement, { loop = false, typeSpeed = 100, deleteSpeed = 100 }: TypewriterOptions = {}) {
     this.element = document.createElement('div');
-    parent.append(this.element);
     this.loop = loop;
     this.typeSpeed = typeSpeed;
     this.deleteSpeed = deleteSpeed;
+    parent.append(this.element);
+  }
+
+  #addQueue(callback: (resolve: () => void) => void) {
+    this.#queue.push(() => new Promise(callback));
   }
 
   type(text: string) {
-    this.#queue.push(
-      () =>
-        new Promise((resolve) => {
-          let i = 0;
-          const interval = setInterval(() => {
-            this.element.append(text[i]);
-            i++;
-            if (i >= text.length) {
-              resolve();
-              clearInterval(interval);
-            }
-          }, this.typeSpeed);
-        })
-    );
-
+    this.#addQueue((resolve) => {
+      let i = 0;
+      const interval = setInterval(() => {
+        this.element.append(text[i]);
+        i++;
+        if (i >= text.length) {
+          resolve();
+          clearInterval(interval);
+        }
+      }, this.typeSpeed);
+    });
     return this;
   }
 
-  // ts-disable
-  deleterLetters(letterCount: number) {
-    console.log(letterCount);
+  deleteLetters(letterCount: number) {
+    this.#addQueue((resolve) => {
+      let i = 0;
+      const interval = setInterval(() => {
+        this.element.innerText = this.element.innerText.substring(0, this.element.innerText.length - 1);
+        i++;
+        if (i >= letterCount) {
+          resolve();
+          clearInterval(interval);
+        }
+      }, this.deleteSpeed);
+    });
     return this;
   }
 

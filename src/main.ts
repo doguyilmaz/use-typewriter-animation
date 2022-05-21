@@ -1,9 +1,9 @@
 import './style.css';
 import Typewriter from './Typewriter';
 
-const typewriter = new Typewriter(document.getElementById('app')!, { loop: true });
+const typewriter = new Typewriter(document.querySelector('whitespace')!, { loop: true });
 
-typewriter.type('Hello my name is Rudy!').pauseFor(1000).deleterLetters(5).start();
+typewriter.type('Hello my name is Rudy!').pauseFor(1000).deleteLetters(5).start();
 
 // const app = document.querySelector<HTMLDivElement>('#app')!;
 

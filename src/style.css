@@ -9,4 +9,9 @@
 
 .whitespace {
   white-space: pre-wrap;
+  /* background-image: url('assets/bash.png'); */
+  /* background-repeat: no-repeat;
+  color: white;
+  width: auto;
+  height: 400px; */
 }

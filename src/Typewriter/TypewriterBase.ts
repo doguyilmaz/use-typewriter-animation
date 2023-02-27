@@ -1,4 +1,4 @@
-type TypewriterOptions = {
+export type TypewriterBaseOptions = {
   loop?: boolean;
   typeSpeed?: number;
   deleteSpeed?: number;
@@ -8,7 +8,7 @@ type TypewriterOptions = {
 
 type QueueCallback = () => Promise<void>;
 
-class Typewriter {
+class TypewriterBase {
   #queue: QueueCallback[] = [];
   #element: HTMLElement;
   #loop: boolean;
@@ -19,7 +19,7 @@ class Typewriter {
 
   constructor(
     parent: HTMLElement,
-    { loop = false, typeSpeed = 100, deleteSpeed = 100, color, cursor }: TypewriterOptions = {}
+    { loop = false, typeSpeed = 100, deleteSpeed = 100, color, cursor }: TypewriterBaseOptions = {}
   ) {
     this.#element = document.createElement('div');
     parent.append(this.#element);
@@ -121,6 +121,8 @@ class Typewriter {
   }
 
   async start() {
+    console.log('start of start');
+    console.log(this.#queue, 'this.#queue');
     for (let callback of this.#queue) await callback();
     if (this.#loop) {
       await this.#deleteAllInner();
@@ -130,4 +132,4 @@ class Typewriter {
   }
 }
 
-export default Typewriter;
+export default TypewriterBase;

@@ -18,16 +18,17 @@ class TypewriterBase {
   #cursor = true;
 
   constructor(
-    parent: HTMLElement,
+    element: HTMLElement,
     { loop = false, typeSpeed = 100, deleteSpeed = 100, color, cursor }: TypewriterBaseOptions = {}
   ) {
-    this.#element = document.createElement('div');
-    parent.append(this.#element);
     this.#loop = loop;
     this.#typeSpeed = typeSpeed;
     this.#deleteSpeed = deleteSpeed;
-    this.#element.style.color = color || this.#color;
     this.#cursor = cursor || this.#cursor;
+    this.#color = color || this.#color;
+    // this.#setupElement;
+    this.#element = element;
+    this.#element.style.color = this.#color;
   }
 
   #addQueue(callback: (resolve: () => void) => void) {
@@ -35,6 +36,7 @@ class TypewriterBase {
   }
 
   type(text: string) {
+    console.log(text, 'here text');
     this.#addQueue((resolve) => {
       let i = 0;
       const interval = setInterval(() => {
@@ -121,14 +123,19 @@ class TypewriterBase {
   }
 
   async start() {
-    console.log('start of start');
-    console.log(this.#queue, 'this.#queue');
+    console.log('start');
+    console.log(this.#queue, 'queue');
     for (let callback of this.#queue) await callback();
     if (this.#loop) {
       await this.#deleteAllInner();
       this.start();
     }
     return this;
+  }
+
+  unmount() {
+    console.log('called');
+    this.#queue = [];
   }
 }
 

@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import TypewriterBase from './TypewriterBase';
 import useTypewriter from './useTypewriter';
 
 const Typewriter = () => {
-  const { ref, typewriter, start } = useTypewriter();
+  const { ref, typewriter } = useTypewriter({ loop: true });
 
   useEffect(() => {
+    if (!typewriter) return;
+
     typewriter
       ?.type('Hello my name is Rudy!')
       .pauseFor(300)
@@ -14,16 +17,13 @@ const Typewriter = () => {
       .deleteLetters(5)
       .color('red')
       .type('asfafs Hsf mdsgy name b!')
-      .deleteWords(6);
-  }, [typewriter]);
+      .deleteWords(6)
+      .start();
+  }, []);
 
   return (
     <div>
-      <div ref={ref} />
-
-      <button type='button' onClick={() => start()}>
-        Start
-      </button>
+      <div ref={ref} className='whitespace'></div>
     </div>
   );
 };

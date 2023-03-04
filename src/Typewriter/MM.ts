@@ -1,5 +1,5 @@
 import './style.css';
-import Typewriter from './Typewriter';
+import Typewriter from './TypewriterBase';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 

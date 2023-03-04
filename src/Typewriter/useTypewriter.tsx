@@ -2,12 +2,11 @@ import { useEffect, useRef } from 'react';
 import TypewriterBase, { TypewriterBaseOptions } from './TypewriterBase';
 
 const useTypewriter = (options?: TypewriterBaseOptions) => {
-  const parentRef = useRef<HTMLDivElement>(null);
-  const typewriter = useRef<TypewriterBase | null>(null);
+  const elemRef = useRef<HTMLDivElement>(null);
+  const twRef = useRef<TypewriterBase | null>(null);
 
   useEffect(() => {
-    if (!parentRef.current) return;
-    typewriter.current = new TypewriterBase(parentRef.current!, {
+    twRef.current = new TypewriterBase(elemRef.current!, {
       loop: false,
       deleteSpeed: 30,
       typeSpeed: 30,
@@ -15,20 +14,39 @@ const useTypewriter = (options?: TypewriterBaseOptions) => {
       ...options,
     });
 
+    // twRef.current.start();
+
     return () => {
-      typewriter.current = null;
+      unmount();
     };
   }, []);
 
   const start = async () => {
-    await typewriter.current?.start();
-    console.log('here');
-    if (parentRef.current) console.log(parentRef || undefined, 'parentRef');
+    // if (!elemRef.current) throw new Error('Element ref is not initialized!');
+    // if (!twRef.current) throw new Error('Typewriter is not initialized!');
+    // await twRef.current.start();
   };
 
-  // if (!typewriter.current) throw new Error('Typewriter is not initialized!');
+  // const setup = (ref: HTMLDivElement) => {
+  //   // setTypewriter(
+  //   //   new TypewriterBase(ref, {
+  //   //     loop: false,
+  //   //     deleteSpeed: 30,
+  //   //     typeSpeed: 30,
+  //   //     color: '#000',
+  //   //     ...options,
+  //   //   })
+  //   // );
+  // };
 
-  return { ref: parentRef, typewriter: typewriter.current!, start };
+  const unmount = () => {
+    console.log('unmount:useTypewriter');
+    if (!elemRef.current) throw new Error('Parent ref is not initialized!');
+    if (!twRef.current) throw new Error('Typewriter is not initialized!');
+    twRef.current.unmount();
+  };
+
+  return { ref: elemRef, typewriter: twRef.current, start, setup: () => {}, unmount };
 };
 
 export default useTypewriter;

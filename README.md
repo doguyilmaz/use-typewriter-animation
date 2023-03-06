@@ -111,3 +111,5 @@ const Typewriter = () => {
 
 export default Typewriter;
 ```
+
+> License: MIT

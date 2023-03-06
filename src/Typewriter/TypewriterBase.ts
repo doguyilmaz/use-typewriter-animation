@@ -3,78 +3,113 @@ export type TypewriterBaseOptions = {
   typeSpeed?: number;
   deleteSpeed?: number;
   color?: string;
-  cursor?: boolean;
+  // cursor?: boolean;
 };
-
 type QueueCallback = () => Promise<void>;
 
-class TypewriterBase {
-  #queue: QueueCallback[] = [];
-  #element: HTMLElement;
-  #loop: boolean;
-  #typeSpeed: number;
-  #deleteSpeed: number;
-  #color = '#000';
-  #cursor = true;
+// EXPORTS
 
-  constructor(
-    element: HTMLElement,
-    { loop = false, typeSpeed = 100, deleteSpeed = 100, color, cursor }: TypewriterBaseOptions = {}
-  ) {
-    this.#loop = loop;
-    this.#typeSpeed = typeSpeed;
-    this.#deleteSpeed = deleteSpeed;
-    this.#cursor = cursor || this.#cursor;
-    this.#color = color || this.#color;
-    // this.#setupElement;
-    this.#element = element;
-    this.#element.style.color = this.#color;
-  }
+type TypewriterBase = {
+  ELEMENT: HTMLElement;
+  TYPE_SPEED: number;
+  DELETE_SPEED: number;
+  LOOP: boolean;
+  QUEUE: QueueCallback[];
+  addQueue: (callback: (resolve: () => void) => void) => void;
+  deleteAllInner: (resolve?: () => void) => Promise<TypewriterBase>;
+  mount: (element: HTMLElement) => void;
+  configure: (options: TypewriterBaseOptions) => TypewriterBase;
+  type: (text: string) => TypewriterBase;
+  deleteLetters: (letterCount: number) => TypewriterBase;
+  deleteWords: (wordCount: number) => TypewriterBase;
+  deleteAll: () => TypewriterBase;
+  pauseFor: (duration: number) => TypewriterBase;
+  colorize: (color: string) => TypewriterBase;
+  start: () => Promise<void>;
+  unmount: () => TypewriterBase;
+};
 
-  #addQueue(callback: (resolve: () => void) => void) {
-    this.#queue.push(() => new Promise(callback));
-  }
+const TypewriterBase: TypewriterBase = {
+  ELEMENT: document.createElement('div')!,
+  TYPE_SPEED: 30,
+  DELETE_SPEED: 30,
+  LOOP: false,
+  QUEUE: [] as QueueCallback[],
+  addQueue: function (callback: (resolve: () => void) => void) {
+    this.QUEUE.push(() => new Promise(callback));
+    return this;
+  },
 
-  type(text: string) {
+  deleteAllInner: async function (resolve?: () => void) {
+    const interval = setInterval(() => {
+      this.ELEMENT.innerText = this.ELEMENT.innerText.substring(
+        0,
+        this.ELEMENT.innerText.length - 1
+      );
+      if (!this.ELEMENT.innerText.length) {
+        if (resolve) resolve();
+        clearInterval(interval);
+      }
+    }, this.DELETE_SPEED);
+    return this;
+  },
+  mount: function (element: HTMLElement) {
+    this.ELEMENT = element;
+  },
+  unmount: function () {
+    console.log('called');
+    this.QUEUE.length = 0;
+    this.ELEMENT.remove();
+    return this;
+  },
+  configure: function (options: TypewriterBaseOptions) {
+    this.TYPE_SPEED = options.typeSpeed || this.TYPE_SPEED;
+    this.DELETE_SPEED = options.deleteSpeed || this.DELETE_SPEED;
+    this.LOOP = options.loop || this.LOOP;
+    if (options.color) this.ELEMENT.style.color = options.color;
+    return this;
+  },
+
+  type: function (text: string) {
     console.log(text, 'here text');
-    this.#addQueue((resolve) => {
+    this.addQueue((resolve) => {
       let i = 0;
       const interval = setInterval(() => {
-        this.#element.append(text[i]);
+        this.ELEMENT.append(text[i]);
         i++;
         if (i >= text.length) {
           resolve();
           clearInterval(interval);
         }
-      }, this.#typeSpeed);
+      }, this.TYPE_SPEED);
     });
     return this;
-  }
+  },
 
-  deleteLetters(letterCount: number) {
-    this.#addQueue((resolve) => {
+  deleteLetters: function (letterCount: number) {
+    this.addQueue((resolve) => {
       let i = 0;
       const interval = setInterval(() => {
-        this.#element.innerText = this.#element.innerText.substring(
+        this.ELEMENT.innerText = this.ELEMENT.innerText.substring(
           0,
-          this.#element.innerText.length - 1
+          this.ELEMENT.innerText.length - 1
         );
         i++;
         if (i >= letterCount) {
           resolve();
           clearInterval(interval);
         }
-      }, this.#deleteSpeed);
+      }, this.DELETE_SPEED);
     });
     return this;
-  }
+  },
 
-  deleteWords(wordCount: number) {
-    this.#addQueue((resolve) => {
-      const words = this.#element.innerText.split(' ');
+  deleteWords: function (wordCount: number) {
+    this.addQueue((resolve) => {
+      const words = this.ELEMENT.innerText.split(' ');
       if (!words.length) return;
       if (words.length < wordCount) {
-        this.#deleteAllInner(this.#deleteSpeed, resolve);
+        this.deleteAllInner(resolve);
         return;
       }
 
@@ -82,61 +117,81 @@ class TypewriterBase {
       this.deleteLetters(len);
       resolve();
     });
-
     return this;
-  }
+  },
 
-  deleteAll(deleteSpeed = this.#deleteSpeed) {
-    this.#addQueue((resolve) => this.#deleteAllInner(deleteSpeed, resolve));
+  deleteAll: function () {
+    this.addQueue((resolve) => this.deleteAllInner(resolve));
     return this;
-  }
+  },
 
-  async #deleteAllInner(deleteSpeed?: number, resolve?: () => void) {
-    const interval = setInterval(() => {
-      this.#element.innerText = this.#element.innerText.substring(
-        0,
-        this.#element.innerText.length - 1
-      );
-      if (!this.#element.innerText.length) {
-        if (resolve) resolve();
-        clearInterval(interval);
-      }
-    }, deleteSpeed);
+  pauseFor: function (duration: number) {
+    this.addQueue((resolve) => setTimeout(resolve, duration));
     return this;
-  }
+  },
 
-  pauseFor(duration: number) {
-    this.#addQueue((resolve) => setTimeout(resolve, duration));
-    return this;
-  }
-
-  color(color: string) {
-    this.#addQueue((resolve) => {
-      this.#element.style.color = color;
+  colorize: function (color: string) {
+    this.addQueue((resolve) => {
+      this.ELEMENT.style.color = color;
       resolve();
     });
     return this;
-  }
-
-  rainbow() {
-    return this;
-  }
-
-  async start() {
+  },
+  start: async function () {
     console.log('start');
-    console.log(this.#queue, 'queue');
-    for (let callback of this.#queue) await callback();
-    if (this.#loop) {
-      await this.#deleteAllInner();
+    console.log(this.QUEUE, 'this.queue');
+
+    if (!this.ELEMENT) if (!this.QUEUE.length) return;
+    for (let callback of this.QUEUE) await callback();
+    if (this.LOOP) {
+      await this.deleteAllInner();
       this.start();
     }
-    return this;
-  }
+  },
 
-  unmount() {
-    console.log('called');
-    this.#queue = [];
-  }
-}
+  // if (options) configure(options);
+  // if (element) ELEMENT = element;
+
+  // return {
+  //   mount,
+  //   configure,
+  //   type,
+  //   deleteLetters,
+  //   deleteWords,
+  //   deleteAll,
+  //   pauseFor,
+  //   colorize,
+  //   start,
+  //   unmount,
+  // };
+};
 
 export default TypewriterBase;
+export type TypewriterBaseType = TypewriterBase;
+
+function makeFunc() {
+  const name = 'Mozilla';
+  const obj = {
+    result: 0,
+    addNumber: function (a: number, b: number) {
+      this.result = a + b;
+      return this;
+    },
+
+    multiplyNumber: function (a: number) {
+      this.result = this.result * a;
+      return this;
+    },
+  };
+
+  function displayName() {
+    console.log(name);
+  }
+  function displayName2() {
+    console.log(name);
+  }
+  return { displayName, displayName2, obj };
+}
+
+// const myFunc = makeFunc();
+// const bbb = myFunc.obj.addNumber(4, 5).multiplyNumber(3).result;

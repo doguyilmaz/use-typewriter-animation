@@ -10,6 +10,7 @@ esbuild
     treeShaking: true,
     platform: 'node',
     format: 'cjs',
+    sourcemap: true,
     target: 'node16',
     plugins: [nodeExternalsPlugin()],
   })

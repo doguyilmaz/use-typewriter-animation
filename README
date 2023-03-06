@@ -4,6 +4,7 @@
 
 Requires `React >= 16`
 </br>
+</br>
 
 ## Install
 
@@ -11,7 +12,9 @@ Requires `React >= 16`
 yarn add use-typewriter-animation
 ```
 
-### Usage
+</br>
+
+## Usage
 
 ```tsx
 const { ref, typewriter } = useTypewriter(options);
@@ -31,9 +34,13 @@ typewriter
 <div ref={ref} />
 ```
 
-### Options
+</br>
 
-`options` accepts properties in the table below.
+## Options
+
+#### `options` accepts properties in the table below.
+
+</br>
 
 | property           |  type   |    \*    | default |
 | ------------------ | :-----: | :------: | ------- |
@@ -41,6 +48,40 @@ typewriter
 | `typeSpeed (ms)`   | number  | optional | 30      |
 | `deleteSpeed (ms)` | number  | optional | 30      |
 | `color`            | string  | optional | #000    |
+
+</br>
+
+## Available actions
+
+#### Can be used as chained but make sure to use `start` at last to trigger sequence.
+
+</br>
+
+| Function           | Purpose                                           |
+| ------------------ | ------------------------------------------------- |
+| `type("Example")`  | Types the given (Example) text.                   |
+| `deleteLetters(5)` | Deletes the (5) letters from the end of text.     |
+| `deleteWords(2)`   | Deletes the (2) words from the end of text.       |
+| `deleteAll()`      | Deletes all the text.                             |
+| `pauseFor(300)`    | Pauses (300ms) the typing for the specified time. |
+| `colorize("red")`  | Changes the color (red) of the text.              |
+| `start()`          | Triggers the sequence & starts the typing.        |
+
+</br>
+
+```ts
+type TypewriterBaseType = {
+  type: (text: string) => TypewriterBaseType;
+  deleteLetters: (letterCount: number) => TypewriterBaseType;
+  deleteWords: (wordCount: number) => TypewriterBaseType;
+  deleteAll: () => TypewriterBaseType;
+  pauseFor: (duration: number) => TypewriterBaseType;
+  colorize: (color: string) => TypewriterBaseType;
+  start: () => Promise<void>;
+};
+```
+
+</br>
 
 ## Example
 

@@ -1,29 +1,27 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import TypewriterBase from './TypewriterBase';
+
 import useTypewriter from './useTypewriter';
 
 const Typewriter = () => {
-  const { ref, typewriter } = useTypewriter({ loop: true });
+  const { ref, typewriter } = useTypewriter({ loop: false });
 
   useEffect(() => {
-    if (!typewriter) return;
-
     typewriter
-      ?.type('Hello my name is Rudy!')
+      .type('Hello my name is Rudy!')
       .pauseFor(300)
       .deleteAll()
       .type('wqvrqwrq qwrvqwrvqw \n\nfsafsdaf')
       .pauseFor(200)
       .deleteLetters(5)
-      .color('red')
+      .colorize('red')
       .type('asfafs Hsf mdsgy name b!')
-      .deleteWords(6)
+      .deleteWords(2)
       .start();
   }, []);
 
   return (
     <div>
-      <div ref={ref} className='whitespace'></div>
+      <div ref={ref}></div>
     </div>
   );
 };

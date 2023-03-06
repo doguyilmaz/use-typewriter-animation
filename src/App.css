@@ -16,13 +16,3 @@
   width: auto;
   height: 400px; */
 }
-
-/* place a cursor in after pseudo element */
-.whitespace::after {
-  /* content: ''; */
-  /* display: inline-block; */
-  /* width: 0;
-  height: 0;
-  border-left: 2px solid #000; */
-  /* animation: blink 1s step-end infinite; */
-}

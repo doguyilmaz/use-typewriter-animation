@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useTypewriter } from './useTypewriter';
 
 const Typewriter = () => {
-  const { ref, typewriter } = useTypewriter({ loop: false });
+  const { ref, typewriter } = useTypewriter();
 
   useEffect(() => {
     typewriter
@@ -20,7 +20,7 @@ const Typewriter = () => {
 
   return (
     <div>
-      <div ref={ref}></div>
+      <div ref={ref} />
     </div>
   );
 };

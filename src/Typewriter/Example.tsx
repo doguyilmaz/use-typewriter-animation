@@ -1,6 +1,5 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
-
-import useTypewriter from './useTypewriter';
+import { useEffect } from 'react';
+import { useTypewriter } from './useTypewriter';
 
 const Typewriter = () => {
   const { ref, typewriter } = useTypewriter({ loop: false });

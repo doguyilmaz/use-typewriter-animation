@@ -3,7 +3,7 @@ import TypewriterBase, { TypewriterBaseOptions } from './TypewriterBase';
 
 const { unmount, configure, ...typewriter } = TypewriterBase();
 
-const useTypewriter = (options?: TypewriterBaseOptions, disableUnmount = false) => {
+export const useTypewriter = (options?: TypewriterBaseOptions, disableUnmount = false) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -18,5 +18,3 @@ const useTypewriter = (options?: TypewriterBaseOptions, disableUnmount = false) 
 
   return { ref, typewriter };
 };
-
-export default useTypewriter;

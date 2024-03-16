@@ -2,15 +2,15 @@
   "name": "use-typewriter-animation",
   "version": "1.2.0",
   "type": "module",
-  "homepage": "https://github.com/dogukyilmaz/typewriter-animation#readme",
+  "homepage": "https://github.com/doguyilmaz/typewriter-animation#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dogukyilmaz/typewriter-animation.git"
+    "url": "https://github.com/doguyilmaz/typewriter-animation.git"
   },
   "license": "MIT",
-  "author": "Dogu K. Yilmaz <dogukyilmaz@gmail.com>",
+  "author": "Dogu K. Yilmaz <doguyilmaz@gmail.com>",
   "bugs": {
-    "url": "https://github.com/dogukyilmaz/typewriter-animation/issues"
+    "url": "https://github.com/doguyilmaz/typewriter-animation/issues"
   },
   "description": "An utility hook to create typewriter animation effect in React.",
   "keywords": [

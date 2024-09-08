@@ -1,20 +1,25 @@
 import { useEffect, useRef } from 'react';
 import TypewriterBase, { TypewriterBaseOptions } from './TypewriterBase';
 
-const { unmount, configure, ...typewriter } = TypewriterBase();
+const { configure, unmount, ...typewriter } = TypewriterBase();
 
-export const useTypewriter = (options?: TypewriterBaseOptions, disableUnmount = false) => {
+export const useTypewriter = (options?: TypewriterBaseOptions) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!ref.current) throw new Error('Element ref is not initialized!');
+    if (!ref.current) {
+      console.error('Typewriter element ref is not available');
+      return;
+    }
+
+    // Initialize typewriter on the provided element
     configure(ref.current, options);
 
+    // Clean up on unmount
     return () => {
-      if (disableUnmount) return;
       unmount();
     };
-  }, []);
+  }, [options]);
 
-  return { ref, typewriter };
+  return { ref, typewriter }; // Return ref and typewriter methods
 };

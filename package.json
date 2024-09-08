@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "bun run clean && node esbuild.js && bun run types",
+    "build": "bun run clean && bun run esbuild.ts && bun run types",
     "types": "tsc",
     "pack": "bun pm pack",
     "clean": "rm -rf dist",

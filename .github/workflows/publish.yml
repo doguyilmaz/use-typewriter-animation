@@ -17,23 +17,23 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v3
-      - name: Use Node
-        uses: actions/setup-node@v3
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
-        run: yarn
+        run: bun install
       - name: Build
-        run: yarn build
+        run: bun run build
       - name: Publish New Version
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
           git config --local user.email "dogukyilmaz@gmail.com"
-          git config --local user.name "Dogu K. Yilmaz"
-          yarn version --new-version ${{github.event.inputs.release}} --no-git-tag-version
-          yarn publish --access public
+          git config --local user.name "Dogu Yilmaz"
+          npm version --new-version ${{github.event.inputs.release}}
+          npm publish --access public
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           git commit -a -m "v${PACKAGE_VERSION}"
           git push

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTypewriter } from '../Typewriter/useTypewriter';
 
 const Typewriter = () => {
@@ -22,7 +22,7 @@ const Typewriter = () => {
         .deleteLetters(5)
         .colorize('blue')
         .type(" Now it's blue!", { speed: 100 })
-        .highlight(0, 5, { color: 'yellow', background: 'black' })
+        .highlight(0, 5, { color: 'black', background: 'white' })
         .start();
     }
   }, [typewriter]);

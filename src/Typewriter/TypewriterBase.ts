@@ -28,7 +28,6 @@ export type TypewriterBaseType = {
 };
 
 function injectCursorStyles() {
-  // Ensure the styles are only added once
   if (document.getElementById('typewriter-cursor-styles')) return;
 
   const style = document.createElement('style');
@@ -56,16 +55,16 @@ function TypewriterBase(): TypewriterBaseType & {
     typeEnd: [],
   };
   let ELEMENT: HTMLElement;
-  let CURSOR: HTMLElement | null = null; // Store cursor element
+  let CURSOR: HTMLElement | null = null;
   let TYPE_SPEED = 30;
   let DELETE_SPEED = 30;
   let CURRENT_COLOR = '';
   let LOOP = false;
   let isRunning = false;
-  let activeInterval: number | null = null; // Store interval for cleanup
+  let activeInterval: number | null = null;
 
   const addQueue = (callback: (resolve: () => void) => void) => {
-    QUEUE.push(() => new Promise(callback));
+    QUEUE.push(() => new Promise<void>(callback));
   };
 
   const configure = (element: HTMLElement, options: TypewriterBaseOptions = {}) => {
@@ -74,16 +73,13 @@ function TypewriterBase(): TypewriterBaseType & {
     DELETE_SPEED = options.deleteSpeed || DELETE_SPEED;
     LOOP = options.loop || LOOP;
 
-    // Inject CSS for the cursor
     injectCursorStyles();
 
-    // Add the cursor element and customize its style
     if (!CURSOR) {
       CURSOR = document.createElement('span');
       CURSOR.classList.add('typewriter-cursor');
-      CURSOR.innerHTML = '|'; // Default cursor character
+      CURSOR.innerHTML = '|';
 
-      // Customize cursor style based on options
       CURSOR.style.animationDuration = `${options.cursorBlinkSpeed || 500}ms`;
       CURSOR.style.color = options.cursorColor || 'black';
 
@@ -96,11 +92,11 @@ function TypewriterBase(): TypewriterBaseType & {
           break;
         case 'underline':
           CURSOR.style.borderBottom = `2px solid ${options.cursorColor || 'black'}`;
-          CURSOR.innerHTML = ''; // Remove default | for underline
+          CURSOR.innerHTML = '';
           break;
         case 'bar':
         default:
-          CURSOR.innerHTML = '|'; // Default bar style
+          CURSOR.innerHTML = '|';
           break;
       }
       ELEMENT.appendChild(CURSOR);
@@ -109,12 +105,12 @@ function TypewriterBase(): TypewriterBaseType & {
   };
 
   const unmount = () => {
-    QUEUE.length = 0; // Clear the queue
-    if (activeInterval) clearInterval(activeInterval); // Clear any active interval
-    ELEMENT.innerHTML = ''; // Clear the text content
+    QUEUE.length = 0;
+    if (activeInterval) clearInterval(activeInterval);
+    ELEMENT.innerHTML = '';
     EVENTS.typeStart = [];
     EVENTS.typeEnd = [];
-    if (CURSOR) CURSOR.remove(); // Remove the cursor on unmount
+    if (CURSOR) CURSOR.remove();
     CURSOR = null;
   };
 
@@ -131,7 +127,7 @@ function TypewriterBase(): TypewriterBaseType & {
           const span = document.createElement('span');
           if (CURRENT_COLOR) span.style.color = CURRENT_COLOR;
           span.textContent = text[i];
-          ELEMENT.insertBefore(span, CURSOR); // Insert before the cursor
+          ELEMENT.insertBefore(span, CURSOR);
           i++;
           if (i >= text.length) {
             clearInterval(activeInterval!);

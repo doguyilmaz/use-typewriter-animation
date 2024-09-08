@@ -15,7 +15,6 @@ export const useTypewriter = (
 
     typewriter.configure(ref.current, options);
 
-    // Cleanup the typewriter when the component unmounts
     return () => {
       typewriter.unmount();
     };

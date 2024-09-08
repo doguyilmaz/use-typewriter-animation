@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { useTypewriter } from './useTypewriter';
+import React, { useEffect } from 'react';
+import { useTypewriter } from '../Typewriter/useTypewriter';
 
 const Typewriter = () => {
   const { ref, typewriter } = useTypewriter({
     typeSpeed: 50,
     loop: false,
-    cursorStyle: 'bar', // You can also try 'block' or 'underline'
-    cursorBlinkSpeed: 500, // Customize the blink speed
-    cursorColor: 'blue', // Customize the cursor color
+    cursorStyle: 'bar',
+    cursorBlinkSpeed: 500,
+    cursorColor: 'blue',
   });
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Typewriter = () => {
         .deleteLetters(5)
         .colorize('blue')
         .type(" Now it's blue!", { speed: 100 })
-        .highlight(0, 5, { color: 'yellow', background: 'black' }) // Highlight "Hello"
+        .highlight(0, 5, { color: 'yellow', background: 'black' })
         .start();
     }
   }, [typewriter]);

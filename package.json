@@ -1,6 +1,6 @@
 {
   "name": "use-typewriter-animation",
-  "version": "2.0.3",
+  "version": "2.0.0",
   "description": "An utility hook to create typewriter animation effect in React.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -16,9 +16,9 @@
     "watch": "tsc --watch",
     "format": "prettier --write 'src/**/*.ts'",
     "test": "jest --config jest.config.js",
-    "release": "bun run build && bun run publish",
+    "version": "bun run version-bump.ts",
     "publish": "bun run pack && npm publish",
-    "version": "bun run version-bump.ts"
+    "release": "bun run version && bun run build && bun run publish"
   },
   "peerDependencies": {
     "react": ">=16.8",

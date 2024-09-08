@@ -1,115 +1,138 @@
 # use-typewriter-animation
 
-> An utility hook to create typewriter animation effect in React.
+`use-typewriter-animation` is a React hook that provides an easy way to create typewriter animation effects. It allows you to animate typing, deleting, and customizing text with various options like speed, colorization, and cursor styles.
 
-Requires `React >= 16`
-</br>
-</br>
+## Features
 
-## Install
+- Typewriter animation with customizable typing and deleting speeds.
+- Supports multiple text styling options (color, highlight).
+- Looping options for continuous animations.
+- Customizable cursor styles (block, underline, bar).
+- Easy integration with React using hooks.
+
+## Installation
+
+You can install the package via npm or Yarn:
 
 ```bash
+# Using npm
+npm install use-typewriter-animation
+
+# Using Yarn
 yarn add use-typewriter-animation
 ```
 
-</br>
-
 ## Usage
 
-```tsx
-const { ref, typewriter } = useTypewriter(options);
-```
+Here's a simple example of how to use the `useTypewriter` hook in your React project:
 
 ```tsx
-typewriter
-  .type('Hello my name is use-typewriter-animation!')
-  .pauseFor(100)
-  .deleteLetters(1)
-  .colorize('red')
-  .type('Dogu!')
-  .start();
-```
+import React from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx
-<div ref={ref} />
-```
+const MyTypewriterComponent = () => {
+  const { ref, typewriter } = useTypewriter({
+    typeSpeed: 50,
+    deleteSpeed: 30,
+    loop: true,
+    cursorStyle: 'bar',
+    cursorBlinkSpeed: 700,
+    cursorColor: 'red',
+  });
 
-</br>
-
-## Options
-
-#### `options` accepts properties in the table below.
-
-</br>
-
-| property           |  type   |    \*    | default |
-| ------------------ | :-----: | :------: | ------- |
-| `loop`             | boolean | optional | false   |
-| `typeSpeed (ms)`   | number  | optional | 30      |
-| `deleteSpeed (ms)` | number  | optional | 30      |
-| `color`            | string  | optional | #000    |
-
-</br>
-
-## Available actions
-
-#### Can be used as chained but make sure to use `start` at last to trigger sequence.
-
-</br>
-
-| Function           | Purpose                                           |
-| ------------------ | ------------------------------------------------- |
-| `type("Example")`  | Types the given (Example) text.                   |
-| `deleteLetters(5)` | Deletes the (5) letters from the end of text.     |
-| `deleteWords(2)`   | Deletes the (2) words from the end of text.       |
-| `deleteAll()`      | Deletes all the text.                             |
-| `pauseFor(300)`    | Pauses (300ms) the typing for the specified time. |
-| `colorize("red")`  | Changes the color (red) of the text.              |
-| `start()`          | Triggers the sequence & starts the typing.        |
-
-</br>
-
-```ts
-type TypewriterBaseType = {
-  type: (text: string) => TypewriterBaseType;
-  deleteLetters: (letterCount: number) => TypewriterBaseType;
-  deleteWords: (wordCount: number) => TypewriterBaseType;
-  deleteAll: () => TypewriterBaseType;
-  pauseFor: (duration: number) => TypewriterBaseType;
-  colorize: (color: string) => TypewriterBaseType;
-  start: () => Promise<void>;
-};
-```
-
-</br>
-
-## Example
-
-```tsx
-import { useEffect } from 'react';
-import { useTypewriter } from './useTypewriter';
-
-const Typewriter = () => {
-  const { ref, typewriter } = useTypewriter();
-
-  useEffect(() => {
+  React.useEffect(() => {
     typewriter
-      .type('Hello, this is use-typewriter-animation hook!')
-      .pauseFor(300)
-      .deleteAll()
-      .type('cyan magenta \n\ndarkgray')
-      .pauseFor(200)
-      .deleteLetters(5)
+      .on('typeStart', () => console.log('Typing started!'))
+      .on('typeEnd', () => console.log('Typing finished!'))
+      .type('Hello, ')
       .colorize('red')
-      .type('yellow black white turquoise green')
-      .deleteWords(2)
+      .type('this will be red.', { speed: 80 })
+      .pauseFor(500)
+      .deleteLetters(5)
+      .colorize('blue')
+      .type(" Now it's blue!", { speed: 100 })
+      .highlight(0, 5, { color: 'black', background: 'white' })
       .start();
-  }, []);
+  }, [typewriter]);
 
-  return <div ref={ref} />;
+  return <div ref={ref}></div>;
 };
 
-export default Typewriter;
+export default MyTypewriterComponent;
 ```
 
-> License: MIT
+## API Reference
+
+### `useTypewriter(options?: TypewriterBaseOptions)`
+
+This hook provides access to a reference object and the typewriter instance. The typewriter instance exposes methods for controlling the animation.
+
+- **Arguments**:
+
+  - `options` (optional): A configuration object for the typewriter. The available options are:
+    - `loop` (boolean): Whether the animation should loop. Default: `false`.
+    - `typeSpeed` (number): Speed of typing in milliseconds. Default: `30`.
+    - `deleteSpeed` (number): Speed of deleting text in milliseconds. Default: `30`.
+    - `cursorStyle` (string): Style of the cursor (`block`, `underline`, `bar`). Default: `bar`.
+    - `cursorBlinkSpeed` (number): Blink speed of the cursor in milliseconds. Default: `500`.
+    - `cursorColor` (string): The color of the cursor. Default: `black`.
+
+- **Returns**:
+  - `ref`: A `React.RefObject` to attach to the DOM element where the animation should occur.
+  - `typewriter`: An instance of `TypewriterBaseType` for controlling the animation.
+
+### Methods on `typewriter`
+
+- **`type(text: string, options?: { speed?: number })`**: Types the specified text.
+- **`deleteLetters(count: number)`**: Deletes the specified number of letters.
+- **`deleteWords(count: number)`**: Deletes the specified number of words.
+- **`deleteAll()`**: Deletes all the text.
+- **`pauseFor(duration: number)`**: Pauses the animation for the specified duration (in milliseconds).
+- **`colorize(color: string)`**: Changes the text color after the current cursor position.
+- **`highlight(start: number, length: number, style: { color?: string; background?: string })`**: Highlights a portion of text with the specified color and/or background.
+- **`on(event: 'typeStart' | 'typeEnd', callback: () => void)`**: Adds a callback for when typing starts or ends.
+- **`start()`**: Starts the typewriter animation.
+- **`stop()`**: Stops the typewriter animation.
+- **`unmount()`**: Cleans up the typewriter instance and removes the cursor.
+
+## Building the Project
+
+To build the project, you can use the following scripts:
+
+```bash
+# Clean the build directory
+bun run clean
+
+# Build the project
+bun run build
+
+# Build the TypeScript declaration files
+bun run types
+
+# Format the source code
+bun run format
+
+# Run tests
+bun run test
+
+# Publish the package
+bun run release
+```
+
+## Development
+
+To start development, use the `watch` script:
+
+```bash
+bun run watch
+```
+
+This will watch for changes in your TypeScript files and automatically recompile them.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/doguyilmaz/use-typewriter-animation/blob/main/LICENSE) file for more details.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/doguyilmaz/use-typewriter-animation).

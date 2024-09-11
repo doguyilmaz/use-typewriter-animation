@@ -20,6 +20,9 @@ npm install use-typewriter-animation
 
 # Using Yarn
 yarn add use-typewriter-animation
+
+# Using Bun
+bun add use-typewriter-animation
 ```
 
 ## Usage
@@ -101,22 +104,22 @@ To build the project, you can use the following scripts:
 
 ```bash
 # Clean the build directory
-bun run clean
+npm run clean
 
 # Build the project
-bun run build
+npm run build
 
 # Build the TypeScript declaration files
-bun run types
+npm run types
 
 # Format the source code
-bun run format
+npm run format
 
 # Run tests
-bun run test
+npm run test
 
 # Publish the package
-bun run release
+npm run release
 ```
 
 ## Development
@@ -124,7 +127,7 @@ bun run release
 To start development, use the `watch` script:
 
 ```bash
-bun run watch
+npm run watch
 ```
 
 This will watch for changes in your TypeScript files and automatically recompile them.

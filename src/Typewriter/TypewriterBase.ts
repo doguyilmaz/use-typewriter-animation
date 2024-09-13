@@ -181,7 +181,8 @@ function TypewriterBase(): TypewriterBaseType & {
 				const words = ELEMENT.innerText.trim().split(/\s+/); // Split the text into words
 				const count = wordCount >= words.length ? words.length : wordCount;
 				const charsToRemove = words.slice(-count).join(' ').length;
-				this.deleteLetters(charsToRemove).start().then(resolve);
+				this.deleteLetters(charsToRemove);
+				resolve();
 			});
 			return this;
 		},

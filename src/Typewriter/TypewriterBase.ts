@@ -189,6 +189,7 @@ function TypewriterBase(): TypewriterBaseType & {
 			addQueue((resolve) => {
 				const totalCharacters = ELEMENT.innerText.length;
 				this.deleteLetters(totalCharacters);
+				CURRENT_COLOR = '';
 				resolve();
 			});
 			return this;

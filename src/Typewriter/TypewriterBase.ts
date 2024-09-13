@@ -22,6 +22,12 @@ export type TypewriterBaseType = {
     length: number,
     style: { color?: string; background?: string }
   ) => TypewriterBaseType;
+  highlightWords: (
+    wordCount: number,
+    from: 'start' | 'end',
+    style: { color?: string; background?: string }
+  ) => TypewriterBaseType;
+  newLine: () => TypewriterBaseType;
   on: (event: 'typeStart' | 'typeEnd', callback: () => void) => TypewriterBaseType;
   start: () => Promise<void>;
   stop: () => void;
@@ -154,6 +160,11 @@ function TypewriterBase(): TypewriterBaseType & {
 
     deleteLetters: function (letterCount: number) {
       addQueue((resolve) => {
+        const totalCharacters = ELEMENT.innerText.length;
+        if (letterCount >= totalCharacters) {
+          letterCount = totalCharacters;
+        }
+
         let i = 0;
         activeInterval = window.setInterval(() => {
           const lastNode = ELEMENT.childNodes[ELEMENT.childNodes.length - 2];
@@ -172,18 +183,15 @@ function TypewriterBase(): TypewriterBaseType & {
 
     deleteWords: function (wordCount: number) {
       addQueue((resolve) => {
-        const words = ELEMENT.innerText.trim().split(/\s+/);
-        if (words.length === 0 || wordCount > words.length) {
-          resolve();
-          return;
+        const words = ELEMENT.innerText.trim().split(/\s+/); // Split the text into words
+        if (wordCount >= words.length) {
+          wordCount = words.length; // Delete all words
         }
         const charsToRemove = words.slice(-wordCount).join(' ').length;
-        this.deleteLetters(charsToRemove);
-        resolve();
+        this.deleteLetters(charsToRemove).start().then(resolve);
       });
       return this;
     },
-
     deleteAll: function () {
       addQueue((resolve) => {
         const totalCharacters = ELEMENT.innerText.length;
@@ -206,13 +214,70 @@ function TypewriterBase(): TypewriterBaseType & {
       return this;
     },
 
-    highlight: function (start, length, style) {
+    highlight: function (
+      start: number,
+      length: number,
+      style: { color?: string; background?: string }
+    ) {
       addQueue((resolve) => {
+        const totalCharacters = ELEMENT.innerText.length;
+        if (start + length > totalCharacters) {
+          length = totalCharacters - start; // Highlight only up to the end of the text
+        }
         const textNodes = Array.from(ELEMENT.childNodes) as HTMLElement[];
         for (let i = start; i < start + length && i < textNodes.length; i++) {
           if (style.color) textNodes[i].style.color = style.color;
           if (style.background) textNodes[i].style.backgroundColor = style.background;
         }
+
+        resolve();
+      });
+      return this;
+    },
+
+    highlightWords: function (
+      wordCount: number,
+      from: 'start' | 'end',
+      style: { color?: string; background?: string }
+    ) {
+      addQueue((resolve) => {
+        const words = ELEMENT.innerText.trim().split(/\s+/);
+
+        if (wordCount >= words.length) {
+          wordCount = words.length;
+        }
+
+        let startIndex: number;
+        let endIndex: number;
+
+        if (from === 'start') {
+          startIndex = 0;
+          endIndex = wordCount;
+        } else {
+          startIndex = words.length - wordCount;
+          endIndex = words.length;
+        }
+
+        let currentCharIndex = 0;
+        for (let i = 0; i < words.length; i++) {
+          const word = words[i];
+          const wordLength = word.length;
+          if (i >= startIndex && i < endIndex) {
+            this.highlight(currentCharIndex, wordLength, style);
+          }
+          currentCharIndex += wordLength + 1;
+        }
+
+        resolve();
+      });
+      return this;
+    },
+
+    newLine: function () {
+      addQueue((resolve) => {
+        // Create a new <br> element for the new line
+        const br = document.createElement('br');
+        ELEMENT.insertBefore(br, CURSOR); // Insert the new line before the cursor
         resolve();
       });
       return this;

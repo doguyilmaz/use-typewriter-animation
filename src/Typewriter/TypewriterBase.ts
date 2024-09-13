@@ -30,11 +30,11 @@ export type TypewriterBaseType = {
 	unmount: () => void;
 };
 
-function injectCursorStyles() {
-	if (document.getElementById('typewriter-cursor-styles')) return;
+function injectGlobalStyles() {
+	if (document.getElementById('typewriter-global-styles')) return;
 
 	const style = document.createElement('style');
-	style.id = 'typewriter-cursor-styles';
+	style.id = 'typewriter-global-styles';
 	style.textContent = `
     .typewriter-cursor {
       display: inline-block;
@@ -45,15 +45,7 @@ function injectCursorStyles() {
       from, to { opacity: 1; }
       50% { opacity: 0; }
     }
-  `;
-	document.head.appendChild(style);
-}
 
-function injectHighlightStyles() {
-	if (document.getElementById('typewriter-highlight-styles')) return;
-	const style = document.createElement('style');
-	style.id = 'typewriter-highlight-styles';
-	style.textContent = `
     .highlight-transition {
       transition: color 0.5s ease, background-color 0.5s ease;
     }
@@ -83,12 +75,12 @@ function TypewriterBase(): TypewriterBaseType & {
 	};
 
 	const configure: TypewriterConfigure = (element, options = {}) => {
+		injectGlobalStyles(); // Inject global styles once
+
 		ELEMENT = element;
 		TYPE_SPEED = options.typeSpeed || TYPE_SPEED;
 		DELETE_SPEED = options.deleteSpeed || DELETE_SPEED;
 		LOOP = options.loop || LOOP;
-
-		injectCursorStyles();
 
 		if (!CURSOR) {
 			CURSOR = document.createElement('span');
@@ -214,19 +206,16 @@ function TypewriterBase(): TypewriterBaseType & {
 		},
 		highlight: function (start, length, style) {
 			addQueue((resolve) => {
-				injectHighlightStyles();
-
 				const totalCharacters = ELEMENT.innerText.length;
 				const chars = start + length > totalCharacters ? totalCharacters - start : length;
 				const textNodes = Array.from(ELEMENT.childNodes) as HTMLElement[];
-
 				for (let i = start; i < start + chars && i < textNodes.length; i++) {
 					const node = textNodes[i];
-					node.classList.add('highlight-transition');
+					node.classList.add('highlight-transition'); // Apply transition class
 					setTimeout(() => {
 						if (style.color) node.style.color = style.color;
 						if (style.background) node.style.backgroundColor = style.background;
-					}, 10);
+					}, 10); // Trigger the transition
 				}
 
 				resolve();
@@ -235,8 +224,6 @@ function TypewriterBase(): TypewriterBaseType & {
 		},
 		highlightWords: function (wordCount, from, style) {
 			addQueue((resolve) => {
-				injectHighlightStyles();
-
 				const words = ELEMENT.innerText.trim().split(/\s+/);
 				const count = wordCount >= words.length ? words.length : wordCount;
 
@@ -256,26 +243,19 @@ function TypewriterBase(): TypewriterBaseType & {
 					const word = words[i];
 					const wordLength = word.length;
 					if (i >= startIndex && i < endIndex) {
-						for (let j = currentCharIndex; j < currentCharIndex + wordLength; j++) {
-							const node = ELEMENT.childNodes[j] as HTMLElement;
-							node.classList.add('highlight-transition');
-							setTimeout(() => {
-								if (style.color) node.style.color = style.color;
-								if (style.background) node.style.backgroundColor = style.background;
-							}, 10);
-						}
+						this.highlight(currentCharIndex, wordLength, style);
 					}
 					currentCharIndex += wordLength + 1; // +1 for the space between words
 				}
+
 				resolve();
 			});
 			return this;
 		},
 		newLine: function () {
 			addQueue((resolve) => {
-				// Create a new <br> element for the new line
 				const br = document.createElement('br');
-				ELEMENT.insertBefore(br, CURSOR); // Insert the new line before the cursor
+				ELEMENT.insertBefore(br, CURSOR);
 				resolve();
 			});
 			return this;

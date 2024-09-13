@@ -49,6 +49,18 @@ function injectCursorStyles() {
 	document.head.appendChild(style);
 }
 
+function injectHighlightStyles() {
+	if (document.getElementById('typewriter-highlight-styles')) return;
+	const style = document.createElement('style');
+	style.id = 'typewriter-highlight-styles';
+	style.textContent = `
+    .highlight-transition {
+      transition: color 0.5s ease, background-color 0.5s ease;
+    }
+  `;
+	document.head.appendChild(style);
+}
+
 function TypewriterBase(): TypewriterBaseType & {
 	configure: TypewriterConfigure;
 } {
@@ -202,12 +214,19 @@ function TypewriterBase(): TypewriterBaseType & {
 		},
 		highlight: function (start, length, style) {
 			addQueue((resolve) => {
+				injectHighlightStyles();
+
 				const totalCharacters = ELEMENT.innerText.length;
 				const chars = start + length > totalCharacters ? totalCharacters - start : length;
 				const textNodes = Array.from(ELEMENT.childNodes) as HTMLElement[];
+
 				for (let i = start; i < start + chars && i < textNodes.length; i++) {
-					if (style.color) textNodes[i].style.color = style.color;
-					if (style.background) textNodes[i].style.backgroundColor = style.background;
+					const node = textNodes[i];
+					node.classList.add('highlight-transition');
+					setTimeout(() => {
+						if (style.color) node.style.color = style.color;
+						if (style.background) node.style.backgroundColor = style.background;
+					}, 10);
 				}
 
 				resolve();
@@ -216,6 +235,8 @@ function TypewriterBase(): TypewriterBaseType & {
 		},
 		highlightWords: function (wordCount, from, style) {
 			addQueue((resolve) => {
+				injectHighlightStyles();
+
 				const words = ELEMENT.innerText.trim().split(/\s+/);
 				const count = wordCount >= words.length ? words.length : wordCount;
 
@@ -235,11 +256,17 @@ function TypewriterBase(): TypewriterBaseType & {
 					const word = words[i];
 					const wordLength = word.length;
 					if (i >= startIndex && i < endIndex) {
-						this.highlight(currentCharIndex, wordLength, style);
+						for (let j = currentCharIndex; j < currentCharIndex + wordLength; j++) {
+							const node = ELEMENT.childNodes[j] as HTMLElement;
+							node.classList.add('highlight-transition');
+							setTimeout(() => {
+								if (style.color) node.style.color = style.color;
+								if (style.background) node.style.backgroundColor = style.background;
+							}, 10);
+						}
 					}
-					currentCharIndex += wordLength + 1;
+					currentCharIndex += wordLength + 1; // +1 for the space between words
 				}
-
 				resolve();
 			});
 			return this;

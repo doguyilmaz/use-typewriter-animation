@@ -156,11 +156,12 @@ function TypewriterBase(): TypewriterBaseType & {
       addQueue((resolve) => {
         let i = 0;
         activeInterval = window.setInterval(() => {
-          if (ELEMENT.lastChild !== CURSOR) {
-            ELEMENT.removeChild(ELEMENT.lastChild as Node);
+          const lastNode = ELEMENT.childNodes[ELEMENT.childNodes.length - 2];
+          if (lastNode && lastNode !== CURSOR) {
+            ELEMENT.removeChild(lastNode);
           }
           i++;
-          if (i >= letterCount) {
+          if (i >= letterCount || ELEMENT.innerText.length === 0) {
             clearInterval(activeInterval!);
             resolve();
           }
@@ -171,10 +172,13 @@ function TypewriterBase(): TypewriterBaseType & {
 
     deleteWords: function (wordCount: number) {
       addQueue((resolve) => {
-        const words = ELEMENT.innerText.split(' ');
-        if (!words.length) return;
-        const len = words.slice(words.length - wordCount).join(' ').length + 1;
-        this.deleteLetters(len);
+        const words = ELEMENT.innerText.trim().split(/\s+/);
+        if (words.length === 0 || wordCount > words.length) {
+          resolve();
+          return;
+        }
+        const charsToRemove = words.slice(-wordCount).join(' ').length;
+        this.deleteLetters(charsToRemove);
         resolve();
       });
       return this;
@@ -182,15 +186,9 @@ function TypewriterBase(): TypewriterBaseType & {
 
     deleteAll: function () {
       addQueue((resolve) => {
-        activeInterval = window.setInterval(() => {
-          if (ELEMENT.innerText.length && ELEMENT.lastChild !== CURSOR) {
-            ELEMENT.innerText = ELEMENT.innerText.substring(0, ELEMENT.innerText.length - 1);
-          }
-          if (!ELEMENT.innerText.length) {
-            clearInterval(activeInterval!);
-            resolve();
-          }
-        }, DELETE_SPEED);
+        const totalCharacters = ELEMENT.innerText.length;
+        this.deleteLetters(totalCharacters);
+        resolve();
       });
       return this;
     },

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useCallback } from 'react';
 import TypewriterBase, { type TypewriterBaseOptions, type TypewriterBaseType } from './TypewriterBase';
 
 export const useTypewriter = (
@@ -7,18 +7,22 @@ export const useTypewriter = (
 	const ref = useRef<HTMLDivElement>(null);
 	const typewriter = useMemo(() => TypewriterBase(), []);
 
-	useEffect(() => {
+	const configureTypewriter = useCallback(() => {
 		if (!ref.current) {
 			console.error('Element ref is not initialized!');
 			return;
 		}
 
 		typewriter.configure(ref.current, options);
+	}, [options, typewriter]);
+
+	useEffect(() => {
+		configureTypewriter();
 
 		return () => {
 			typewriter.unmount();
 		};
-	}, [options, typewriter]);
+	}, [configureTypewriter, typewriter]);
 
 	return { ref, typewriter };
 };

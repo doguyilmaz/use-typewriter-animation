@@ -162,17 +162,19 @@ function TypewriterBase(): TypewriterBaseType & {
 				const totalCharacters = ELEMENT.innerText.length;
 				const count = letterCount >= totalCharacters ? totalCharacters : letterCount;
 				let i = 0;
-				activeInterval = window.setInterval(() => {
+				const deleteInterval = () => {
 					const lastNode = ELEMENT.childNodes[ELEMENT.childNodes.length - 2];
 					if (lastNode && lastNode !== CURSOR) {
 						ELEMENT.removeChild(lastNode);
 					}
 					i++;
 					if (i >= count || ELEMENT.innerText.length === 0) {
-						clearInterval(activeInterval ?? undefined);
 						resolve();
+					} else {
+						setTimeout(deleteInterval, DELETE_SPEED);
 					}
-				}, DELETE_SPEED);
+				};
+				deleteInterval();
 			});
 			return this;
 		},

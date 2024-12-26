@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useTypewriter } from '../Typewriter/useTypewriter';
+import { useTypewriter } from '..';
 
 const Typewriter = () => {
 	const { ref, typewriter } = useTypewriter({

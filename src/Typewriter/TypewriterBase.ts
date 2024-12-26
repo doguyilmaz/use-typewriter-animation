@@ -38,12 +38,27 @@ export type TypewriterBaseType = {
   unmount: () => void;
 };
 
-function injectGlobalStyles() {
-  if (document.getElementById('typewriter-global-styles')) return;
+// Separate browser-specific operations
+const browserOperations = {
+  createElement: (tag: string): HTMLElement | null =>
+    typeof document !== 'undefined' ? document.createElement(tag) : null,
 
-  const style = document.createElement('style');
-  style.id = 'typewriter-global-styles';
-  style.textContent = `
+  getElementById: (id: string): HTMLElement | null =>
+    typeof document !== 'undefined' ? document.getElementById(id) : null,
+
+  injectStyles: (styles: string) => {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('typewriter-global-styles')) return;
+    const styleElement = document.createElement('style');
+    styleElement.id = 'typewriter-global-styles';
+    styleElement.innerHTML = styles;
+    document.head.appendChild(styleElement);
+  },
+};
+
+// Use these operations in your code
+function injectGlobalStyles() {
+  browserOperations.injectStyles(`
     .typewriter-cursor {
       display: inline-block;
       animation: blink 1s step-end infinite;
@@ -57,14 +72,35 @@ function injectGlobalStyles() {
     .highlight-transition {
       transition: color 0.5s ease, background-color 0.5s ease;
     }
-  `;
-  document.head.appendChild(style);
+  `);
 }
 
 interface QueueItem {
   fn: (options?: any) => void;
   options?: any;
 }
+
+export const environment = {
+  createElement: (tag: string): any =>
+    typeof document !== 'undefined' ? document.createElement(tag) : {},
+  getElementById: (id: string): any =>
+    typeof document !== 'undefined' ? document.getElementById(id) : null,
+  injectStyles: (styles: string) => {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('typewriter-global-styles')) return;
+    const styleElement = document.createElement('style');
+    styleElement.id = 'typewriter-global-styles';
+    styleElement.innerHTML = styles;
+    document.head.appendChild(styleElement);
+  },
+  setInterval: (callback: () => void, ms: number): any =>
+    typeof window !== 'undefined' ? window.setInterval(callback, ms) : null,
+  clearInterval: (id: any) => {
+    if (typeof window !== 'undefined') {
+      window.clearInterval(id);
+    }
+  },
+};
 
 function TypewriterBase(): TypewriterBaseType & {
   configure: TypewriterConfigure;
@@ -112,41 +148,11 @@ function TypewriterBase(): TypewriterBaseType & {
     LOOP = options.loop || LOOP;
 
     if (!CURSOR) {
-      CURSOR = document.createElement('span');
-      CURSOR.classList.add('typewriter-cursor');
-
-      // Default bar style
-      CURSOR.innerHTML = '|';
-      CURSOR.style.animationDuration = `${options.cursorBlinkSpeed || 500}ms`;
-      CURSOR.style.color = options.cursorColor || 'black';
-      const cursorWidth =
-        typeof options.cursorWidth === 'number' ? `${options.cursorWidth}px` : options.cursorWidth;
-
-      // Apply cursor styles based on the provided cursorStyle option
-      switch (options.cursorStyle) {
-        case 'block':
-          CURSOR.innerHTML = ''; // Clear any existing inner content
-          CURSOR.style.display = 'inline-block';
-          CURSOR.style.width = cursorWidth || '0.6em'; // Allow user-defined width
-          CURSOR.style.height = '1em'; // Full height of the text
-          CURSOR.style.backgroundColor = options.cursorColor || 'black';
-          break;
-
-        case 'underline':
-          CURSOR.innerHTML = ''; // Clear any existing inner content
-          CURSOR.style.display = 'inline-block';
-          CURSOR.style.width = cursorWidth || '1ch'; // Allow user-defined width
-          CURSOR.style.borderBottom = `2px solid ${options.cursorColor || 'black'}`;
-          break;
-
-        default:
-          CURSOR.innerHTML = '|'; // Default bar style with blinking
-          CURSOR.style.display = 'inline';
-          CURSOR.style.width = cursorWidth || 'auto'; // For bar style, usually no need for custom width
-          break;
+      CURSOR = browserOperations.createElement('span');
+      if (CURSOR) {
+        CURSOR.className = 'typewriter-cursor';
+        CURSOR.innerHTML = '|';
       }
-
-      ELEMENT.appendChild(CURSOR);
     }
 
     return TypewriterBase;
@@ -173,7 +179,7 @@ function TypewriterBase(): TypewriterBaseType & {
         }
         let i = 0;
         const speed = options.speed || TYPE_SPEED;
-        activeInterval = window.setInterval(() => {
+        activeInterval = environment.setInterval(() => {
           const span = document.createElement('span');
           if (CURRENT_COLOR) span.style.color = CURRENT_COLOR;
           span.textContent = text[i];
@@ -329,3 +335,8 @@ function TypewriterBase(): TypewriterBaseType & {
 }
 
 export default TypewriterBase;
+
+// Export for testing purposes
+export { browserOperations };
+
+export { TypewriterBase };

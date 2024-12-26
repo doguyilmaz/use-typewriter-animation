@@ -15,7 +15,7 @@
     "clean": "rm -rf dist",
     "watch": "tsc --watch",
     "format": "prettier --write 'src/**/*.ts'",
-    "test": "jest --config jest.config.js",
+    "test": "bun test src/Typewriter/__tests__",
     "version": "bun run version-bump.ts",
     "publish": "bun run pack && npm publish",
     "release": "bun run version && bun run build && bun run publish"
@@ -26,14 +26,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.0",
+    "@types/bun": "^1.1.10",
     "@types/node": "^18.14.6",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
     "esbuild": "^0.23.1",
     "esbuild-node-externals": "^1.14.0",
     "inquirer": "^10.2.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "semver": "^7.6.3",
     "typescript": "^4.9.3"
   },

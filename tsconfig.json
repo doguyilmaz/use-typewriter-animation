@@ -6,11 +6,12 @@
 		"skipLibCheck": true,
 		"strict": true,
 		"moduleResolution": "Node",
-		"jsx": "react-jsx",
 		"target": "ESNext",
 		"module": "ESNext",
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"types": ["bun-types"],
+		"jsx": "react"
 	},
 	"include": ["src"],
 	"exclude": ["node_modules", "dist", "src/example"]

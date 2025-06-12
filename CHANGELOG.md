@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 2025-06-13
+
+### 🔧 Fixes
+- Minor version bump to complete dependency and configuration updates
+
+## [3.1.0] - 2025-06-13
+
+### ✨ Added
+- **React 19 Support**: Full compatibility with React 19.x latest stable
+- **Modern Engine Requirements**: Updated Node.js ≥18.0.0, Bun ≥1.0.0 support
+- **Enhanced Build Tools**: Latest esbuild 0.25.5, TypeScript 5.8.3, and build toolchain
+
+### 🔧 Improved
+- **Peer Dependencies**: Proper version ranges `^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0`
+- **ES2022 Target**: Updated from ES2020 to ES2022 for modern features
+- **ESM Support**: Proper `.mjs` extension for ESM builds to avoid module conflicts
+- **Build Configuration**: Enhanced esbuild and TypeScript configs for better compatibility
+- **Package Exports**: Optimized conditional exports for modern bundlers
+- **Tree Shaking**: Better support with `sideEffects: false`
+
+### 📦 Dependencies
+- Updated all dev dependencies to latest versions
+- Enhanced TypeScript strict mode compatibility
+- Improved bundler compatibility (Webpack, Vite, Rollup, esbuild)
+
 ## [3.0.0] - 2025-01-13
 
 ### 🚀 Major Changes

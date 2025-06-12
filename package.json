@@ -1,12 +1,23 @@
 {
   "name": "use-typewriter-animation",
   "version": "3.0.0",
-  "description": "An utility hook to create typewriter animation effect in React.",
+  "description": "A modern, performant React hook for creating typewriter animation effects with full TypeScript support and SSR compatibility.",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md",
+    "README.md"
   ],
   "scripts": {
     "build": "bun run clean && bun run esbuild.ts && bun run types",
@@ -21,12 +32,17 @@
     "release": "bun run version && bun run build && bun run publish"
   },
   "peerDependencies": {
-    "react": ">=16.8",
-    "react-dom": ">=16.8"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.0",
-    "@types/node": "^18.14.6",
+    "@types/node": "^20.0.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "esbuild": "^0.23.1",
@@ -35,7 +51,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "semver": "^7.6.3",
-    "typescript": "^4.9.3"
+    "typescript": "^5.0.0"
   },
   "repository": {
     "type": "git",
@@ -46,10 +62,31 @@
     "hook",
     "typewriter",
     "animation",
+    "typescript",
+    "ssr",
+    "rsc",
+    "server-components",
+    "react-19",
+    "text-animation",
+    "typing-effect",
     "use-typewriter-animation",
-    "use-typewriter"
+    "use-typewriter",
+    "modern-react",
+    "performance"
   ],
   "license": "MIT",
+  "author": {
+    "name": "Dogu Yilmaz",
+    "url": "https://github.com/doguyilmaz"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not op_mini all"
+  ],
   "bugs": {
     "url": "https://github.com/doguyilmaz/use-typewriter-animation/issues"
   },

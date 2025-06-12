@@ -145,7 +145,7 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 					const newSegment: TextSegment = {
 						id: `${segmentId}-${charIndex}`,
 						content: char,
-						color: currentColor || undefined,
+						...(currentColor ? { color: currentColor } : {}),
 						isNewLine: false,
 					};
 
@@ -240,8 +240,8 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 					if (index >= start && index < endIndex) {
 						return {
 							...segment,
-							color: style.color || segment.color,
-							backgroundColor: style.background,
+							...(style.color ? { color: style.color } : {}),
+							...(style.background ? { backgroundColor: style.background } : {}),
 							isHighlighted: true,
 						};
 					}

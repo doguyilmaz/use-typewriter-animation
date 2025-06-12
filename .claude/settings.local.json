@@ -3,7 +3,9 @@
     "allow": [
       "Bash(bun run:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(bun install:*)",
+      "Bash(npm view:*)"
     ],
     "deny": []
   }

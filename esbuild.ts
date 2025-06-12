@@ -15,7 +15,7 @@ const sharedConfig: BuildOptions = {
       allowWorkspaces: true,
     }),
   ],
-  target: ['es2020'], // Target ES2020 for better compatibility
+  target: ['es2022'], // Target ES2022 for modern features while maintaining compatibility
   platform: 'neutral', // Neutral platform for isomorphic code
   legalComments: 'none', // Remove legal comments to reduce bundle size
   logLevel: 'info',

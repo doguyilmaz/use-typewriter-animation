@@ -1,8 +1,9 @@
-type QueueCallback = () => Promise<void>;
+// TypeScript types for the typewriter
+
+type QueueAction = () => Promise<void>;
 type HighlightStyle = { background: string; color?: string };
 type HighlightFrom = 'start' | 'end';
-type TypeOnEvents = 'typeStart' | 'typeEnd';
-type TypewriterConfigure = (element: HTMLElement, options?: TypewriterBaseOptions) => TypewriterBaseType;
+type TypewriterEvents = 'start' | 'end' | 'loop';
 
 export type TypewriterBaseOptions = {
 	loop?: boolean;
@@ -12,7 +13,28 @@ export type TypewriterBaseOptions = {
 	cursorBlinkSpeed?: number;
 	cursorColor?: string;
 	cursorWidth?: string | number;
+	enableCursor?: boolean;
 };
+
+export type TextSegment = {
+	id: string;
+	content: string;
+	color?: string;
+	backgroundColor?: string;
+	isHighlighted?: boolean;
+	isNewLine?: boolean;
+};
+
+export type TypewriterState = {
+	segments: TextSegment[];
+	isTyping: boolean;
+	isLooping: boolean;
+	currentText: string;
+	visibleText: string;
+	cursorVisible: boolean;
+};
+
+export type TypewriterStateUpdater = (state: TypewriterState) => void;
 
 export type TypewriterBaseType = {
 	type: (text: string, options?: { speed?: number }) => TypewriterBaseType;
@@ -24,230 +46,236 @@ export type TypewriterBaseType = {
 	highlight: (start: number, length: number, style: HighlightStyle) => TypewriterBaseType;
 	highlightWords: (wordCount: number, from: HighlightFrom, style: HighlightStyle) => TypewriterBaseType;
 	newLine: () => TypewriterBaseType;
-	on: (event: TypeOnEvents, callback: () => void) => TypewriterBaseType;
+	on: (event: TypewriterEvents, callback: () => void) => TypewriterBaseType;
 	start: () => Promise<void>;
 	stop: () => void;
-	unmount: () => void;
+	reset: () => void;
+	getState: () => TypewriterState;
 };
 
-function injectGlobalStyles() {
-	if (document.getElementById('typewriter-global-styles')) return;
+// CSS-in-JS styles to eliminate global style injection
+export const typewriterStyles = {
+	cursor: {
+		display: 'inline-block',
+		animation: 'typewriter-blink 1s step-end infinite',
+	},
+	highlightTransition: {
+		transition: 'color 0.5s ease, background-color 0.5s ease',
+	},
+};
 
-	const style = document.createElement('style');
-	style.id = 'typewriter-global-styles';
-	style.textContent = `
-    .typewriter-cursor {
-      display: inline-block;
-      animation: blink 1s step-end infinite;
-    }
+// CSS keyframes for cursor blinking (to be used with CSS-in-JS libraries)
+export const typewriterKeyframes = `
+	@keyframes typewriter-blink {
+		from, to { opacity: 1; }
+		50% { opacity: 0; }
+	}
+`;
 
-    @keyframes blink {
-      from, to { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .highlight-transition {
-      transition: color 0.5s ease, background-color 0.5s ease;
-    }
-  `;
-	document.head.appendChild(style);
-}
-
-function TypewriterBase(): TypewriterBaseType & {
-	configure: TypewriterConfigure;
-} {
-	const QUEUE = [] as QueueCallback[];
-	const EVENTS: { typeStart: (() => void)[]; typeEnd: (() => void)[] } = {
-		typeStart: [],
-		typeEnd: [],
+export function createTypewriterBase(onStateChange: TypewriterStateUpdater, options: TypewriterBaseOptions = {}): TypewriterBaseType {
+	const actionQueue: QueueAction[] = [];
+	const eventCallbacks: { [K in TypewriterEvents]: (() => void)[] } = {
+		start: [],
+		end: [],
+		loop: [],
 	};
-	let ELEMENT: HTMLElement;
-	let CURSOR: HTMLElement | null = null;
-	let TYPE_SPEED = 30;
-	let DELETE_SPEED = 30;
-	let CURRENT_COLOR = '';
-	let LOOP = false;
+
+	let currentState: TypewriterState = {
+		segments: [],
+		isTyping: false,
+		isLooping: false,
+		currentText: '',
+		visibleText: '',
+		cursorVisible: true,
+	};
+
+	let typeSpeed = options.typeSpeed || 30;
+	let deleteSpeed = options.deleteSpeed || 30;
+	let shouldLoop = options.loop || false;
+	let currentColor = '';
 	let isRunning = false;
-	let activeInterval: number | null = null;
+	let activeTimeouts: Set<ReturnType<typeof setTimeout>> = new Set();
+	let isDestroyed = false;
 
-	const addQueue = (callback: (resolve: () => void) => void) => {
-		QUEUE.push(() => new Promise<void>(callback));
+	const updateState = (updates: Partial<TypewriterState>) => {
+		if (isDestroyed) return;
+		currentState = { ...currentState, ...updates };
+		onStateChange(currentState);
 	};
 
-	const configure: TypewriterConfigure = (element, options = {}) => {
-		injectGlobalStyles(); // Inject global styles once
-
-		ELEMENT = element;
-		TYPE_SPEED = options.typeSpeed || TYPE_SPEED;
-		DELETE_SPEED = options.deleteSpeed || DELETE_SPEED;
-		LOOP = options.loop || LOOP;
-
-		if (!CURSOR) {
-			CURSOR = document.createElement('span');
-			CURSOR.classList.add('typewriter-cursor');
-
-			// Default bar style
-			CURSOR.innerHTML = '|';
-			CURSOR.style.animationDuration = `${options.cursorBlinkSpeed || 500}ms`;
-			CURSOR.style.color = options.cursorColor || 'black';
-			const cursorWidth = typeof options.cursorWidth === 'number' ? `${options.cursorWidth}px` : options.cursorWidth;
-
-			// Apply cursor styles based on the provided cursorStyle option
-			switch (options.cursorStyle) {
-				case 'block':
-					CURSOR.innerHTML = ''; // Clear any existing inner content
-					CURSOR.style.display = 'inline-block';
-					CURSOR.style.width = cursorWidth || '0.6em'; // Allow user-defined width
-					CURSOR.style.height = '1em'; // Full height of the text
-					CURSOR.style.backgroundColor = options.cursorColor || 'black';
-					break;
-
-				case 'underline':
-					CURSOR.innerHTML = ''; // Clear any existing inner content
-					CURSOR.style.display = 'inline-block';
-					CURSOR.style.width = cursorWidth || '1ch'; // Allow user-defined width
-					CURSOR.style.borderBottom = `2px solid ${options.cursorColor || 'black'}`;
-					break;
-
-				default:
-					CURSOR.innerHTML = '|'; // Default bar style with blinking
-					CURSOR.style.display = 'inline';
-					CURSOR.style.width = cursorWidth || 'auto'; // For bar style, usually no need for custom width
-					break;
-			}
-
-			ELEMENT.appendChild(CURSOR);
-		}
-
-		return TypewriterBase;
-	};
-
-	const unmount = () => {
-		QUEUE.length = 0;
-		if (activeInterval) clearInterval(activeInterval);
-		ELEMENT.innerHTML = '';
-		EVENTS.typeStart = [];
-		EVENTS.typeEnd = [];
-		if (CURSOR) CURSOR.remove();
-		CURSOR = null;
-	};
-
-	const TypewriterBase: TypewriterBaseType = {
-		type: function (text, options = {}) {
-			addQueue((resolve) => {
-				if (!isRunning) {
-					for (const callback of EVENTS.typeStart) {
-						callback();
-					}
-					isRunning = true;
+	const addToQueue = (action: (resolve: () => void) => void) => {
+		actionQueue.push(() => {
+			return new Promise<void>((resolve) => {
+				if (isDestroyed) {
+					resolve();
+					return;
 				}
-				let i = 0;
-				const speed = options.speed || TYPE_SPEED;
-				activeInterval = window.setInterval(() => {
-					const span = document.createElement('span');
-					if (CURRENT_COLOR) span.style.color = CURRENT_COLOR;
-					span.textContent = text[i];
-					ELEMENT.insertBefore(span, CURSOR);
-					i++;
-					if (i >= text.length) {
-						clearInterval(activeInterval ?? undefined);
+				action(resolve);
+			});
+		});
+	};
+
+	const clearAllTimeouts = () => {
+		activeTimeouts.forEach(timeout => clearTimeout(timeout));
+		activeTimeouts.clear();
+	};
+
+	const generateSegmentId = () => `segment-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+
+	const typewriterBase: TypewriterBaseType = {
+		type: function (text, options = {}) {
+			addToQueue((resolve) => {
+				if (!isRunning) {
+					eventCallbacks.start.forEach(callback => callback());
+					isRunning = true;
+					updateState({ isTyping: true });
+				}
+
+				let charIndex = 0;
+				const speed = options.speed || typeSpeed;
+				const segmentId = generateSegmentId();
+
+				const typeNextChar = () => {
+					if (isDestroyed || charIndex >= text.length) {
 						resolve();
+						return;
 					}
-				}, speed);
+
+					const char = text[charIndex];
+					const newSegment: TextSegment = {
+						id: `${segmentId}-${charIndex}`,
+						content: char,
+						color: currentColor || undefined,
+						isNewLine: false,
+					};
+
+					updateState({
+						segments: [...currentState.segments, newSegment],
+						currentText: currentState.currentText + char,
+						visibleText: currentState.visibleText + char,
+					});
+
+					charIndex++;
+					const timeout = setTimeout(typeNextChar, speed) as ReturnType<typeof setTimeout>;
+					activeTimeouts.add(timeout);
+				};
+
+				typeNextChar();
 			});
 			return this;
 		},
 		deleteLetters: function (letterCount) {
-			addQueue((resolve) => {
-				const totalCharacters = ELEMENT.innerText.length;
-				const count = letterCount >= totalCharacters ? totalCharacters : letterCount;
-				let i = 0;
-				activeInterval = window.setInterval(() => {
-					const lastNode = ELEMENT.childNodes[ELEMENT.childNodes.length - 2];
-					if (lastNode && lastNode !== CURSOR) {
-						ELEMENT.removeChild(lastNode);
-					}
-					i++;
-					if (i >= count || ELEMENT.innerText.length === 0) {
-						clearInterval(activeInterval ?? undefined);
+			addToQueue((resolve) => {
+				const totalSegments = currentState.segments.length;
+				const count = Math.min(letterCount, totalSegments);
+				let deletedCount = 0;
+
+				const deleteNextChar = () => {
+					if (isDestroyed || deletedCount >= count || currentState.segments.length === 0) {
 						resolve();
+						return;
 					}
-				}, DELETE_SPEED);
+
+					const newSegments = currentState.segments.slice(0, -1);
+					const newVisibleText = newSegments.map(s => s.content).join('');
+
+					updateState({
+						segments: newSegments,
+						visibleText: newVisibleText,
+					});
+
+					deletedCount++;
+					const timeout = setTimeout(deleteNextChar, deleteSpeed) as ReturnType<typeof setTimeout>;
+					activeTimeouts.add(timeout);
+				};
+
+				deleteNextChar();
 			});
 			return this;
 		},
 		deleteWords: function (wordCount) {
-			addQueue((resolve) => {
-				const words = ELEMENT.innerText.trim().split(/\s+/); // Split the text into words
-				const count = wordCount >= words.length ? words.length : wordCount;
-				const charsToRemove = words.slice(-count).join(' ').length;
-				this.deleteLetters(charsToRemove);
+			addToQueue((resolve) => {
+				const words = currentState.visibleText.trim().split(/\s+/);
+				const count = Math.min(wordCount, words.length);
+				const wordsToDelete = words.slice(-count);
+				const charsToRemove = wordsToDelete.join(' ').length;
+				
+				if (charsToRemove > 0) {
+					typewriterBase.deleteLetters(charsToRemove);
+				}
 				resolve();
 			});
 			return this;
 		},
 		deleteAll: function () {
-			addQueue((resolve) => {
-				const totalCharacters = ELEMENT.innerText.length;
-				this.deleteLetters(totalCharacters);
-				CURRENT_COLOR = '';
+			addToQueue((resolve) => {
+				updateState({
+					segments: [],
+					currentText: '',
+					visibleText: '',
+				});
+				currentColor = '';
 				resolve();
 			});
 			return this;
 		},
 		pauseFor: function (duration) {
-			addQueue((resolve) => setTimeout(resolve, duration));
+			addToQueue((resolve) => {
+				const timeout = setTimeout(resolve, duration) as ReturnType<typeof setTimeout>;
+				activeTimeouts.add(timeout);
+			});
 			return this;
 		},
 		colorize: function (color) {
-			addQueue((resolve) => {
-				CURRENT_COLOR = color;
+			addToQueue((resolve) => {
+				currentColor = color;
 				resolve();
 			});
 			return this;
 		},
 		highlight: function (start, length, style) {
-			addQueue((resolve) => {
-				const totalCharacters = ELEMENT.innerText.length;
-				const chars = start + length > totalCharacters ? totalCharacters - start : length;
-				const textNodes = Array.from(ELEMENT.childNodes) as HTMLElement[];
-				for (let i = start; i < start + chars && i < textNodes.length; i++) {
-					const node = textNodes[i];
-					node.classList.add('highlight-transition'); // Apply transition class
-					setTimeout(() => {
-						if (style.color) node.style.color = style.color;
-						if (style.background) node.style.backgroundColor = style.background;
-					}, 10); // Trigger the transition
-				}
+			addToQueue((resolve) => {
+				const endIndex = Math.min(start + length, currentState.segments.length);
+				const updatedSegments = currentState.segments.map((segment, index) => {
+					if (index >= start && index < endIndex) {
+						return {
+							...segment,
+							color: style.color || segment.color,
+							backgroundColor: style.background,
+							isHighlighted: true,
+						};
+					}
+					return segment;
+				});
 
+				updateState({ segments: updatedSegments });
 				resolve();
 			});
 			return this;
 		},
 		highlightWords: function (wordCount, from, style) {
-			addQueue((resolve) => {
-				const words = ELEMENT.innerText.trim().split(/\s+/);
-				const count = wordCount >= words.length ? words.length : wordCount;
+			addToQueue((resolve) => {
+				const words = currentState.visibleText.trim().split(/\s+/);
+				const count = Math.min(wordCount, words.length);
 
-				let startIndex: number;
-				let endIndex: number;
+				let startWordIndex: number;
+				let endWordIndex: number;
 
 				if (from === 'start') {
-					startIndex = 0;
-					endIndex = count;
+					startWordIndex = 0;
+					endWordIndex = count;
 				} else {
-					startIndex = words.length - count;
-					endIndex = words.length;
+					startWordIndex = Math.max(0, words.length - count);
+					endWordIndex = words.length;
 				}
 
-				let currentCharIndex = 0;
+				let charIndex = 0;
 				for (let i = 0; i < words.length; i++) {
 					const word = words[i];
-					const wordLength = word.length;
-					if (i >= startIndex && i < endIndex) {
-						this.highlight(currentCharIndex, wordLength, style);
+					if (i >= startWordIndex && i < endWordIndex) {
+						typewriterBase.highlight(charIndex, word.length, style);
 					}
-					currentCharIndex += wordLength + 1; // +1 for the space between words
+					charIndex += word.length + (i < words.length - 1 ? 1 : 0); // +1 for space
 				}
 
 				resolve();
@@ -255,41 +283,94 @@ function TypewriterBase(): TypewriterBaseType & {
 			return this;
 		},
 		newLine: function () {
-			addQueue((resolve) => {
-				const br = document.createElement('br');
-				ELEMENT.insertBefore(br, CURSOR);
+			addToQueue((resolve) => {
+				const newLineSegment: TextSegment = {
+					id: generateSegmentId(),
+					content: '\n',
+					isNewLine: true,
+				};
+
+				updateState({
+					segments: [...currentState.segments, newLineSegment],
+					currentText: currentState.currentText + '\n',
+					visibleText: currentState.visibleText + '\n',
+				});
 				resolve();
 			});
 			return this;
 		},
 		on: function (event, callback) {
-			if (EVENTS[event]) {
-				EVENTS[event].push(callback);
+			if (eventCallbacks[event]) {
+				eventCallbacks[event].push(callback);
 			}
 			return this;
 		},
 		start: async function () {
-			for (const callback of QUEUE) {
-				await callback();
-			}
-			if (LOOP) {
-				this.start();
-			} else {
-				for (const callback of EVENTS.typeEnd) {
-					callback();
+			if (isDestroyed) return;
+
+			try {
+				for (const action of actionQueue) {
+					if (isDestroyed) break;
+					await action();
 				}
+
+				if (shouldLoop && !isDestroyed) {
+					eventCallbacks.loop.forEach(callback => callback());
+					updateState({ isLooping: true });
+					// Use setTimeout to prevent stack overflow in loop mode
+					const timeout = setTimeout(() => {
+						if (!isDestroyed) {
+							typewriterBase.start();
+						}
+					}, 0) as ReturnType<typeof setTimeout>;
+					activeTimeouts.add(timeout);
+				} else if (!isDestroyed) {
+					eventCallbacks.end.forEach(callback => callback());
+					updateState({ isTyping: false, isLooping: false });
+					isRunning = false;
+				}
+			} catch (error) {
+				console.error('Typewriter error:', error);
+				updateState({ isTyping: false, isLooping: false });
 				isRunning = false;
 			}
 		},
 		stop: () => {
-			QUEUE.length = 0;
-			if (activeInterval) clearInterval(activeInterval);
+			actionQueue.length = 0;
+			clearAllTimeouts();
+			updateState({ isTyping: false, isLooping: false });
 			isRunning = false;
 		},
-		unmount,
+		reset: () => {
+			typewriterBase.stop();
+			updateState({
+				segments: [],
+				isTyping: false,
+				isLooping: false,
+				currentText: '',
+				visibleText: '',
+				cursorVisible: true,
+			});
+			currentColor = '';
+			isRunning = false;
+		},
+		getState: () => ({ ...currentState }),
 	};
 
-	return { ...TypewriterBase, configure };
+	// Cleanup function to be called when component unmounts
+	typewriterBase.stop = () => {
+		isDestroyed = true;
+		actionQueue.length = 0;
+		clearAllTimeouts();
+		updateState({ isTyping: false, isLooping: false });
+		isRunning = false;
+		// Clear event callbacks
+		Object.keys(eventCallbacks).forEach(key => {
+			eventCallbacks[key as TypewriterEvents] = [];
+		});
+	};
+
+	return typewriterBase;
 }
 
-export default TypewriterBase;
+export default createTypewriterBase;

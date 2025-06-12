@@ -49,7 +49,7 @@ export type TypewriterBaseType = {
 	on: (event: TypewriterEvents, callback: () => void) => TypewriterBaseType;
 	start: () => Promise<void>;
 	stop: () => void;
-	reset: () => void;
+	reset: () => TypewriterBaseType;
 	getState: () => TypewriterState;
 };
 
@@ -255,23 +255,58 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 			addToQueue((resolve) => {
 				const words = currentState.visibleText.trim().split(/\s+/);
 				const count = Math.min(wordCount, words.length);
-				const wordsToDelete = words.slice(-count);
-				const charsToRemove = wordsToDelete.join(' ').length;
 				
-				if (charsToRemove > 0) {
-					typewriterBase.deleteLetters(charsToRemove);
+				if (count === 0) {
+					resolve();
+					return;
 				}
-				resolve();
+
+				// Calculate how many characters to remove
+				const wordsToDelete = words.slice(-count);
+				let charsToRemove = wordsToDelete.join(' ').length;
+				
+				// Include trailing space if deleting from the end and there are remaining words
+				if (words.length > count && currentState.visibleText.endsWith(' ')) {
+					charsToRemove += 1;
+				}
+
+				// Implement word deletion directly instead of calling deleteLetters recursively
+				let deletedCount = 0;
+				const deleteNextChar = () => {
+					if (isDestroyed || deletedCount >= charsToRemove || currentState.segments.length === 0) {
+						resolve();
+						return;
+					}
+
+					const newSegments = currentState.segments.slice(0, -1);
+					const newVisibleText = newSegments.map(s => s.content).join('');
+
+					updateState({
+						segments: newSegments,
+						visibleText: newVisibleText,
+					});
+
+					deletedCount++;
+					const timeout = setTimeout(deleteNextChar, deleteSpeed) as ReturnType<typeof setTimeout>;
+					activeTimeouts.add(timeout);
+				};
+
+				if (charsToRemove > 0) {
+					deleteNextChar();
+				} else {
+					resolve();
+				}
 			});
 			return this;
 		},
 		deleteAll: function () {
 			addToQueue((resolve) => {
+				// Use immediate update for critical state clearing
 				updateState({
 					segments: [],
 					currentText: '',
 					visibleText: '',
-				});
+				}, true); // Force immediate update
 				currentColor = '';
 				resolve();
 			});
@@ -399,7 +434,7 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 			updateState({ isTyping: false, isLooping: false });
 			isRunning = false;
 		},
-		reset: () => {
+		reset: function() {
 			typewriterBase.stop();
 			updateState({
 				segments: [],
@@ -411,6 +446,7 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 			});
 			currentColor = '';
 			isRunning = false;
+			return this;
 		},
 		getState: () => ({ ...currentState }),
 	};

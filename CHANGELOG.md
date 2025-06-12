@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.1] - 2025-06-13
+
+### 🐛 Critical Bug Fixes
+
+**Delete/Type Conflict Resolution:**
+- ✅ **Fixed delete/type event loop conflicts** - Resolved critical issue from v2.x where delete operations would interfere with subsequent type operations
+- ✅ **Improved `deleteAll()` reliability** - Now uses immediate state updates to prevent conflicts with queued operations  
+- ✅ **Fixed `deleteWords()` implementation** - Eliminated recursive queue calls that caused timing issues
+- ✅ **Enhanced method chaining** - Fixed `reset()` function to properly return chainable interface
+
+### 🔧 Technical Improvements
+- **Queue Management**: All delete operations now work seamlessly within the single queue system
+- **State Synchronization**: Critical state changes (like `deleteAll()`) use immediate updates instead of batched updates
+- **Event Loop Stability**: Eliminated the timing conflicts that could cause text accumulation instead of replacement
+
+### 🧪 Testing
+- Added comprehensive test suite for delete/type conflict scenarios
+- Verified fix works across complex sequences: basic delete+type, multiple cycles, rapid alternation, and timing-sensitive operations
+- All test scenarios now pass consistently
+
+### 📈 Impact
+This fix resolves a significant reliability issue that could cause unexpected text accumulation in applications using delete operations followed by type operations. The fix maintains all performance improvements from v3.2.0 while ensuring deterministic behavior.
+
 ## [3.2.0] - 2025-06-13
 
 ### 🚀 Major Performance Overhaul - Phase 2 Complete!

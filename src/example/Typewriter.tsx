@@ -2,13 +2,16 @@ import React, { useEffect } from 'react';
 import { useTypewriter } from '../Typewriter/useTypewriter';
 
 const Typewriter = () => {
-	const { typewriter, elements, cursor, keyframes } = useTypewriter({
+	const { typewriter, elements, cursor, keyframes, metrics, styles } = useTypewriter({
 		typeSpeed: 50,
 		loop: false,
 		cursorStyle: 'bar',
 		cursorBlinkSpeed: 500,
 		cursorColor: 'blue',
 		enableCursor: true,
+		// Performance optimizations
+		enableVirtualization: true,
+		maxVisibleSegments: 50,
 	});
 
 	useEffect(() => {
@@ -30,10 +33,17 @@ const Typewriter = () => {
 	return (
 		<>
 			<style>{keyframes}</style>
-			<div>
+			<div style={{ ...styles.container, ...styles.optimizedText }}>
 				{elements}
 				{cursor}
 			</div>
+			{/* Performance metrics in development */}
+			{process.env.NODE_ENV === 'development' && (
+				<div style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>
+					Segments: {metrics.totalSegments} | Visible: {metrics.visibleSegments} | 
+					Virtualized: {metrics.isVirtualized ? 'Yes' : 'No'}
+				</div>
+			)}
 		</>
 	);
 };

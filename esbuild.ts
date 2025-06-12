@@ -19,6 +19,9 @@ const sharedConfig: BuildOptions = {
   platform: 'neutral', // Neutral platform for isomorphic code
   legalComments: 'none', // Remove legal comments to reduce bundle size
   logLevel: 'info',
+  // Additional optimizations
+  mangleProps: /^_/, // Mangle private properties starting with _
+  drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [], // Remove console.log in production
 };
 
 // Build configurations

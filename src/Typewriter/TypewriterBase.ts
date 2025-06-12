@@ -60,15 +60,37 @@ export const typewriterStyles = {
 		animation: 'typewriter-blink 1s step-end infinite',
 	},
 	highlightTransition: {
-		transition: 'color 0.5s ease, background-color 0.5s ease',
+		transition: 'color 0.3s ease, background-color 0.3s ease',
+	},
+	optimizedText: {
+		// Optimize text rendering for better performance
+		textRendering: 'optimizeSpeed' as const,
+		fontKerning: 'none' as const,
+		fontVariantLigatures: 'none' as const,
+	},
+	container: {
+		// Container optimizations
+		willChange: 'contents',
+		contain: 'layout style' as const,
 	},
 };
 
-// CSS keyframes for cursor blinking (to be used with CSS-in-JS libraries)
+// CSS keyframes for cursor blinking and typing animations
 export const typewriterKeyframes = `
 	@keyframes typewriter-blink {
 		from, to { opacity: 1; }
 		50% { opacity: 0; }
+	}
+	
+	@keyframes typewriter-appear {
+		from { opacity: 0; transform: translateY(-2px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+	
+	@keyframes typewriter-highlight {
+		0% { background-color: transparent; }
+		50% { background-color: rgba(255, 255, 0, 0.3); }
+		100% { background-color: var(--highlight-color, transparent); }
 	}
 `;
 
@@ -97,10 +119,35 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 	let activeTimeouts: Set<ReturnType<typeof setTimeout>> = new Set();
 	let isDestroyed = false;
 
-	const updateState = (updates: Partial<TypewriterState>) => {
+	// Batched state updates for better performance
+	let pendingUpdates: Partial<TypewriterState> | null = null;
+	let updateTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	const flushUpdates = () => {
+		if (pendingUpdates && !isDestroyed) {
+			currentState = { ...currentState, ...pendingUpdates };
+			onStateChange(currentState);
+			pendingUpdates = null;
+		}
+		updateTimeout = null;
+	};
+
+	const updateState = (updates: Partial<TypewriterState>, immediate = false) => {
 		if (isDestroyed) return;
-		currentState = { ...currentState, ...updates };
-		onStateChange(currentState);
+		
+		if (immediate) {
+			// Immediate update for critical state changes
+			currentState = { ...currentState, ...updates };
+			onStateChange(currentState);
+			return;
+		}
+
+		// Batch non-critical updates
+		pendingUpdates = pendingUpdates ? { ...pendingUpdates, ...updates } : updates;
+		
+		if (!updateTimeout) {
+			updateTimeout = setTimeout(flushUpdates, 0) as ReturnType<typeof setTimeout>;
+		}
 	};
 
 	const addToQueue = (action: (resolve: () => void) => void) => {
@@ -118,6 +165,17 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 	const clearAllTimeouts = () => {
 		activeTimeouts.forEach(timeout => clearTimeout(timeout));
 		activeTimeouts.clear();
+		
+		// Clear batching timeout if pending
+		if (updateTimeout) {
+			clearTimeout(updateTimeout);
+			updateTimeout = null;
+		}
+		
+		// Flush any pending updates before clearing
+		if (pendingUpdates) {
+			flushUpdates();
+		}
 	};
 
 	const generateSegmentId = () => `segment-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
@@ -128,7 +186,7 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 				if (!isRunning) {
 					eventCallbacks.start.forEach(callback => callback());
 					isRunning = true;
-					updateState({ isTyping: true });
+					updateState({ isTyping: true }, true); // Immediate update for critical state
 				}
 
 				let charIndex = 0;

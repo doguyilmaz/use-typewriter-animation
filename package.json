@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/doguyilmaz/use-typewriter-animation/issues"
   },
-  "homepage": "https://github.com/doguyilmaz/use-typewriter-animation#readme"
+  "homepage": "https://github.com/doguyilmaz/use-typewriter-animation#readme",
+  "trustedDependencies": [
+    "@biomejs/biome"
+  ]
 }

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTypewriter } from '../../Typewriter/useTypewriter';
 
 export const StorytellingDemo = () => {
   const [currentScene, setCurrentScene] = useState(0);
-  const [backgroundStyle, setBackgroundStyle] = useState('day');
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 80,

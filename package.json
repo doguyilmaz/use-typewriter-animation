@@ -22,7 +22,7 @@
   "scripts": {
     "build": "bun run clean && bun run esbuild.ts && bun run types",
     "types": "tsc",
-    "pack": "bun pm pack",
+    "pack": "bun run build && bun pm pack",
     "clean": "rm -rf dist",
     "watch": "tsc --watch",
     "format": "prettier --write 'src/**/*.ts'",

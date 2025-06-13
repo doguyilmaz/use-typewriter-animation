@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTypewriter } from '../../Typewriter/useTypewriter';
 
 export const LoopingAnimation = () => {

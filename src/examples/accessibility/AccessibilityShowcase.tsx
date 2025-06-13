@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTypewriter } from '../../Typewriter/useTypewriter';
 
 export const AccessibilityShowcase = () => {

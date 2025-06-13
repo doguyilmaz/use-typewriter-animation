@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect, ComponentType } from 'react';
 import { useTypewriter } from '../../Typewriter/useTypewriter';
 
 /**
@@ -11,7 +11,7 @@ import { useTypewriter } from '../../Typewriter/useTypewriter';
 interface TestScenario {
   name: string;
   description: string;
-  component: React.ComponentType;
+  component: ComponentType;
   status: 'idle' | 'running' | 'passed' | 'failed';
 }
 
@@ -24,7 +24,7 @@ const ReducedMotionTest = () => {
       ariaLabel: 'Reduced motion test typewriter',
     });
 
-  React.useEffect(() => {
+  useEffect(() => {
     typewriter
       .type('This text should appear instantly if reduced motion is preferred.', {
         screenReaderText: 'Complete text for screen readers',
@@ -61,7 +61,7 @@ const ScreenReaderTest = () => {
       screenReaderText: 'Welcome to our accessible typewriter animation!',
     });
 
-  React.useEffect(() => {
+  useEffect(() => {
     typewriter
       .type('Welcome to our accessible typewriter animation!', {
         screenReaderText: 'Welcome to our accessible typewriter animation!',
@@ -103,7 +103,7 @@ const KeyboardControlTest = () => {
         'Keyboard controllable typewriter (Space to pause/resume, Escape to skip, R to reset)',
     });
 
-  React.useEffect(() => {
+  useEffect(() => {
     typewriter
       .type('Use Space to pause/resume, Escape to skip, R to reset.', {
         announceCompletion: true,
@@ -143,7 +143,7 @@ const HighContrastTest = () => {
       ariaLabel: 'High contrast mode test typewriter',
     });
 
-  React.useEffect(() => {
+  useEffect(() => {
     typewriter
       .type('This text should be visible in high contrast mode.')
       .colorize('#0066cc')
@@ -172,7 +172,7 @@ const HighContrastTest = () => {
   );
 };
 
-export const AccessibilityTesting: React.FC = () => {
+export const AccessibilityTesting = () => {
   const [activeTest, setActiveTest] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<Record<string, 'passed' | 'failed' | 'idle'>>({});
 
@@ -243,6 +243,14 @@ export const AccessibilityTesting: React.FC = () => {
       default:
         return '⚪';
     }
+  };
+
+  const renderActiveTest = () => {
+    const activeScenario = testScenarios.find((t) => t.name === activeTest);
+    if (!activeScenario) return null;
+
+    const TestComponent = activeScenario.component;
+    return <TestComponent />;
   };
 
   return (
@@ -396,9 +404,7 @@ export const AccessibilityTesting: React.FC = () => {
           >
             🧪 Active Test: {activeTest}
           </h3>
-          {React.createElement(
-            testScenarios.find((t) => t.name === activeTest)?.component || 'div'
-          )}
+          {renderActiveTest()}
         </div>
       )}
 

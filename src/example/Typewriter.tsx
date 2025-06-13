@@ -61,7 +61,7 @@ const Typewriter = () => {
 			})
 			.highlight(0, 5, { color: 'black', background: 'white' })
 			.start();
-	}, [typewriter]);
+	}, []); // ✅ Empty dependency array - typewriter object is stable
 
 	return (
 		<>

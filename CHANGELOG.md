@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.1] - 2025-06-13
+
+### 🐛 Critical Bug Fixes
+
+**Package Resolution & Infinite Loop Fixes:**
+
+- **🔧 Fixed Vite/bundler import resolution** - Resolved "Failed to resolve entry for package" error that prevented the library from being imported in Vite, Webpack, and other modern bundlers
+- **🔧 Fixed infinite re-render loop** - Eliminated infinite `useEffect` execution that caused thousands of console logs and performance degradation
+- **🔧 Improved hook stability** - Used `useRef` to create stable typewriter instances, preventing unnecessary recreations on every render
+
+### 🔧 Technical Improvements
+
+**Build & Distribution:**
+- **Proper build artifacts** - Ensured all dist files (CJS, ESM, types) are included in published package
+- **Stable hook implementation** - Replaced `useMemo` with `useRef` for typewriter instance creation to prevent object recreation
+
+**Developer Experience:**
+- **Fixed bundler compatibility** - Package now works correctly with Vite, Webpack, Rollup, esbuild, and other modern bundlers
+- **Eliminated console spam** - Removed infinite logging that could overwhelm development tools
+- **Better performance** - Reduced unnecessary re-renders and object recreations
+
+### 🚀 Migration Notes
+
+**From v3.4.0 to v3.4.1:**
+
+These are bug fixes with no API changes required. Existing code will work without modification:
+
+```tsx
+// This pattern now works correctly without infinite loops
+const { typewriter, elements, cursor } = useTypewriter({
+  typeSpeed: 50,
+  enableKeyboardControls: true,
+});
+
+useEffect(() => {
+  typewriter.type('Hello World!').start();
+}, []); // Empty dependency array now works properly
+```
+
+**Key Improvement:**
+- The `typewriter` object is now stable across renders, eliminating the need to include it in `useEffect` dependencies
+- Always use an empty dependency array `[]` when setting up typewriter animations
+
+### 🎯 Package Distribution
+
+- **ESM Bundle**: ~16.9KB (fixed import resolution)
+- **CJS Bundle**: ~18.0KB (fixed import resolution) 
+- **TypeScript Types**: Complete type definitions included
+- **Bundler Support**: ✅ Vite, Webpack, Rollup, esbuild, Parcel
+
+---
+
 ## [3.4.0] - 2025-06-13
 
 ### 🎉 Major Accessibility & UX Enhancement - Phase 4 Complete!

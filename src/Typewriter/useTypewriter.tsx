@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback, memo } from 'react';
+import { useEffect, useMemo, useState, useCallback, memo, useRef } from 'react';
 import { createTypewriterBase, type TypewriterBaseOptions, type TypewriterBaseType, type TypewriterState, type TextSegment, typewriterStyles, typewriterKeyframes } from './TypewriterBase';
 
 export type UseTypewriterOptions = TypewriterBaseOptions & {
@@ -64,10 +64,15 @@ export const useTypewriter = (
 		setTypewriterState(newState);
 	}, []);
 
-	// Create typewriter instance
-	const typewriter = useMemo(() => {
-		return createTypewriterBase(updateState, options);
-	}, [updateState, options]);
+	// Create stable typewriter instance using useRef to prevent recreations
+	const typewriterRef = useRef<TypewriterBaseType | null>(null);
+	
+	// Only create typewriter instance once
+	if (!typewriterRef.current) {
+		typewriterRef.current = createTypewriterBase(updateState, options);
+	}
+	
+	const typewriter = typewriterRef.current;
 
 	// Cleanup on unmount
 	useEffect(() => {

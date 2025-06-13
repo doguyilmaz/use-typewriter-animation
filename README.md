@@ -83,7 +83,7 @@ const MyTypewriterComponent = () => {
       .colorize('blue')
       .type(" Now it's blue!")
       .start();
-  }, [typewriter]);
+  }, []); // ✅ Empty dependency array - typewriter object is stable
 
   return (
     <>
@@ -342,6 +342,52 @@ return (
 - [ACCESSIBILITY.md](./ACCESSIBILITY.md) - Comprehensive accessibility guide
 - [CHANGELOG.md](./CHANGELOG.md) - Version history and migration guides
 - [ROADMAP.md](./ROADMAP.md) - Development roadmap and future plans
+
+## 🧪 Troubleshooting
+
+### Common Issues
+
+**Import/Resolution Errors:**
+```bash
+# Error: Failed to resolve entry for package "use-typewriter-animation"
+# Solution: Update to v3.4.1+ which includes proper build artifacts
+npm install use-typewriter-animation@latest
+```
+
+**Infinite Re-renders:**
+```tsx
+// ❌ Don't include typewriter in dependency array
+useEffect(() => {
+  typewriter.type('Hello').start();
+}, [typewriter]); // This causes infinite loops!
+
+// ✅ Use empty dependency array instead
+useEffect(() => {
+  typewriter.type('Hello').start();
+}, []); // Runs only once
+```
+
+**Bundler Compatibility:**
+```json
+// For older bundlers, ensure proper module resolution
+{
+  "resolve": {
+    "mainFields": ["module", "main"]
+  }
+}
+```
+
+**TypeScript Errors:**
+```tsx
+// If you get type errors, ensure you have React types installed
+npm install --save-dev @types/react @types/react-dom
+```
+
+### Performance Tips
+
+- Use `enableVirtualization: true` for long text sequences (1000+ characters)
+- Set `respectReducedMotion: true` for better accessibility
+- Use `maxVisibleSegments` to limit DOM nodes for very long animations
 
 ## 🛠️ Development
 

@@ -64,7 +64,7 @@ function AccessibleTypewriter() {
         announceCompletion: true,
       })
       .start();
-  }, [typewriter]);
+  }, []);
 
   return (
     <div {...accessibilityProps}>
@@ -128,7 +128,7 @@ function FullyAccessibleTypewriter() {
         announceCompletion: true,
       })
       .start();
-  }, [typewriter]);
+  }, []);
 
   return (
     <div 
@@ -294,7 +294,7 @@ useEffect(() => {
 
   document.addEventListener('keydown', handleKeyDown);
   return () => document.removeEventListener('keydown', handleKeyDown);
-}, [typewriter]);
+}, []); // typewriter object is stable, so we can use empty array
 ```
 
 ## 🎨 Reduced Motion Support

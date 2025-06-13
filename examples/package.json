@@ -1,0 +1,25 @@
+{
+  "name": "use-typewriter-animation-examples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Examples and demos for use-typewriter-animation library",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Examples are meant to be imported into your React project'",
+    "build": "echo 'Examples are not built - they are source code for reference'"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "use-typewriter-animation": "^3.4.0"
+  },
+  "keywords": [
+    "examples",
+    "demos",
+    "typewriter",
+    "animation",
+    "react",
+    "typescript"
+  ],
+  "license": "MIT"
+}

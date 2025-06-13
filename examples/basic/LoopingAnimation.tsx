@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useTypewriter } from '../../Typewriter/useTypewriter';
+import { useTypewriter } from '../src/Typewriter/useTypewriter';
 
 export const LoopingAnimation = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({

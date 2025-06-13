@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTypewriter } from '../../Typewriter/useTypewriter';
+import { useTypewriter } from '../src/Typewriter/useTypewriter';
 
 interface Message {
   id: number;

@@ -92,14 +92,16 @@ Explore our comprehensive collection of **12+ examples** demonstrating various f
 - **ConflictTesting**: Event loop and timing conflict detection
 
 ```tsx
-// Access examples programmatically
-import { getExamplesByCategory, getExampleByName } from 'use-typewriter-animation/examples';
+// Examples are now separate from the main library
+// Copy examples from the /examples directory into your project
+import { SimpleTypewriter } from './path/to/copied/SimpleTypewriter';
 
-const basicExamples = getExamplesByCategory('basic');
-const terminalExample = getExampleByName('TerminalSimulation');
+function App() {
+  return <SimpleTypewriter />;
+}
 ```
 
-**[View all examples →](./src/examples/README.md)**
+**[View all examples →](./docs/examples.md)**
 
 ## 🚀 Quick Start
 

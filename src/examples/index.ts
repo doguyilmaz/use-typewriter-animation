@@ -23,6 +23,11 @@ export { AccessibilityShowcase } from './accessibility/AccessibilityShowcase';
 // Performance Examples
 export { VirtualizationDemo } from './performance/VirtualizationDemo';
 
+// Development Examples
+export { PerformanceTesting } from './development/PerformanceTesting';
+export { AccessibilityTesting } from './development/AccessibilityTesting';
+export { ConflictTesting } from './development/ConflictTesting';
+
 // Example categories for documentation
 export const exampleCategories = {
   basic: [
@@ -132,6 +137,29 @@ export const exampleCategories = {
       description: 'Performance optimization with long text sequences and metrics',
       component: 'VirtualizationDemo',
       features: ['Virtualization', 'Performance metrics', 'Long text handling'],
+    },
+  ],
+  development: [
+    {
+      name: 'PerformanceTesting',
+      title: 'Performance Testing',
+      description: 'Interactive performance testing with benchmarks and metrics',
+      component: 'PerformanceTesting',
+      features: ['Performance benchmarks', 'Real-time metrics', 'Test automation'],
+    },
+    {
+      name: 'AccessibilityTesting',
+      title: 'Accessibility Testing',
+      description: 'Comprehensive WCAG 2.1 compliance testing suite',
+      component: 'AccessibilityTesting',
+      features: ['WCAG testing', 'Interactive tests', 'Compliance validation'],
+    },
+    {
+      name: 'ConflictTesting',
+      title: 'Conflict Testing',
+      description: 'Event loop and timing conflict detection for delete/type operations',
+      component: 'ConflictTesting',
+      features: ['Event loop testing', 'Conflict detection', 'Timing validation'],
     },
   ],
 };

@@ -56,6 +56,3 @@ export {
   typewriterStyles,
   typewriterKeyframes,
 } from './Typewriter/TypewriterBase';
-
-// Performance testing (optional export for development)
-export { PerformanceTest } from './performance/PerformanceTest';

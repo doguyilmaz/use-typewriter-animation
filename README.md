@@ -85,6 +85,12 @@ Explore our comprehensive collection of **12+ examples** demonstrating various f
 
 - **VirtualizationDemo**: Long text handling with performance metrics
 
+### 🛠️ Development Examples (⭐⭐⭐⭐⭐)
+
+- **PerformanceTesting**: Interactive performance testing with benchmarks
+- **AccessibilityTesting**: WCAG 2.1 compliance testing suite
+- **ConflictTesting**: Event loop and timing conflict detection
+
 ```tsx
 // Access examples programmatically
 import { getExamplesByCategory, getExampleByName } from 'use-typewriter-animation/examples';

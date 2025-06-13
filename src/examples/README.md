@@ -59,6 +59,14 @@ src/examples/
 
 - **VirtualizationDemo** - Long text handling with performance metrics
 
+### Development Examples
+
+**Testing and development utilities**
+
+- **PerformanceTesting** - Interactive performance testing with benchmarks
+- **AccessibilityTesting** - WCAG 2.1 compliance testing suite
+- **ConflictTesting** - Event loop and timing conflict detection
+
 ## 🚀 Usage
 
 ### Import Individual Examples
@@ -237,6 +245,41 @@ import { VirtualizationDemo } from '../examples/performance/VirtualizationDemo';
 - **Features**: Virtualization, performance metrics, long text handling
 - **Use Case**: Large text sequences, performance testing
 - **Complexity**: ⭐⭐⭐⭐☆
+
+### Development Examples
+
+#### PerformanceTesting
+
+```tsx
+import { PerformanceTesting } from '../examples/development/PerformanceTesting';
+```
+
+- **Focus**: Interactive performance testing and benchmarking
+- **Features**: Performance benchmarks, real-time metrics, test automation
+- **Use Case**: Performance validation, optimization testing, development debugging
+- **Complexity**: ⭐⭐⭐⭐⭐
+
+#### AccessibilityTesting
+
+```tsx
+import { AccessibilityTesting } from '../examples/development/AccessibilityTesting';
+```
+
+- **Focus**: WCAG 2.1 compliance testing suite
+- **Features**: WCAG testing, interactive tests, compliance validation
+- **Use Case**: Accessibility auditing, compliance verification, development testing
+- **Complexity**: ⭐⭐⭐⭐⭐
+
+#### ConflictTesting
+
+```tsx
+import { ConflictTesting } from '../examples/development/ConflictTesting';
+```
+
+- **Focus**: Event loop and timing conflict detection
+- **Features**: Event loop testing, conflict detection, timing validation
+- **Use Case**: Development debugging, regression testing, stability validation
+- **Complexity**: ⭐⭐⭐⭐⭐
 
 ## 🎨 Design Principles
 

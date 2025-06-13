@@ -50,6 +50,51 @@ yarn add use-typewriter-animation
 bun add use-typewriter-animation
 ```
 
+## 📚 Examples & Showcase
+
+Explore our comprehensive collection of **12+ examples** demonstrating various features, styles, and design patterns:
+
+### 🎯 Basic Examples (⭐☆☆☆☆)
+
+- **SimpleTypewriter**: Clean minimal animation with modern styling
+- **ColorfulText**: Text colorization with dynamic colors on dark background
+- **LoopingAnimation**: Continuous delete/type cycles with gradient background
+- **ComprehensiveBasic**: All-in-one example showcasing multiple features together
+
+### 🎮 Interactive Examples (⭐⭐☆☆☆)
+
+- **KeyboardControls**: Terminal-style interface with keyboard shortcuts and status indicators
+
+### 🎨 Creative Examples (⭐⭐⭐☆☆)
+
+- **TerminalSimulation**: Realistic macOS terminal with commands and live clock
+- **CodeEditor**: Dracula-themed code editor with syntax highlighting
+- **ChatSimulation**: Multi-user chat interface with typing indicators
+- **StorytellingDemo**: Multi-scene narrative with dynamic backgrounds
+- **LoadingStates**: Realistic loading sequences with progress indicators
+
+### 🚀 Advanced Examples (⭐⭐⭐⭐☆)
+
+- **HeroSection**: Modern landing page hero with feature cards
+
+### ♿ Accessibility Examples (⭐⭐⭐⭐⭐)
+
+- **AccessibilityShowcase**: WCAG 2.1 AA compliance demo with comprehensive features
+
+### ⚡ Performance Examples (⭐⭐⭐⭐⭐)
+
+- **VirtualizationDemo**: Long text handling with performance metrics
+
+```tsx
+// Access examples programmatically
+import { getExamplesByCategory, getExampleByName } from 'use-typewriter-animation/examples';
+
+const basicExamples = getExamplesByCategory('basic');
+const terminalExample = getExampleByName('TerminalSimulation');
+```
+
+**[View all examples →](./src/examples/README.md)**
+
 ## 🚀 Quick Start
 
 ```tsx

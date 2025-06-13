@@ -178,12 +178,24 @@ export const typewriterKeyframes = `
 // Accessibility utility functions
 export const detectReducedMotion = (): boolean => {
   if (typeof window === 'undefined') return false;
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!window.matchMedia) return false;
+  try {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    return mediaQuery ? mediaQuery.matches : false;
+  } catch {
+    return false;
+  }
 };
 
 export const detectHighContrast = (): boolean => {
   if (typeof window === 'undefined') return false;
-  return window.matchMedia('(prefers-contrast: high)').matches;
+  if (!window.matchMedia) return false;
+  try {
+    const mediaQuery = window.matchMedia('(prefers-contrast: high)');
+    return mediaQuery ? mediaQuery.matches : false;
+  } catch {
+    return false;
+  }
 };
 
 export function createTypewriterBase(

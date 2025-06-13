@@ -1,6 +1,6 @@
 {
   "name": "use-typewriter-animation",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "A modern, performant React hook for creating typewriter animation effects with full TypeScript support and SSR compatibility.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",

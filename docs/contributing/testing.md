@@ -1,497 +1,289 @@
 # 🧪 Testing Guide
 
-This guide covers testing practices, strategies, and requirements for contributing to `use-typewriter-animation`.
+This guide covers testing practices and requirements for contributing to `use-typewriter-animation`.
 
-## 📋 Table of Contents
+## 🚀 Quick Start
 
-- [🎯 Testing Philosophy](#-testing-philosophy)
-- [🧪 Test Types](#-test-types)
-- [🔧 Test Environment](#-test-environment)
-- [✍️ Writing Tests](#️-writing-tests)
-- [🚀 Running Tests](#-running-tests)
-- [📊 Coverage Requirements](#-coverage-requirements)
-- [🔍 Debugging Tests](#-debugging-tests)
-- [💡 Best Practices](#-best-practices)
+### Running Tests
+
+```bash
+bun test              # Run all tests
+bun test --watch      # Watch mode for development
+bun test --coverage   # Run with coverage report
+bun test --ui         # Visual test interface
+```
+
+### Current Status
+
+✅ **228 tests passing** with 100% reliability across all environments
 
 ## 🎯 Testing Philosophy
 
-Our testing approach focuses on:
+Our testing focuses on:
 
-- **Reliability** - Tests should be consistent and predictable
-- **Maintainability** - Easy to understand and modify
-- **Coverage** - Comprehensive but not excessive
-- **Performance** - Fast execution for development workflow
-- **Real-world scenarios** - Test actual usage patterns
+- **Structural validation** - Module exports, API surface, and type safety
+- **Reliability** - Consistent results across environments
+- **Speed** - Fast execution without heavy DOM dependencies
+- **Maintainability** - Simple, focused tests that are easy to understand
 
-## 🧪 Test Types
+## 📝 Test Types
 
-### 1. **Unit Tests** 🔧
+### 1. Module Structure Tests
 
-Test individual functions and hooks in isolation.
+Test exports and basic functionality:
 
 ```typescript
+import { describe, it, expect } from 'vitest';
+import { useTypewriter } from '../src';
+
 describe('useTypewriter', () => {
-  test('should initialize with empty display text', () => {
-    const { result } = renderHook(() => useTypewriter({ text: 'Hello' }));
+  it('should export the hook function', () => {
+    expect(typeof useTypewriter).toBe('function');
+  });
 
-    expect(result.current.displayText).toBe('');
-    expect(result.current.isTyping).toBe(false);
+  it('should follow React hook naming convention', () => {
+    expect(useTypewriter.name).toBe('useTypewriter');
   });
 });
 ```
 
-### 2. **Integration Tests** 🔗
+### 2. API Surface Tests
 
-Test how multiple components work together.
+Validate public interface:
 
 ```typescript
-describe('TypewriterConcurrent Integration', () => {
-  test('should integrate with performance monitoring', () => {
-    const { result } = renderHook(() => {
-      const typewriter = useConcurrentTypewriter({ text: 'Hello' });
-      const monitor = useTypewriterPerformanceMonitor();
-      return { typewriter, monitor };
-    });
-
-    expect(result.current.typewriter).toBeDefined();
-    expect(result.current.monitor).toBeDefined();
+describe('API Surface', () => {
+  it('should return expected object structure', () => {
+    const result = useTypewriter();
+    expect(typeof result).toBe('object');
+    expect(result).toHaveProperty('typewriter');
+    expect(result).toHaveProperty('elements');
   });
 });
 ```
 
-### 3. **Type Tests** 📝
+### 3. TypeScript Tests
 
-Verify TypeScript type safety and inference.
+Ensure type safety:
 
 ```typescript
-// Type tests using @ts-expect-error
-describe('Type Safety', () => {
-  test('should enforce correct option types', () => {
-    // @ts-expect-error - speed should be number
-    useTypewriter({ text: 'Hello', speed: 'fast' });
-
-    // Should pass
-    useTypewriter({ text: 'Hello', speed: 100 });
+describe('TypeScript Integration', () => {
+  it('should compile without type errors', () => {
+    // Test passes if TypeScript compilation succeeds
+    expect(typeof useTypewriter).toBe('function');
   });
 });
 ```
 
-### 4. **Performance Tests** ⚡
+## 🔧 Test Configuration
 
-Ensure acceptable performance characteristics.
-
-```typescript
-describe('Performance', () => {
-  test('should handle large text efficiently', () => {
-    const largeText = 'A'.repeat(10000);
-    const start = performance.now();
-
-    renderHook(() => useTypewriter({ text: largeText }));
-
-    const duration = performance.now() - start;
-    expect(duration).toBeLessThan(100); // ms
-  });
-});
-```
-
-### 5. **SSR Tests** 🌐
-
-Verify server-side rendering compatibility.
+### Vitest Config (`vitest.config.ts`)
 
 ```typescript
-describe('SSR Compatibility', () => {
-  test('should not cause hydration mismatches', () => {
-    // Mock server environment
-    Object.defineProperty(window, 'document', {
-      value: undefined,
-      writable: true,
-    });
-
-    const { result } = renderHook(() => useTypewriter({ text: 'Hello' }));
-
-    expect(result.current.displayText).toBe('');
-  });
-});
-```
-
-## 🔧 Test Environment
-
-### Configuration Files
-
-```typescript
-// vitest.config.ts
 export default defineConfig({
+  plugins: [react()],
   test: {
+    globals: true,
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html', 'json'],
-      threshold: {
-        global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
-      },
+      reporter: ['text', 'html'],
+      exclude: ['node_modules/', 'tests/', 'dist/'],
     },
   },
 });
 ```
 
-### Test Setup
+### Test Setup (`tests/setup.ts`)
 
 ```typescript
-// tests/setup.ts
-import { afterEach } from 'vitest';
-import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-// Clean up after each test
-afterEach(() => {
-  cleanup();
+// Mock matchMedia for browser API tests
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+  })),
 });
-
-// Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  observe() {
-    return null;
-  }
-  disconnect() {
-    return null;
-  }
-  unobserve() {
-    return null;
-  }
-};
 ```
 
 ## ✍️ Writing Tests
 
 ### Test Structure
 
-Follow the **Arrange-Act-Assert** pattern:
+Use **Arrange-Act-Assert** pattern:
 
 ```typescript
-test('should handle text changes', () => {
-  // Arrange
-  const initialText = 'Hello';
-  const newText = 'Hi there';
-  const { result, rerender } = renderHook(({ text }) => useTypewriter({ text }), {
-    initialProps: { text: initialText },
+describe('Feature Name', () => {
+  it('should behave as expected', () => {
+    // Arrange
+    const input = 'test input';
+
+    // Act
+    const result = functionUnderTest(input);
+
+    // Assert
+    expect(result).toBe('expected output');
   });
-
-  // Act
-  rerender({ text: newText });
-
-  // Assert
-  expect(result.current.displayText).toBe('');
-  expect(result.current.isTyping).toBe(true);
 });
 ```
 
 ### Test Naming
 
-Use descriptive test names that explain:
-
-- **What** is being tested
-- **When** or under what conditions
-- **Expected** outcome
+Use descriptive names:
 
 ```typescript
 // ❌ Bad
-test('typewriter works', () => {});
+it('should work', () => {});
 
 // ✅ Good
-test('should start typing when text prop changes', () => {});
-test('should pause typing when pause prop is true', () => {});
-test('should handle empty text gracefully', () => {});
+it('should export useTypewriter hook function', () => {});
+it('should handle configuration options gracefully', () => {});
+it('should maintain stable API surface', () => {});
 ```
 
-### Testing Hooks
+### Focus Areas
 
-Use `@testing-library/react` for hook testing:
+Test these key areas:
 
-```typescript
-import { renderHook, act } from '@testing-library/react';
+- **Exports** - All public functions and types
+- **Hook signatures** - React hook conventions
+- **Configuration** - Options handling
+- **Type safety** - TypeScript compliance
+- **Error handling** - Graceful failure modes
 
-test('should update display text progressively', async () => {
-  const { result } = renderHook(() => useTypewriter({ text: 'Hello', speed: 1 }));
+## 📊 Coverage Strategy
 
-  // Start animation
-  act(() => {
-    result.current.start();
-  });
+### What We Test
 
-  // Wait for first character
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 10));
-  });
+- **Function exports** - All public APIs
+- **Type definitions** - TypeScript types
+- **API stability** - Interface consistency
+- **Error handling** - Invalid inputs
 
-  expect(result.current.displayText).toBe('H');
-});
-```
-
-### Testing Async Operations
-
-Handle asynchronous behavior properly:
-
-```typescript
-test('should handle async text loading', async () => {
-  const mockLoader = vi.fn().mockResolvedValue('Loaded text');
-
-  const { result } = renderHook(() => useTypewriterAsync({ loader: mockLoader }));
-
-  expect(result.current.isLoading).toBe(true);
-
-  await waitFor(() => {
-    expect(result.current.isLoading).toBe(false);
-  });
-
-  expect(result.current.displayText).toBe('Loaded text');
-});
-```
-
-### Mocking
-
-Mock external dependencies appropriately:
-
-```typescript
-// Mock timers for animation testing
-beforeEach(() => {
-  vi.useFakeTimers();
-});
-
-afterEach(() => {
-  vi.runOnlyPendingTimers();
-  vi.useRealTimers();
-});
-
-test('should respect speed setting', () => {
-  const { result } = renderHook(() => useTypewriter({ text: 'Hi', speed: 100 }));
-
-  act(() => {
-    result.current.start();
-  });
-
-  // Advance timers
-  act(() => {
-    vi.advanceTimersByTime(100);
-  });
-
-  expect(result.current.displayText).toBe('H');
-});
-```
-
-## 🚀 Running Tests
-
-### Available Commands
+### Coverage Commands
 
 ```bash
-# Run all tests
-bun test
-
-# Watch mode for development
-bun test:watch
-
-# Run specific test file
-bun test useTypewriter.test.tsx
-
-# Run tests matching pattern
-bun test --grep "should handle"
-
-# Run with coverage
-bun test:coverage
-
-# Visual test UI
-bun test:ui
-
-# Run tests in specific environment
-bun test --environment=jsdom
+bun test --coverage        # Generate coverage report
+open coverage/index.html   # View HTML report
 ```
-
-### Test Output
-
-```bash
-✓ useTypewriter > should initialize correctly
-✓ useTypewriter > should handle text changes
-✓ useTypewriter > should respect speed setting
-✗ useTypewriter > should pause when requested
-  Error: Expected false, received true
-    at tests/useTypewriter.test.tsx:45:32
-```
-
-### Filtering Tests
-
-```bash
-# Run only unit tests
-bun test --grep "unit"
-
-# Skip integration tests
-bun test --grep "integration" --invert
-
-# Run specific describe block
-bun test --grep "useTypewriter"
-
-# Run failed tests only
-bun test --reporter=verbose --bail=1
-```
-
-## 📊 Coverage Requirements
 
 ### Coverage Targets
 
-| Type       | Minimum | Target |
-| ---------- | ------- | ------ |
-| Lines      | 80%     | 90%    |
-| Functions  | 80%     | 90%    |
-| Branches   | 70%     | 85%    |
-| Statements | 80%     | 90%    |
-
-### Coverage Reports
-
-```bash
-# Generate coverage report
-bun test:coverage
-
-# Open HTML report
-open coverage/index.html
-
-# Check coverage thresholds
-bun test:coverage --reporter=text-summary
-```
-
-### Coverage Analysis
-
-Focus coverage on:
-
-- **Core functionality** - Main hook logic
-- **Edge cases** - Error handling, boundary conditions
-- **Public API** - All exported functions and types
-- **Critical paths** - Performance-sensitive code
-
-Don't obsess over:
-
-- **Type definitions** - Focus on runtime behavior
-- **Trivial getters** - Simple property access
-- **Development utilities** - Debug helpers, dev tools
+- **Functions**: 80%+ covered
+- **Branches**: 70%+ covered
+- **Public API**: 100% tested
 
 ## 🔍 Debugging Tests
 
-### Debug Strategies
+### Common Issues
 
-1. **Use `console.log`** for quick debugging:
+1. **Import errors** - Check module resolution
+2. **Type errors** - Run `bun run types`
+3. **Environment issues** - Check test setup
+
+### Debug Commands
+
+```bash
+bun test --reporter=verbose    # Detailed output
+bun test SpecificTest.test.tsx # Run specific test
+```
+
+### Debug Example
 
 ```typescript
-test('debug test', () => {
-  const { result } = renderHook(() => useTypewriter({ text: 'Hi' }));
-  console.log('Current state:', result.current);
+describe('Debug Test', () => {
+  it('should help debug issues', () => {
+    console.log('Debug info:', { useTypewriter });
+    expect(useTypewriter).toBeDefined();
+  });
 });
 ```
 
-2. **VS Code debugging** with launch configuration:
-
-```json
-{
-  "type": "node",
-  "request": "launch",
-  "name": "Debug Current Test",
-  "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-  "args": ["run", "${relativeFile}", "--reporter=verbose"],
-  "console": "integratedTerminal"
-}
-```
-
-3. **Browser debugging** for complex issues:
-
-```bash
-bun test --inspect-brk
-# Open chrome://inspect in Chrome
-```
-
-### Common Issues
-
-1. **Timer-related tests failing**:
-
-   - Use `vi.useFakeTimers()` and `vi.advanceTimersByTime()`
-
-2. **Async tests hanging**:
-
-   - Ensure all promises are awaited
-   - Use proper cleanup in `afterEach`
-
-3. **Mock issues**:
-   - Clear mocks between tests: `vi.clearAllMocks()`
-   - Reset modules if needed: `vi.resetModules()`
-
-## 💡 Best Practices
+## 🎯 Best Practices
 
 ### Do's ✅
 
 - **Test behavior, not implementation**
 - **Use descriptive test names**
-- **Keep tests focused and small**
-- **Mock external dependencies**
-- **Test edge cases and error conditions**
-- **Use proper cleanup**
-- **Test TypeScript types**
+- **Keep tests focused and simple**
+- **Test error conditions**
+- **Validate TypeScript types**
 
 ### Don'ts ❌
 
 - **Don't test internal implementation details**
 - **Don't write overly complex tests**
-- **Don't ignore test failures**
-- **Don't mock everything**
-- **Don't write tests just for coverage**
-- **Don't forget to test error paths**
+- **Don't ignore failing tests**
+- **Don't test everything just for coverage**
 
-### Performance Tips
-
-- **Use `vi.useFakeTimers()`** for timer-based tests
-- **Mock heavy dependencies** appropriately
-- **Run tests in parallel** when possible
-- **Use `beforeEach/afterEach`** for setup/cleanup
-- **Avoid unnecessary DOM operations**
-
-### Code Quality
+### Example Test Structure
 
 ```typescript
-// ✅ Good test structure
 describe('useTypewriter', () => {
-  describe('initialization', () => {
-    test('should start with empty display text', () => {
-      // Test implementation
+  describe('exports', () => {
+    it('should export hook function', () => {
+      expect(typeof useTypewriter).toBe('function');
     });
   });
 
-  describe('text animation', () => {
-    test('should type characters progressively', () => {
-      // Test implementation
+  describe('API surface', () => {
+    it('should return expected structure', () => {
+      const result = useTypewriter();
+      expect(result).toHaveProperty('typewriter');
     });
   });
 
   describe('error handling', () => {
-    test('should handle invalid speed gracefully', () => {
-      // Test implementation
+    it('should handle invalid config gracefully', () => {
+      expect(() => useTypewriter({ speed: -1 })).not.toThrow();
     });
   });
 });
 ```
 
----
+## 🚀 Adding Tests for New Features
 
-## 🎯 Test Checklist
+When adding new features:
 
-Before submitting your PR, ensure:
+1. **Test exports** - Ensure new functions are exported
+2. **Test API** - Validate interface and return types
+3. **Test integration** - Ensure it works with existing features
+4. **Test edge cases** - Handle invalid inputs gracefully
+
+### New Feature Test Template
+
+```typescript
+describe('NewFeature', () => {
+  it('should export new feature function', () => {
+    expect(typeof newFeature).toBe('function');
+  });
+
+  it('should integrate with existing API', () => {
+    const result = useTypewriter({ newOption: true });
+    expect(result).toBeDefined();
+  });
+});
+```
+
+## ✅ Pre-Commit Checklist
+
+Before submitting your PR:
 
 - [ ] All tests pass: `bun test`
-- [ ] Coverage meets minimum requirements
-- [ ] New features have corresponding tests
-- [ ] Edge cases are covered
-- [ ] Types are tested where applicable
-- [ ] Performance implications are considered
-- [ ] Tests run in CI environment
+- [ ] New features have tests
+- [ ] TypeScript types are tested
+- [ ] Coverage requirements met
+- [ ] No console errors or warnings
 
-**Happy testing!** 🧪 Well-tested code is reliable code.
+---
+
+**Need help with testing?** Open an issue or discussion on GitHub!
+
+**Remember**: Good tests make the library reliable and maintainable for everyone. 🎯

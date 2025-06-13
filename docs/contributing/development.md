@@ -1,51 +1,33 @@
-# 🛠️ Development Setup Guide
+# 🛠️ Development Setup
 
 This guide will help you set up your development environment for contributing to `use-typewriter-animation`.
 
-## 📋 Prerequisites
+## 🚀 Quick Setup
 
-Before you begin, ensure you have the following installed:
+### Prerequisites
 
 - **Node.js** 18.0.0 or higher
 - **Bun** 1.0.0 or higher (recommended)
 - **Git** for version control
 - **VS Code** (recommended) with TypeScript support
 
-## 🚀 Getting Started
-
-### 1. Fork and Clone
+### Installation
 
 ```bash
 # Fork the repository on GitHub, then clone your fork
-git clone https://github.com/your-username/use-typewriter-animation.git
-# (replace 'your-username' with your GitHub username)
+git clone https://github.com/YOUR_USERNAME/use-typewriter-animation.git
 cd use-typewriter-animation
 
 # Add the upstream remote
 git remote add upstream https://github.com/doguyilmaz/use-typewriter-animation.git
-```
 
-### 2. Install Dependencies
-
-```bash
-# Install all dependencies using Bun (recommended)
+# Install dependencies
 bun install
 
-# Or use npm if you prefer
-npm install
-```
-
-### 3. Verify Setup
-
-```bash
-# Run tests to ensure everything works
-bun test
-
-# Build the project
-bun run build
-
-# Start the development watcher
-bun run watch
+# Verify setup
+bun test        # Run tests (228 tests should pass)
+bun run build   # Build project
+bun run watch   # Start development watcher
 ```
 
 ## 📁 Project Structure
@@ -53,132 +35,86 @@ bun run watch
 ```
 use-typewriter-animation/
 ├── src/                    # Source code
-│   ├── Typewriter/        # Main typewriter components
-│   │   ├── useTypewriter.tsx
-│   │   ├── TypewriterConcurrent.tsx
-│   │   ├── TypewriterAsync.tsx
-│   │   └── TypewriterServer.tsx
-│   └── index.ts           # Main exports
+│   ├── index.ts           # Main exports
+│   ├── hooks/             # React hooks
+│   ├── components/        # React components
+│   ├── utils/             # Utility functions
+│   └── types/             # TypeScript definitions
 ├── tests/                 # Test files
+│   ├── setup.ts          # Test configuration
+│   └── **/*.test.tsx     # Test files
+├── examples/              # Usage examples
+├── dist/                  # Built files (generated)
+├── scripts/               # Build scripts
+│   ├── esbuild.ts        # Build configuration
+│   └── version-bump.ts   # Version management
 ├── docs/                  # Documentation
-├── examples/             # Usage examples
-├── dist/                 # Built files (generated)
-├── scripts/             # Build and utility scripts
-│   ├── esbuild.ts       # Build configuration
-│   ├── version-bump.ts  # Version management
-│   └── bundle-analysis.ts # Bundle analysis
-├── vitest.config.ts     # Test configuration
-├── tsconfig.json        # TypeScript configuration
-└── package.json         # Package configuration
+└── package.json          # Package configuration
 ```
 
-## 🔧 Development Scripts
+## 🔧 Development Commands
 
 ### Core Development
 
 ```bash
-# Start development with file watching
-bun run watch
-
-# Build the project
-bun run build
-
-# Clean build artifacts
-bun run clean
+bun run watch         # Start development with file watching
+bun run build         # Build the project
+bun run clean         # Clean build artifacts
 ```
 
 ### Testing
 
 ```bash
-# Run all tests
-bun test
-
-# Run tests in watch mode
-bun test:watch
-
-# Run tests with coverage
-bun test:coverage
-
-# Open test UI
-bun test:ui
-
-# Run specific test file
-bun test Typewriter.test.tsx
+bun test              # Run all tests
+bun test --watch      # Watch mode for development
+bun test --coverage   # Coverage report
+bun test --ui         # Open test UI
 ```
 
 ### Code Quality
 
 ```bash
-# Format code with Biome
-bun run format
-
-# Type checking
-bun run types
-
-# Bundle analysis
-bun run analyze
+bun run format        # Format code with Biome
+bun run types         # TypeScript type checking
+bun run analyze       # Bundle size analysis
 ```
 
-### Release Process
+### Release
 
 ```bash
-# Version bump (interactive)
-bun run version
-
-# Full release pipeline
-bun run release
+bun run version       # Interactive version bump
+bun run pack          # Create package for testing
 ```
 
-## 🧪 Testing Environment
+## 🧪 Testing
 
-### Test Configuration
+### Test Structure
 
-The project uses **Vitest** with **JSDOM** environment:
+Our tests focus on:
 
-- **Test files**: `tests/*.test.tsx`
-- **Setup file**: `tests/setup.ts`
-- **Config**: `vitest.config.ts`
+- **Structural validation** - Module imports/exports
+- **Function signatures** - React hook conventions
+- **TypeScript compliance** - Type safety
+- **API surface validation** - Public interface stability
 
 ### Writing Tests
 
 ```typescript
-import { describe, it, expect, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { useTypewriter } from '../src';
 
 describe('useTypewriter', () => {
-  it('should type text progressively', () => {
-    const { result } = renderHook(() => useTypewriter({ text: 'Hello' }));
+  it('should export the hook function', () => {
+    expect(typeof useTypewriter).toBe('function');
+  });
 
-    expect(result.current.displayText).toBe('');
-
-    act(() => {
-      // Trigger animation
-    });
-
-    expect(result.current.displayText).toBe('Hello');
+  it('should follow React hook naming convention', () => {
+    expect(useTypewriter.name).toBe('useTypewriter');
   });
 });
 ```
 
-### Test Best Practices
-
-- **Unit tests** for individual functions
-- **Integration tests** for hook combinations
-- **Type tests** for TypeScript safety
-- **Performance tests** for critical paths
-- **SSR tests** for server compatibility
-
 ## 🏗️ Build Process
-
-### Build Pipeline
-
-The project uses **esbuild** for fast builds:
-
-1. **Clean** - Remove old build files
-2. **Bundle** - Create ESM and CJS bundles
-3. **Types** - Generate TypeScript declarations
-4. **Verify** - Ensure build integrity
 
 ### Build Outputs
 
@@ -194,52 +130,40 @@ dist/
 
 ### Bundle Configuration
 
-```typescript
-// scripts/esbuild.ts configuration highlights
-{
-  entryPoints: ['src/index.ts'],
-  bundle: true,
-  minify: true,
-  sourcemap: true,
-  target: ['es2020'],
-  external: ['react', 'react-dom'],
-  // ... more config
-}
-```
+The project uses **esbuild** for fast builds with:
 
-## 🔍 Debugging
+- **Tree shaking** for smaller bundles
+- **Source maps** for debugging
+- **Minification** for production
+- **External dependencies** (React, React DOM)
 
-### VS Code Setup
+### Bundle Size Targets
 
-Add to `.vscode/launch.json`:
+- **ESM**: ~5.3KB gzipped
+- **CJS**: ~5.6KB gzipped
 
-```json
-{
-  "type": "node",
-  "request": "launch",
-  "name": "Debug Tests",
-  "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-  "args": ["run", "--reporter=verbose"],
-  "console": "integratedTerminal",
-  "internalConsoleOptions": "neverOpen"
-}
-```
+## 🔍 Common Issues & Solutions
 
-### Chrome DevTools
-
-For browser debugging:
+### TypeScript Errors
 
 ```bash
-# Run tests with Chrome DevTools
-bun test --inspect-brk
+bun run types  # Check TypeScript compilation
 ```
 
-### Common Issues
+### Test Failures
 
-1. **TypeScript errors**: Run `bun run types` to check
-2. **Test failures**: Check `tests/setup.ts` configuration
-3. **Build issues**: Verify `scripts/esbuild.ts` settings
-4. **Import problems**: Check `src/index.ts` exports
+- Check `tests/setup.ts` configuration
+- Verify React Testing Library setup
+
+### Build Issues
+
+- Verify `scripts/esbuild.ts` settings
+- Check `src/index.ts` exports
+
+### Import Problems
+
+- Ensure proper export/import statements
+- Check TypeScript path resolution
 
 ## 🔄 Git Workflow
 
@@ -248,7 +172,14 @@ bun test --inspect-brk
 - **Features**: `feature/description`
 - **Fixes**: `fix/description`
 - **Docs**: `docs/description`
-- **Tests**: `test/description`
+
+### Before Committing
+
+```bash
+bun test           # Ensure tests pass
+bun run build      # Verify build works
+bun run format     # Format code
+```
 
 ### Commit Messages
 
@@ -261,42 +192,48 @@ docs: update API documentation
 test: add edge case coverage
 ```
 
-### Before Committing
+## 🛠️ IDE Setup
 
-```bash
-# Ensure everything works
-bun test
-bun run build
-bun run types
+### VS Code Extensions (Recommended)
 
-# Format code
-bun run format
+- **Biome** - Code formatting and linting
+- **Vitest** - Test runner integration
+- **TypeScript** - Built-in language support
+
+### VS Code Settings
+
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "typescript.preferences.importModuleSpecifier": "relative"
+}
 ```
 
-## 🚀 Performance Tips
+## 📊 Performance Tips
 
 ### Development Speed
 
 - Use **Bun** for faster installs and scripts
 - Run `bun run watch` for live rebuilds
-- Use `bun test:watch` for test-driven development
-- Enable **TypeScript strict mode** for better DX
+- Use `bun test --watch` for test-driven development
 
-### Build Optimization
+### Bundle Optimization
 
-- **Tree shaking** removes unused code
-- **Bundle splitting** for better caching
-- **Source maps** for debugging
-- **Minification** for production
+```bash
+bun run analyze  # Check bundle size and composition
+```
 
 ## 📞 Getting Help
 
-If you encounter issues during setup:
+If you encounter issues:
 
 1. **Check the logs** for error messages
 2. **Clear dependencies**: `rm -rf node_modules && bun install`
 3. **Update tools**: Ensure latest Node.js and Bun versions
-4. **Ask for help**: Create an issue with setup details
+4. **Ask for help**:
+   - 💬 [GitHub Discussions](https://github.com/doguyilmaz/use-typewriter-animation/discussions)
+   - 🐛 [GitHub Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues)
 
 ## 🎯 Next Steps
 
@@ -306,7 +243,7 @@ Once your development environment is ready:
 2. **Create a branch** for your changes
 3. **Write tests** for new functionality
 4. **Update docs** if needed
-5. **Submit a PR** following our guidelines
+5. **Submit a PR** following our [Contributing Guide](./contributing.md)
 
 ---
 

@@ -7,18 +7,21 @@ The use-typewriter-animation library is designed with accessibility-first princi
 ## 🎯 Accessibility Features
 
 ### ✅ Screen Reader Support
+
 - **ARIA live regions** for real-time announcements
 - **Screen reader-only content** for full context
 - **Progressive announcements** during typing
 - **Completion announcements** when animation finishes
 
 ### ✅ Reduced Motion Support
+
 - **Automatic detection** of `prefers-reduced-motion` preference
 - **Instant text display** for users who prefer reduced motion
 - **Dynamic preference changes** - responds to real-time changes
 - **Cursor animation respect** - disables blinking when needed
 
 ### ✅ Keyboard Navigation
+
 - **Configurable keyboard shortcuts** for full control
 - **Pause/Resume** functionality (default: Space bar)
 - **Skip animation** (default: Escape)
@@ -26,12 +29,14 @@ The use-typewriter-animation library is designed with accessibility-first princi
 - **Focus management** for better keyboard navigation
 
 ### ✅ ARIA Compliance
+
 - **Comprehensive ARIA attributes** (live, label, describedby, role)
 - **Semantic roles** (status, log, alert, marquee)
 - **Busy state indicators** during active animations
 - **Atomic announcements** for complete context
 
 ### ✅ High Contrast Support
+
 - **System color respect** - uses `currentColor` for better contrast
 - **Non-color-dependent indicators** for state changes
 - **Border and background transparency** for theme compatibility
@@ -44,18 +49,13 @@ The use-typewriter-animation library is designed with accessibility-first princi
 import { useTypewriter } from 'use-typewriter-animation';
 
 function AccessibleTypewriter() {
-  const { 
-    typewriter, 
-    elements, 
-    cursor, 
-    accessibilityProps, 
-    screenReaderAnnouncement 
-  } = useTypewriter({
-    // Basic accessibility settings
-    ariaLabel: 'Welcome message typewriter',
-    respectReducedMotion: true,
-    announceCompletion: true,
-  });
+  const { typewriter, elements, cursor, accessibilityProps, screenReaderAnnouncement } =
+    useTypewriter({
+      // Basic accessibility settings
+      ariaLabel: 'Welcome message typewriter',
+      respectReducedMotion: true,
+      announceCompletion: true,
+    });
 
   useEffect(() => {
     typewriter
@@ -80,39 +80,34 @@ function AccessibleTypewriter() {
 
 ```tsx
 function FullyAccessibleTypewriter() {
-  const { 
-    typewriter, 
-    elements, 
-    cursor, 
-    accessibilityProps, 
-    screenReaderAnnouncement 
-  } = useTypewriter({
-    // ARIA Configuration
-    ariaLive: 'polite',
-    ariaLabel: 'Product announcement typewriter',
-    role: 'status',
-    
-    // Reduced Motion Support
-    respectReducedMotion: true,
-    reducedMotionFallback: 'instant',
-    
-    // Keyboard Controls
-    enableKeyboardControls: true,
-    autoKeyboardHandling: true,
-    keyboardShortcuts: {
-      pause: ['Space', ' '],
-      resume: ['Space', ' '],
-      skip: ['Escape', 'Enter'],
-      reset: ['KeyR', 'r'],
-    },
-    
-    // Screen Reader Optimizations
-    announceCompletion: true,
-    screenReaderText: 'New product launch: Revolutionary AI Assistant now available!',
-    
-    // Visual Accessibility
-    cursorColor: 'currentColor',
-  });
+  const { typewriter, elements, cursor, accessibilityProps, screenReaderAnnouncement } =
+    useTypewriter({
+      // ARIA Configuration
+      ariaLive: 'polite',
+      ariaLabel: 'Product announcement typewriter',
+      role: 'status',
+
+      // Reduced Motion Support
+      respectReducedMotion: true,
+      reducedMotionFallback: 'instant',
+
+      // Keyboard Controls
+      enableKeyboardControls: true,
+      autoKeyboardHandling: true,
+      keyboardShortcuts: {
+        pause: ['Space', ' '],
+        resume: ['Space', ' '],
+        skip: ['Escape', 'Enter'],
+        reset: ['KeyR', 'r'],
+      },
+
+      // Screen Reader Optimizations
+      announceCompletion: true,
+      screenReaderText: 'New product launch: Revolutionary AI Assistant now available!',
+
+      // Visual Accessibility
+      cursorColor: 'currentColor',
+    });
 
   useEffect(() => {
     typewriter
@@ -131,7 +126,7 @@ function FullyAccessibleTypewriter() {
   }, []);
 
   return (
-    <div 
+    <div
       {...accessibilityProps}
       tabIndex={0} // Make focusable for keyboard navigation
       style={{
@@ -156,36 +151,36 @@ function FullyAccessibleTypewriter() {
 
 ### ARIA Configuration
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `ariaLive` | `'polite' \| 'assertive' \| 'off'` | `'polite'` | Controls how screen readers announce content |
-| `ariaLabel` | `string` | `undefined` | Provides accessible name for the component |
-| `ariaDescribedBy` | `string` | `undefined` | References elements that describe the component |
-| `role` | `'status' \| 'log' \| 'alert' \| 'marquee'` | `'status'` | Semantic role for the component |
+| Option            | Type                                        | Default     | Description                                     |
+| ----------------- | ------------------------------------------- | ----------- | ----------------------------------------------- |
+| `ariaLive`        | `'polite' \| 'assertive' \| 'off'`          | `'polite'`  | Controls how screen readers announce content    |
+| `ariaLabel`       | `string`                                    | `undefined` | Provides accessible name for the component      |
+| `ariaDescribedBy` | `string`                                    | `undefined` | References elements that describe the component |
+| `role`            | `'status' \| 'log' \| 'alert' \| 'marquee'` | `'status'`  | Semantic role for the component                 |
 
 ### Screen Reader Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `screenReaderText` | `string` | `undefined` | Full text provided to screen readers when complete |
-| `announceCompletion` | `boolean` | `false` | Whether to announce when typing is complete |
+| Option               | Type      | Default     | Description                                        |
+| -------------------- | --------- | ----------- | -------------------------------------------------- |
+| `screenReaderText`   | `string`  | `undefined` | Full text provided to screen readers when complete |
+| `announceCompletion` | `boolean` | `false`     | Whether to announce when typing is complete        |
 
 ### Reduced Motion Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `respectReducedMotion` | `boolean` | `true` | Whether to respect user's motion preferences |
+| Option                  | Type                  | Default     | Description                                    |
+| ----------------------- | --------------------- | ----------- | ---------------------------------------------- |
+| `respectReducedMotion`  | `boolean`             | `true`      | Whether to respect user's motion preferences   |
 | `reducedMotionFallback` | `'instant' \| 'none'` | `'instant'` | How to handle animation when motion is reduced |
 
 ### Keyboard Navigation Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `enableKeyboardControls` | `boolean` | `false` | Enable keyboard control functionality |
-| `autoKeyboardHandling` | `boolean` | `false` | Automatically handle keyboard events |
-| `keyboardShortcuts` | `object` | See below | Custom keyboard shortcuts |
-| `manageFocus` | `boolean` | `false` | Manage focus during animations |
-| `focusOnComplete` | `boolean` | `false` | Focus component when animation completes |
+| Option                   | Type      | Default   | Description                              |
+| ------------------------ | --------- | --------- | ---------------------------------------- |
+| `enableKeyboardControls` | `boolean` | `false`   | Enable keyboard control functionality    |
+| `autoKeyboardHandling`   | `boolean` | `false`   | Automatically handle keyboard events     |
+| `keyboardShortcuts`      | `object`  | See below | Custom keyboard shortcuts                |
+| `manageFocus`            | `boolean` | `false`   | Manage focus during animations           |
+| `focusOnComplete`        | `boolean` | `false`   | Focus component when animation completes |
 
 #### Default Keyboard Shortcuts
 
@@ -215,7 +210,7 @@ const { accessibilityProps } = useTypewriter({
 </div>
 
 // Results in:
-<div 
+<div
   aria-label="Status updates"
   aria-live="polite"
   role="status"
@@ -230,26 +225,30 @@ const { accessibilityProps } = useTypewriter({
 The library provides multiple levels of screen reader support:
 
 ### 1. Progressive Announcements
+
 Text is announced as it's being typed (configurable via `ariaLive`).
 
 ### 2. Completion Announcements
+
 Full context is provided when animation completes.
 
 ### 3. Status Announcements
+
 Current state (typing, paused, completed) is announced.
 
 ### 4. Keyboard Control Instructions
+
 When keyboard controls are enabled, instructions are provided.
 
 ## ⌨️ Keyboard Navigation
 
 ### Default Controls
 
-| Key | Action | Description |
-|-----|--------|-------------|
-| **Space** | Pause/Resume | Toggle animation playback |
-| **Escape** | Skip | Skip to end of current animation |
-| **R** | Reset | Reset animation to beginning |
+| Key        | Action       | Description                      |
+| ---------- | ------------ | -------------------------------- |
+| **Space**  | Pause/Resume | Toggle animation playback        |
+| **Escape** | Skip         | Skip to end of current animation |
+| **R**      | Reset        | Reset animation to beginning     |
 
 ### Custom Keyboard Shortcuts
 
@@ -332,7 +331,10 @@ The library responds to real-time changes in motion preferences:
 ### Using the Built-in Test Utilities
 
 ```tsx
-import { AccessibilityTestUtils, AccessibilityTestHelpers } from 'use-typewriter-animation/test/AccessibilityTest';
+import {
+  AccessibilityTestUtils,
+  AccessibilityTestHelpers,
+} from 'use-typewriter-animation/test/AccessibilityTest';
 
 // Test basic accessibility compliance
 const auditResult = AccessibilityTestUtils.auditAccessibility(containerElement);
@@ -363,36 +365,40 @@ test('keyboard navigation works', async () => {
 ## 🌟 Best Practices
 
 ### 1. Always Provide Context
+
 ```tsx
 // ✅ Good: Descriptive aria-label
-ariaLabel: "Product announcement typewriter"
+ariaLabel: 'Product announcement typewriter';
 
 // ❌ Bad: Generic or missing label
-ariaLabel: "Typewriter"
+ariaLabel: 'Typewriter';
 ```
 
 ### 2. Use Appropriate ARIA Live Regions
+
 ```tsx
 // ✅ Good: Use 'polite' for most announcements
-ariaLive: 'polite'
+ariaLive: 'polite';
 
 // ✅ Good: Use 'assertive' for urgent messages
-ariaLive: 'assertive'
+ariaLive: 'assertive';
 
 // ❌ Bad: Overusing 'assertive'
-ariaLive: 'assertive' // for non-urgent content
+ariaLive: 'assertive'; // for non-urgent content
 ```
 
 ### 3. Provide Full Context for Screen Readers
+
 ```tsx
 // ✅ Good: Complete text for screen readers
-screenReaderText: "Welcome to our accessible website! We're committed to inclusive design."
+screenReaderText: "Welcome to our accessible website! We're committed to inclusive design.";
 
 // ❌ Bad: Incomplete or missing context
-screenReaderText: "Welcome"
+screenReaderText: 'Welcome';
 ```
 
 ### 4. Enable Keyboard Controls for Interactive Content
+
 ```tsx
 // ✅ Good: Enable controls for long animations
 enableKeyboardControls: true
@@ -402,12 +408,13 @@ enableKeyboardControls: true
 ```
 
 ### 5. Respect User Preferences
+
 ```tsx
 // ✅ Good: Always respect reduced motion
-respectReducedMotion: true
+respectReducedMotion: true;
 
 // ✅ Good: Use system colors for high contrast
-cursorColor: 'currentColor'
+cursorColor: 'currentColor';
 ```
 
 ## 🔧 Troubleshooting

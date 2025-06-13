@@ -271,19 +271,19 @@ const { typewriter } = useTypewriter({
 
 We welcome contributions! Please see our [Contributing Guide](./docs/contributing/contributing.md) for details.
 
-- 🐛 [Report Issues](https://github.com/yourusername/use-typewriter-animation/issues)
-- 💡 [Request Features](https://github.com/yourusername/use-typewriter-animation/discussions)
+- 🐛 [Report Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues)
+- 💡 [Request Features](https://github.com/doguyilmaz/use-typewriter-animation/discussions)
 - 📖 [Improve Docs](./docs/contributing/contributing.md)
 
 ## 📄 License
 
-MIT © [Your Name](https://github.com/yourusername)
+MIT © [Dogu Yilmaz](https://github.com/doguyilmaz)
 
 ## 🔗 Links
 
 - 📚 [**Full Documentation**](./docs/README.md)
 - 🎯 [**Examples**](./examples/)
-- 🐙 [**GitHub**](https://github.com/yourusername/use-typewriter-animation)
+- 🐙 [**GitHub**](https://github.com/doguyilmaz/use-typewriter-animation)
 - 📦 [**npm**](https://www.npmjs.com/package/use-typewriter-animation)
 
 ---

@@ -8,32 +8,23 @@ Welcome to the comprehensive documentation for `use-typewriter-animation` - a mo
 
 - [Installation & Setup](./guides/installation.md)
 - [Quick Start Guide](./guides/quick-start.md)
-- [Basic Usage](./guides/basic-usage.md)
-- [Migration Guide](./guides/migration.md)
+- [Accessibility (WCAG 2.1)](./guides/accessibility.md)
+- [Performance Optimization](./guides/performance.md)
 
 ### 🔧 **API Reference**
 
 - [Core Hook: useTypewriter](./api/use-typewriter.md)
-- [React 19 Features](./api/react-19.md)
-- [Server Components](./api/server-components.md)
-- [Concurrent Features](./api/concurrent.md)
 - [Type Definitions](./api/types.md)
 
 ### 🎯 **Feature Guides**
 
 - [Accessibility (WCAG 2.1)](./guides/accessibility.md)
 - [Performance Optimization](./guides/performance.md)
-- [Styling & Theming](./guides/styling.md)
-- [Event Handling](./guides/events.md)
-- [Advanced Patterns](./guides/advanced.md)
+- [Troubleshooting](./guides/troubleshooting.md)
 
 ### 📚 **Examples**
 
 - [Example Gallery](./examples.md)
-- [Basic Examples](./examples/basic.md)
-- [Creative Examples](./examples/creative.md)
-- [Accessibility Examples](./examples/accessibility.md)
-- [Performance Examples](./examples/performance.md)
 
 ### 🛠️ **Development**
 
@@ -41,29 +32,25 @@ Welcome to the comprehensive documentation for `use-typewriter-animation` - a mo
 - [Development Setup](./contributing/development.md)
 - [Testing Guide](./contributing/testing.md)
 - [Release Process](./contributing/releases.md)
+- [Project Roadmap](./ROADMAP.md)
 
 ### 🔍 **Troubleshooting**
 
-- [Common Issues](./guides/troubleshooting.md)
-- [Performance Tips](./guides/performance-tips.md)
-- [Browser Support](./guides/browser-support.md)
-- [FAQ](./guides/faq.md)
+- [Common Issues & Solutions](./guides/troubleshooting.md)
 
 ## 📊 **Library Overview**
 
-| Feature               | Status          | Documentation                                    |
-| --------------------- | --------------- | ------------------------------------------------ |
-| **Core Hook**         | ✅ Stable       | [API Reference](./api/use-typewriter.md)         |
-| **React 19 Support**  | ✅ Stable       | [React 19 Guide](./api/react-19.md)              |
-| **Server Components** | ✅ Stable       | [SSR Guide](./api/server-components.md)          |
-| **Accessibility**     | ✅ WCAG 2.1 AA  | [Accessibility Guide](./guides/accessibility.md) |
-| **Performance**       | ✅ Optimized    | [Performance Guide](./guides/performance.md)     |
-| **TypeScript**        | ✅ Full Support | [Type Definitions](./api/types.md)               |
+| Feature           | Status           | Documentation                                    |
+| ----------------- | ---------------- | ------------------------------------------------ |
+| **Core Hook**     | ✅ Stable        | [API Reference](./api/use-typewriter.md)         |
+| **Accessibility** | ✅ WCAG 2.1 AA   | [Accessibility Guide](./guides/accessibility.md) |
+| **Performance**   | ✅ Optimized     | [Performance Guide](./guides/performance.md)     |
+| **TypeScript**    | ✅ Full Support  | [Type Definitions](./api/types.md)               |
+| **Examples**      | ✅ Comprehensive | [Example Gallery](./examples.md)                 |
 
 ## 🎯 **Quick Links**
 
 - **New to the library?** → [Quick Start Guide](./guides/quick-start.md)
-- **Migrating from v2?** → [Migration Guide](./guides/migration.md)
 - **Need examples?** → [Example Gallery](./examples.md)
 - **Building accessible apps?** → [Accessibility Guide](./guides/accessibility.md)
 - **Performance issues?** → [Performance Guide](./guides/performance.md)
@@ -79,12 +66,35 @@ This documentation follows these principles:
 - **TypeScript Ready**: Full type information and examples
 - **Modern React**: React 19 features and concurrent patterns
 
+## 🗂️ **Documentation Structure**
+
+```
+docs/
+├── README.md                    # This file - main documentation hub
+├── examples.md                  # Comprehensive example showcase
+├── ROADMAP.md                   # Project roadmap and development phases
+├── guides/                      # Feature guides and tutorials
+│   ├── installation.md         # Installation and setup
+│   ├── quick-start.md          # Getting started tutorial
+│   ├── accessibility.md        # WCAG 2.1 compliance guide
+│   ├── performance.md          # Performance optimization
+│   └── troubleshooting.md      # Common issues and solutions
+├── api/                         # API reference documentation
+│   ├── use-typewriter.md       # Main hook documentation
+│   └── types.md                # TypeScript type definitions
+└── contributing/                # Contributor guides
+    ├── contributing.md          # How to contribute
+    ├── development.md           # Development setup
+    ├── testing.md              # Testing guidelines
+    └── releases.md             # Release process
+```
+
 ## 🤝 **Contributing to Docs**
 
 Found an error or want to improve the documentation? See our [Contributing Guide](./contributing/contributing.md) for details on how to help make these docs better.
 
 ---
 
-**Last Updated**: June 2025  
-**Library Version**: 3.4.2+  
+**Last Updated**: January 2025  
+**Library Version**: 3.5.1+  
 **React Compatibility**: 16.8+ | 17+ | 18+ | 19+

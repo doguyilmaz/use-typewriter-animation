@@ -1,5 +1,9 @@
+// This example is ready to copy to your project
+// Install: npm install use-typewriter-animation
+// Then copy this entire component to your codebase
+
 import { useState, useCallback } from 'react';
-import { useTypewriter } from '../src/Typewriter/useTypewriter';
+import { useTypewriter } from 'use-typewriter-animation';
 
 interface PerformanceTestingProps {
   textLength?: number;

@@ -324,8 +324,8 @@ import { ConflictTesting } from '../examples/development/ConflictTesting';
 ### Example Template
 
 ```tsx
-import React, { useEffect } from 'react';
-import { useTypewriter } from '../../Typewriter/useTypewriter';
+import { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
 export const ExampleName = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({

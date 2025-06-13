@@ -1,5 +1,9 @@
+// This example is ready to copy to your project
+// Install: npm install use-typewriter-animation
+// Then copy this entire component to your codebase
+
 import { useEffect } from 'react';
-import { useTypewriter } from '../src/Typewriter/useTypewriter';
+import { useTypewriter } from 'use-typewriter-animation';
 
 export const HeroSection = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({

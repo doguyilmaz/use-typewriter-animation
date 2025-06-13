@@ -8,32 +8,25 @@ Welcome to the comprehensive documentation for `use-typewriter-animation` - a mo
 
 - [Installation & Setup](./guides/installation.md)
 - [Quick Start Guide](./guides/quick-start.md)
-- [Basic Usage](./guides/basic-usage.md)
-- [Migration Guide](./guides/migration.md)
+- [Accessibility (WCAG 2.1)](./guides/accessibility.md)
+- [Performance Optimization](./guides/performance.md)
 
 ### 🔧 **API Reference**
 
 - [Core Hook: useTypewriter](./api/use-typewriter.md)
-- [React 19 Features](./api/react-19.md)
-- [Server Components](./api/server-components.md)
-- [Concurrent Features](./api/concurrent.md)
 - [Type Definitions](./api/types.md)
-
-### 🎯 **Feature Guides**
-
-- [Accessibility (WCAG 2.1)](./guides/accessibility.md)
-- [Performance Optimization](./guides/performance.md)
-- [Styling & Theming](./guides/styling.md)
-- [Event Handling](./guides/events.md)
-- [Advanced Patterns](./guides/advanced.md)
 
 ### 📚 **Examples**
 
-- [Example Gallery](./examples.md)
-- [Basic Examples](./examples/basic.md)
-- [Creative Examples](./examples/creative.md)
-- [Accessibility Examples](./examples/accessibility.md)
-- [Performance Examples](./examples/performance.md)
+- [Example Gallery](./examples.md) - Comprehensive showcase of all features
+- [Live Examples Directory](../examples/) - Working code examples you can run
+  - [Basic Examples](../examples/basic/) - Simple, foundational examples
+  - [Creative Examples](../examples/creative/) - Artistic and creative implementations
+  - [Interactive Examples](../examples/interactive/) - User interaction and controls
+  - [Advanced Examples](../examples/advanced/) - Complex, production-ready examples
+  - [Accessibility Examples](../examples/accessibility/) - WCAG 2.1 compliance demos
+  - [Performance Examples](../examples/performance/) - Optimization techniques
+  - [Development Examples](../examples/development/) - Testing and debugging tools
 
 ### 🛠️ **Development**
 
@@ -41,29 +34,25 @@ Welcome to the comprehensive documentation for `use-typewriter-animation` - a mo
 - [Development Setup](./contributing/development.md)
 - [Testing Guide](./contributing/testing.md)
 - [Release Process](./contributing/releases.md)
+- [Project Roadmap](./ROADMAP.md)
 
 ### 🔍 **Troubleshooting**
 
-- [Common Issues](./guides/troubleshooting.md)
-- [Performance Tips](./guides/performance-tips.md)
-- [Browser Support](./guides/browser-support.md)
-- [FAQ](./guides/faq.md)
+- [Common Issues & Solutions](./guides/troubleshooting.md)
 
 ## 📊 **Library Overview**
 
-| Feature               | Status          | Documentation                                    |
-| --------------------- | --------------- | ------------------------------------------------ |
-| **Core Hook**         | ✅ Stable       | [API Reference](./api/use-typewriter.md)         |
-| **React 19 Support**  | ✅ Stable       | [React 19 Guide](./api/react-19.md)              |
-| **Server Components** | ✅ Stable       | [SSR Guide](./api/server-components.md)          |
-| **Accessibility**     | ✅ WCAG 2.1 AA  | [Accessibility Guide](./guides/accessibility.md) |
-| **Performance**       | ✅ Optimized    | [Performance Guide](./guides/performance.md)     |
-| **TypeScript**        | ✅ Full Support | [Type Definitions](./api/types.md)               |
+| Feature           | Status           | Documentation                                    |
+| ----------------- | ---------------- | ------------------------------------------------ |
+| **Core Hook**     | ✅ Stable        | [API Reference](./api/use-typewriter.md)         |
+| **Accessibility** | ✅ WCAG 2.1 AA   | [Accessibility Guide](./guides/accessibility.md) |
+| **Performance**   | ✅ Optimized     | [Performance Guide](./guides/performance.md)     |
+| **TypeScript**    | ✅ Full Support  | [Type Definitions](./api/types.md)               |
+| **Examples**      | ✅ Comprehensive | [Example Gallery](./examples.md)                 |
 
 ## 🎯 **Quick Links**
 
 - **New to the library?** → [Quick Start Guide](./guides/quick-start.md)
-- **Migrating from v2?** → [Migration Guide](./guides/migration.md)
 - **Need examples?** → [Example Gallery](./examples.md)
 - **Building accessible apps?** → [Accessibility Guide](./guides/accessibility.md)
 - **Performance issues?** → [Performance Guide](./guides/performance.md)
@@ -79,12 +68,48 @@ This documentation follows these principles:
 - **TypeScript Ready**: Full type information and examples
 - **Modern React**: React 19 features and concurrent patterns
 
+## 🗂️ **Documentation Structure**
+
+```
+docs/
+├── README.md                    # This file - main documentation hub
+├── CHANGELOG.md                 # ✅ Correct location (standard)
+├── docs/                        # Documentation hub
+│   ├── README.md               # ✅ Updated - main docs navigation
+│   ├── examples.md             # ✅ Comprehensive example showcase
+│   ├── ROADMAP.md              # Project roadmap
+│   ├── guides/                 # Feature guides
+│   │   ├── installation.md     # ✅ Exists
+│   │   ├── quick-start.md      # ✅ Exists
+│   │   ├── accessibility.md    # ✅ Moved here from root
+│   │   ├── performance.md      # ✅ Exists
+│   │   └── troubleshooting.md  # ✅ Exists
+│   ├── api/                    # API documentation
+│   │   ├── use-typewriter.md   # ✅ Exists
+│   │   └── types.md            # ✅ Exists
+│   └── contributing/           # Contributor guides
+│       ├── contributing.md     # ✅ Created
+│       ├── development.md      # ✅ Created
+│       ├── testing.md          # ✅ Created
+│       └── releases.md         # ✅ Created
+└── examples/                   # ✅ Actual working code examples
+    ├── README.md               # Examples overview
+    ├── package.json            # Examples dependencies
+    ├── basic/                  # Basic examples
+    ├── creative/               # Creative examples
+    ├── interactive/            # Interactive examples
+    ├── advanced/               # Advanced examples
+    ├── accessibility/          # Accessibility examples
+    ├── performance/            # Performance examples
+    └── development/            # Development/testing examples
+```
+
 ## 🤝 **Contributing to Docs**
 
 Found an error or want to improve the documentation? See our [Contributing Guide](./contributing/contributing.md) for details on how to help make these docs better.
 
 ---
 
-**Last Updated**: June 2025  
-**Library Version**: 3.4.2+  
+**Last Updated**: January 2025  
+**Library Version**: 3.5.1+  
 **React Compatibility**: 16.8+ | 17+ | 18+ | 19+

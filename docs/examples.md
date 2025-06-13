@@ -401,7 +401,7 @@ When contributing new examples:
 ## 📚 Additional Resources
 
 - [Main Documentation](../../README.md)
-- [Accessibility Guide](../../ACCESSIBILITY.md)
+- [Accessibility Guide](./guides/accessibility.md)
 - [TypeScript Types](../Typewriter/TypewriterBase.ts)
 - [Performance Tips](../performance/)
 

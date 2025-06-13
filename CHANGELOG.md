@@ -5,6 +5,189 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2025-06-13
+
+### 🚀 Major Documentation & Developer Experience Overhaul
+
+**Comprehensive Documentation System:**
+
+- ✅ **Professional documentation hub** with organized navigation and clear structure
+- ✅ **Complete API reference** with detailed method documentation and TypeScript support
+- ✅ **Accessibility compliance guide** covering WCAG 2.1 AA standards and best practices
+- ✅ **Performance optimization guide** with actual measurements and benchmarking tools
+- ✅ **Troubleshooting guide** with common issues and diagnostic tools
+
+### ✨ Added - Documentation Infrastructure
+
+**Documentation Hub (`docs/README.md`):**
+
+- **Organized navigation** - Clear categories for getting started, API reference, guides, and examples
+- **Quick links** - Direct access to most commonly needed documentation
+- **Feature overview** - Comprehensive list of library capabilities
+- **Documentation standards** - Consistent formatting and structure guidelines
+
+**Getting Started Guides:**
+
+- **Quick start tutorial** - Step-by-step implementation guide with working examples
+- **Installation guide** - Support for npm, yarn, pnpm, and bun package managers
+- **Basic usage patterns** - Common implementation scenarios and best practices
+
+**Complete API Documentation (`docs/api/`):**
+
+- **`use-typewriter.md`** - Comprehensive hook documentation with all options, return values, and methods
+- **`types.md`** - Complete TypeScript reference with interfaces, types, enums, and utility types
+- **Method documentation** - Detailed coverage of all typewriter control methods
+- **Configuration options** - Visual, accessibility, and performance settings with examples
+- **Return value reference** - Complete breakdown of hook return properties
+
+### ✨ Added - Specialized Guides
+
+**Accessibility Guide (`docs/guides/accessibility.md`):**
+
+- **WCAG 2.1 AA compliance** - Complete coverage of accessibility standards
+- **Core accessibility principles** - Perceivable, operable, understandable, robust design
+- **Essential features** - Reduced motion, ARIA live regions, screen reader support
+- **Keyboard controls** - Navigation patterns and customization options
+- **Visual accessibility** - High contrast, color independence, scalable design
+- **Screen reader patterns** - Progressive announcements and semantic markup
+- **Testing strategies** - Real assistive technology testing approaches
+- **Configuration examples** - Practical accessibility implementation patterns
+- **Compliance checklist** - Comprehensive accessibility validation checklist
+
+**Performance Guide (`docs/guides/performance.md`):**
+
+- **Actual bundle measurements** - Real size data: 5.3KB gzipped (ESM), 5.6KB gzipped (CJS)
+- **Performance goals** - Clear targets for bundle size, rendering, and memory usage
+- **Core optimizations** - Virtualization, re-rendering prevention, memory management
+- **Advanced techniques** - Concurrent features, web workers, intersection observer
+- **Performance monitoring** - Built-in metrics and measurement tools
+- **CSS optimizations** - Hardware acceleration and efficient animations
+- **Mobile optimizations** - Touch interactions and performance considerations
+- **Bundle optimization** - Tree-shaking and import strategies
+- **Benchmarking tools** - `bun run analyze` command for verifiable measurements
+- **Ethical measurement practices** - Focus on own library performance vs. competitive claims
+
+**Troubleshooting Guide (`docs/guides/troubleshooting.md`):**
+
+- **Common issues** - Animation problems, performance issues, memory leaks
+- **TypeScript errors** - Type resolution and configuration problems
+- **React Strict Mode** - Development environment compatibility
+- **Debugging tools** - Browser DevTools usage and performance profiling
+- **Browser compatibility** - Cross-browser testing and polyfill requirements
+- **Mobile issues** - Touch device specific problems and solutions
+- **Error messages** - Common error explanations and resolutions
+- **Testing problems** - Jest, Vitest, and testing library integration
+- **Diagnostic checklist** - Step-by-step troubleshooting process
+
+### 🔧 Enhanced - Bundle Analysis & Transparency
+
+**Verifiable Performance Claims:**
+
+- **Bundle analysis script** (`scripts/bundle-analysis.ts`) - Accurate size measurement tool
+- **`bun run analyze` command** - User-verifiable bundle size checking
+- **Transparent measurements** - Real data: ESM 15KB raw → 5.3KB gzipped, CJS 16KB raw → 5.6KB gzipped
+- **Ethical performance reporting** - Focus on actual measurements vs. unsubstantiated competitive claims
+- **Measurement methodology** - Clear explanation of how sizes are calculated
+
+**Package Optimization:**
+
+- **Removed redundant `.npmignore`** - Simplified package configuration using `package.json` `files` field
+- **Clean package structure** - Only essential files included: `dist/`, `README.md`, `CHANGELOG.md`, `LICENSE`
+- **Source map inclusion** - Professional debugging support with 172KB total source maps
+- **Professional package standards** - Following npm best practices for library distribution
+
+### 📚 Enhanced - Code Quality & Standards
+
+**Modern React Patterns:**
+
+- **Updated React imports** - Removed unnecessary `import React` statements following React 17+ JSX transform
+- **Fixed TypeScript errors** - Resolved all 15+ unused import errors across example files
+- **Modern hook patterns** - Using specific imports like `import { useEffect, useState } from 'react'`
+- **Code formatting** - Consistent Prettier formatting across all documentation and examples
+
+**Development Examples Reorganization:**
+
+- **Moved examples outside source** - Relocated from `/src/examples/` to `/examples/` for zero bundle impact
+- **Enhanced development tools** - Professional performance testing, accessibility testing, and conflict testing components
+- **Separate package configuration** - Examples have their own `package.json` marked as private
+- **Complete bundle separation** - Examples contribute 0KB to library bundle size
+
+### 🎯 Documentation Standards & Best Practices
+
+**Professional Documentation:**
+
+- **Consistent formatting** - Standardized markdown structure and code block formatting
+- **Comprehensive examples** - Real-world usage patterns with complete code samples
+- **Cross-references** - Proper linking between related documentation sections
+- **Version information** - Clear version compatibility and update information
+- **Accessibility-first approach** - Documentation itself follows accessibility guidelines
+
+**Developer Experience:**
+
+- **Quick navigation** - Easy-to-find information with clear section organization
+- **Copy-paste examples** - Working code samples that can be used immediately
+- **Troubleshooting focus** - Proactive problem-solving with common issue coverage
+- **Performance transparency** - Honest performance claims with verification tools
+
+### 📦 Bundle Impact
+
+- **Core library**: 5.3KB gzipped (ESM) / 5.6KB gzipped (CJS) - unchanged
+- **Documentation**: Separate files, zero runtime impact
+- **Examples**: Completely excluded from bundle (0KB impact)
+- **Bundle analysis tools**: Development-only, not included in published package
+- **Total package size**: 0.29MB unpacked (includes source maps for debugging)
+
+### 🔄 Migration Notes
+
+**From v3.4.2 to v3.5.0:**
+
+No breaking changes. This release focuses entirely on documentation and developer experience:
+
+- **Existing code**: Works without any changes
+- **New documentation**: Available in `/docs/` directory
+- **Bundle analysis**: Run `bun run analyze` to verify performance claims
+- **Enhanced examples**: Available in `/examples/` directory (development only)
+
+**Key Improvements:**
+
+- Much better onboarding experience with comprehensive guides
+- Professional API documentation with complete TypeScript support
+- Accessibility-first approach with WCAG 2.1 AA compliance guide
+- Transparent performance claims with verifiable measurements
+- Troubleshooting support for common development issues
+
+### 🎯 Documentation Highlights
+
+**For New Users:**
+
+- Start with `docs/guides/quick-start.md` for immediate implementation
+- Review `docs/guides/installation.md` for environment-specific setup
+- Check `docs/api/use-typewriter.md` for complete API reference
+
+**For Accessibility:**
+
+- Follow `docs/guides/accessibility.md` for WCAG 2.1 AA compliance
+- Use provided accessibility examples and testing utilities
+- Implement keyboard navigation and screen reader support
+
+**For Performance:**
+
+- Review `docs/guides/performance.md` for optimization strategies
+- Use `bun run analyze` to verify bundle sizes in your environment
+- Implement virtualization for large text sequences
+
+**For Troubleshooting:**
+
+- Check `docs/guides/troubleshooting.md` for common issues
+- Use diagnostic checklist for systematic problem-solving
+- Reference browser compatibility and testing guidance
+
+### 📋 Keywords Added
+
+- documentation, developer-experience, accessibility-guide, performance-analysis, troubleshooting, api-reference, wcag-compliance, bundle-analysis
+
+---
+
 ## [3.4.2] - 2025-01-13
 
 ### 🐛 Critical Bug Fixes

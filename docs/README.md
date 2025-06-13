@@ -2,89 +2,84 @@
 
 Welcome to the comprehensive documentation for `use-typewriter-animation` - a modern, performant React hook for creating typewriter animation effects.
 
-## 🚀 Quick Navigation
+## 🚀 Quick Start
 
-### 📖 **Getting Started**
+- **New to the library?** → [Quick Start Guide](./guides/quick-start.md)
+- **Need examples?** → [Example Gallery](./examples.md)
+- **Want to contribute?** → [Contributing Guide](./contributing/contributing.md)
+
+## 📖 Getting Started
 
 - [Installation & Setup](./guides/installation.md)
 - [Quick Start Guide](./guides/quick-start.md)
-- [Basic Usage](./guides/basic-usage.md)
-- [Migration Guide](./guides/migration.md)
+- [Example Gallery](./examples.md)
 
-### 🔧 **API Reference**
+## 🔧 API Reference
 
 - [Core Hook: useTypewriter](./api/use-typewriter.md)
-- [React 19 Features](./api/react-19.md)
-- [Server Components](./api/server-components.md)
-- [Concurrent Features](./api/concurrent.md)
 - [Type Definitions](./api/types.md)
 
-### 🎯 **Feature Guides**
+## 🎯 Essential Guides
 
 - [Accessibility (WCAG 2.1)](./guides/accessibility.md)
 - [Performance Optimization](./guides/performance.md)
-- [Styling & Theming](./guides/styling.md)
-- [Event Handling](./guides/events.md)
-- [Advanced Patterns](./guides/advanced.md)
+- [Troubleshooting](./guides/troubleshooting.md)
 
-### 📚 **Examples**
-
-- [Example Gallery](./examples.md)
-- [Basic Examples](./examples/basic.md)
-- [Creative Examples](./examples/creative.md)
-- [Accessibility Examples](./examples/accessibility.md)
-- [Performance Examples](./examples/performance.md)
-
-### 🛠️ **Development**
+## 🛠️ Contributing
 
 - [Contributing Guide](./contributing/contributing.md)
 - [Development Setup](./contributing/development.md)
-- [Testing Guide](./contributing/testing.md)
-- [Release Process](./contributing/releases.md)
+- [Testing Guidelines](./contributing/testing.md)
+- [Project Roadmap](./ROADMAP.md)
 
-### 🔍 **Troubleshooting**
+## 📊 Library Status
 
-- [Common Issues](./guides/troubleshooting.md)
-- [Performance Tips](./guides/performance-tips.md)
-- [Browser Support](./guides/browser-support.md)
-- [FAQ](./guides/faq.md)
+| Feature           | Status           | Documentation                                    |
+| ----------------- | ---------------- | ------------------------------------------------ |
+| **Core Hook**     | ✅ Stable        | [API Reference](./api/use-typewriter.md)         |
+| **Accessibility** | ✅ WCAG 2.1 AA   | [Accessibility Guide](./guides/accessibility.md) |
+| **Performance**   | ✅ Optimized     | [Performance Guide](./guides/performance.md)     |
+| **TypeScript**    | ✅ Full Support  | [Type Definitions](./api/types.md)               |
+| **Examples**      | ✅ Comprehensive | [Example Gallery](./examples.md)                 |
 
-## 📊 **Library Overview**
+## 🗂️ Documentation Structure
 
-| Feature               | Status          | Documentation                                    |
-| --------------------- | --------------- | ------------------------------------------------ |
-| **Core Hook**         | ✅ Stable       | [API Reference](./api/use-typewriter.md)         |
-| **React 19 Support**  | ✅ Stable       | [React 19 Guide](./api/react-19.md)              |
-| **Server Components** | ✅ Stable       | [SSR Guide](./api/server-components.md)          |
-| **Accessibility**     | ✅ WCAG 2.1 AA  | [Accessibility Guide](./guides/accessibility.md) |
-| **Performance**       | ✅ Optimized    | [Performance Guide](./guides/performance.md)     |
-| **TypeScript**        | ✅ Full Support | [Type Definitions](./api/types.md)               |
+```
+docs/
+├── README.md                    # This documentation hub
+├── examples.md                  # Example gallery and showcase
+├── ROADMAP.md                   # Project roadmap
+├── guides/                      # Feature guides
+│   ├── installation.md          # Setup instructions
+│   ├── quick-start.md           # Getting started
+│   ├── accessibility.md         # WCAG 2.1 compliance
+│   ├── performance.md           # Optimization tips
+│   └── troubleshooting.md       # Common solutions
+├── api/                         # API documentation
+│   ├── use-typewriter.md        # Main hook reference
+│   └── types.md                 # TypeScript types
+└── contributing/                # Contributor resources
+    ├── contributing.md          # How to contribute
+    ├── development.md           # Development setup
+    ├── testing.md               # Testing guidelines
+    └── releases.md              # Release process
+```
 
-## 🎯 **Quick Links**
+## 📝 Documentation Standards
 
-- **New to the library?** → [Quick Start Guide](./guides/quick-start.md)
-- **Migrating from v2?** → [Migration Guide](./guides/migration.md)
-- **Need examples?** → [Example Gallery](./examples.md)
-- **Building accessible apps?** → [Accessibility Guide](./guides/accessibility.md)
-- **Performance issues?** → [Performance Guide](./guides/performance.md)
-- **Want to contribute?** → [Contributing Guide](./contributing/contributing.md)
+- **Clear Examples**: Working code for every feature
+- **Accessibility First**: WCAG 2.1 compliance throughout
+- **Performance Focused**: Optimization best practices
+- **TypeScript Ready**: Full type information
+- **Modern React**: React 19 concurrent features
 
-## 📝 **Documentation Standards**
+## 🤝 Help & Support
 
-This documentation follows these principles:
-
-- **Clear Examples**: Every feature includes working code examples
-- **Accessibility First**: WCAG 2.1 compliance guidance throughout
-- **Performance Focused**: Optimization tips and best practices
-- **TypeScript Ready**: Full type information and examples
-- **Modern React**: React 19 features and concurrent patterns
-
-## 🤝 **Contributing to Docs**
-
-Found an error or want to improve the documentation? See our [Contributing Guide](./contributing/contributing.md) for details on how to help make these docs better.
+- 💬 [GitHub Discussions](https://github.com/doguyilmaz/use-typewriter-animation/discussions) - Questions and ideas
+- 🐛 [GitHub Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues) - Bug reports and features
+- 📖 [Contributing Guide](./contributing/contributing.md) - Help improve the docs
 
 ---
 
-**Last Updated**: June 2025  
-**Library Version**: 3.4.2+  
+**Library Version**: 3.5.1+  
 **React Compatibility**: 16.8+ | 17+ | 18+ | 19+

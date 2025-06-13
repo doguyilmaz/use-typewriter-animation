@@ -594,9 +594,9 @@ If you're still experiencing issues:
 
 1. **Check the Examples** → [Example Gallery](../examples.md)
 2. **Review the API** → [API Reference](../api/use-typewriter.md)
-3. **Search Issues** → [GitHub Issues](https://github.com/your-repo/issues)
+3. **Search Issues** → [GitHub Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues)
 4. **Create Minimal Reproduction** → [CodeSandbox Template](https://codesandbox.io)
-5. **Ask for Help** → [GitHub Discussions](https://github.com/your-repo/discussions)
+5. **Ask for Help** → [GitHub Discussions](https://github.com/doguyilmaz/use-typewriter-animation/discussions)
 
 ### Creating a Bug Report
 

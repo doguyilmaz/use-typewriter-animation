@@ -461,9 +461,9 @@ nvm use --lts
 If you encounter issues:
 
 1. Check the [Troubleshooting Guide](./troubleshooting.md)
-2. Search [GitHub Issues](https://github.com/yourusername/use-typewriter-animation/issues)
+2. Search [GitHub Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues)
 3. Create a [minimal reproduction](https://codesandbox.io)
-4. Ask in [GitHub Discussions](https://github.com/yourusername/use-typewriter-animation/discussions)
+4. Ask in [GitHub Discussions](https://github.com/doguyilmaz/use-typewriter-animation/discussions)
 
 ## ✅ Verification
 

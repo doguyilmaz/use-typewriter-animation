@@ -20,7 +20,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "bun run clean && bun run esbuild.ts && bun run types",
+    "build": "bun run clean && bun run scripts/esbuild.ts && bun run types",
     "types": "tsc",
     "pack": "bun run build && bun pm pack",
     "clean": "rm -rf dist",
@@ -31,7 +31,7 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "version": "bun run version-bump.ts",
+    "version": "bun run scripts/version-bump.ts",
     "publish": "bun run pack && npm publish",
     "release": "bun run version && bun run build && bun run publish",
     "analyze": "bun run build && bun run scripts/bundle-analysis.ts"

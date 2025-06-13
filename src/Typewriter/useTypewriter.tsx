@@ -6,6 +6,8 @@ export type UseTypewriterOptions = TypewriterBaseOptions & {
 	enableVirtualization?: boolean;
 	/** Maximum visible segments when virtualization is enabled (default: 100) */
 	maxVisibleSegments?: number;
+	/** Enable automatic keyboard event handling */
+	autoKeyboardHandling?: boolean;
 };
 
 export type UseTypewriterReturn = {
@@ -27,6 +29,16 @@ export type UseTypewriterReturn = {
 		visibleSegments: number;
 		isVirtualized: boolean;
 	};
+	/** Accessibility props for the container */
+	accessibilityProps: {
+		'aria-live'?: 'polite' | 'assertive' | 'off';
+		'aria-label'?: string;
+		'aria-describedby'?: string;
+		'role'?: string;
+		'aria-busy'?: boolean;
+	};
+	/** Screen reader announcement element */
+	screenReaderAnnouncement: JSX.Element | null;
 };
 
 export const useTypewriter = (
@@ -40,6 +52,11 @@ export const useTypewriter = (
 		currentText: '',
 		visibleText: '',
 		cursorVisible: true,
+		screenReaderAnnouncement: '',
+		isComplete: false,
+		reducedMotion: false,
+		isPaused: false,
+		canBePaused: options.enableKeyboardControls ?? false,
 	});
 
 	// State updater callback
@@ -58,6 +75,78 @@ export const useTypewriter = (
 			typewriter.stop();
 		};
 	}, [typewriter]);
+
+	// Listen for reduced motion preference changes
+	useEffect(() => {
+		if (typeof window === 'undefined' || !window.matchMedia) return;
+
+		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		
+		const handleChange = () => {
+			const hasReducedMotion = mediaQuery.matches;
+			setTypewriterState(prev => ({
+				...prev,
+				reducedMotion: hasReducedMotion && (options.respectReducedMotion ?? true),
+			}));
+		};
+
+		// Set initial state
+		handleChange();
+
+		// Listen for changes
+		mediaQuery.addEventListener('change', handleChange);
+
+		return () => {
+			mediaQuery.removeEventListener('change', handleChange);
+		};
+	}, [options.respectReducedMotion]);
+
+	// Keyboard event handling
+	useEffect(() => {
+		if (!options.enableKeyboardControls || !options.autoKeyboardHandling) return;
+		if (typeof window === 'undefined') return;
+
+		const shortcuts = options.keyboardShortcuts || {
+			pause: ['Space', ' '],
+			resume: ['Space', ' '],
+			skip: ['Escape', 'Enter'],
+			reset: ['KeyR'],
+		};
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			const key = event.code || event.key;
+			
+			// Pause/Resume
+			if (shortcuts.pause?.includes(key) || shortcuts.resume?.includes(key)) {
+				event.preventDefault();
+				if (typewriter.isPaused()) {
+					typewriter.resume();
+				} else {
+					typewriter.pause();
+				}
+				return;
+			}
+
+			// Skip
+			if (shortcuts.skip?.includes(key)) {
+				event.preventDefault();
+				typewriter.skip();
+				return;
+			}
+
+			// Reset
+			if (shortcuts.reset?.includes(key)) {
+				event.preventDefault();
+				typewriter.reset();
+				return;
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [options.enableKeyboardControls, options.autoKeyboardHandling, options.keyboardShortcuts, typewriter]);
 
 	// Memoized text segment component for better performance
 	const TypewriterSegment = memo(({ segment }: { segment: TextSegment }) => {
@@ -166,21 +255,28 @@ export const useTypewriter = (
 		}
 
 		const cursorStyle = useMemo((): React.CSSProperties => {
-			const baseStyle = {
-				...typewriterStyles.cursor,
-				animationDuration: `${options.cursorBlinkSpeed || 500}ms`,
-				color: options.cursorColor || 'black',
-				opacity: typewriterState.cursorVisible ? 1 : 0,
-			};
+			// Use reduced motion cursor if reduced motion is preferred
+			const baseStyle = typewriterState.reducedMotion 
+				? typewriterStyles.reducedMotionCursor 
+				: {
+					...typewriterStyles.cursor,
+					animationDuration: `${options.cursorBlinkSpeed || 500}ms`,
+				};
 
 			const cursorWidth = typeof options.cursorWidth === 'number' 
 				? `${options.cursorWidth}px` 
 				: options.cursorWidth;
 
+			const commonStyle = {
+				...baseStyle,
+				color: options.cursorColor || 'black',
+				opacity: typewriterState.cursorVisible ? 1 : 0,
+			};
+
 			switch (options.cursorStyle) {
 				case 'block':
 					return {
-						...baseStyle,
+						...commonStyle,
 						display: 'inline-block',
 						width: cursorWidth || '0.6em',
 						height: '1em',
@@ -190,7 +286,7 @@ export const useTypewriter = (
 
 				case 'underline':
 					return {
-						...baseStyle,
+						...commonStyle,
 						display: 'inline-block',
 						width: cursorWidth || '1ch',
 						borderBottom: `2px solid ${options.cursorColor || 'black'}`,
@@ -199,11 +295,11 @@ export const useTypewriter = (
 
 				default:
 					return {
-						...baseStyle,
+						...commonStyle,
 						width: cursorWidth || 'auto'
 					};
 			}
-		}, [options.cursorStyle, options.cursorWidth, options.cursorColor, options.cursorBlinkSpeed, typewriterState.cursorVisible]);
+		}, [options.cursorStyle, options.cursorWidth, options.cursorColor, options.cursorBlinkSpeed, typewriterState.cursorVisible, typewriterState.reducedMotion]);
 
 		if (options.cursorStyle === 'block' || options.cursorStyle === 'underline') {
 			return <span style={cursorStyle}> </span>;
@@ -213,6 +309,113 @@ export const useTypewriter = (
 
 	const cursor = <TypewriterCursor />;
 
+	// Accessibility props for the container
+	const accessibilityProps = useMemo(() => {
+		const props: {
+			'aria-live'?: 'polite' | 'assertive' | 'off';
+			'aria-label'?: string;
+			'aria-describedby'?: string;
+			'role'?: string;
+			'aria-busy'?: boolean;
+		} = {};
+
+		// ARIA live region for screen reader announcements
+		if (options.ariaLive !== undefined) {
+			props['aria-live'] = options.ariaLive;
+		} else {
+			props['aria-live'] = 'polite'; // Default to polite
+		}
+
+		// ARIA label
+		if (options.ariaLabel) {
+			props['aria-label'] = options.ariaLabel;
+		}
+
+		// ARIA described by
+		if (options.ariaDescribedBy) {
+			props['aria-describedby'] = options.ariaDescribedBy;
+		}
+
+		// Role
+		if (options.role) {
+			props['role'] = options.role;
+		} else {
+			props['role'] = 'status'; // Default role for status updates
+		}
+
+		// Busy state during typing
+		props['aria-busy'] = typewriterState.isTyping;
+
+		return props;
+	}, [options.ariaLive, options.ariaLabel, options.ariaDescribedBy, options.role, typewriterState.isTyping]);
+
+	// Enhanced screen reader announcement component
+	const screenReaderAnnouncement = useMemo(() => {
+		// Always render hidden screen reader element for consistent announcements
+		const announcement = typewriterState.screenReaderAnnouncement || '';
+		
+		// Provide helpful context for screen reader users
+		const getStatusDescription = () => {
+			if (typewriterState.isPaused) {
+				return 'Typewriter animation paused. Press Space to resume.';
+			}
+			if (typewriterState.isTyping) {
+				return 'Typewriter animation in progress.';
+			}
+			if (typewriterState.isComplete) {
+				return 'Typewriter animation completed.';
+			}
+			return '';
+		};
+
+		const statusDescription = options.enableKeyboardControls ? getStatusDescription() : '';
+
+		return (
+			<>
+				{/* Main content announcement */}
+				<div
+					style={typewriterStyles.screenReaderOnly}
+					aria-live={options.ariaLive || 'polite'}
+					aria-atomic="true"
+					role="status"
+				>
+					{announcement}
+				</div>
+				
+				{/* Status and keyboard controls announcement */}
+				{options.enableKeyboardControls && statusDescription && (
+					<div
+						style={typewriterStyles.screenReaderOnly}
+						aria-live="polite"
+						aria-atomic="true"
+						role="status"
+					>
+						{statusDescription}
+					</div>
+				)}
+				
+				{/* Full text for screen readers when complete */}
+				{typewriterState.isComplete && options.screenReaderText && (
+					<div
+						style={typewriterStyles.screenReaderOnly}
+						aria-label="Complete typewriter text"
+						role="text"
+					>
+						{options.screenReaderText}
+					</div>
+				)}
+			</>
+		);
+	}, [
+		typewriterState.screenReaderAnnouncement, 
+		typewriterState.isPaused, 
+		typewriterState.isTyping, 
+		typewriterState.isComplete,
+		options.ariaLive, 
+		options.enableKeyboardControls, 
+		options.screenReaderText
+	]);
+
 	return {
 		typewriter,
 		state: typewriterState,
@@ -221,5 +424,7 @@ export const useTypewriter = (
 		styles: typewriterStyles,
 		keyframes: typewriterKeyframes,
 		metrics,
+		accessibilityProps,
+		screenReaderAnnouncement,
 	};
 };

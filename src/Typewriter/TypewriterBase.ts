@@ -5,6 +5,13 @@ type HighlightStyle = { background: string; color?: string };
 type HighlightFrom = 'start' | 'end';
 type TypewriterEvents = 'start' | 'end' | 'loop';
 
+export type TypeMethodOptions = {
+	speed?: number;
+	screenReaderText?: string;
+	announceCompletion?: boolean;
+	reducedMotionFallback?: 'instant' | 'none';
+};
+
 export type TypewriterBaseOptions = {
 	loop?: boolean;
 	typeSpeed?: number;
@@ -14,6 +21,25 @@ export type TypewriterBaseOptions = {
 	cursorColor?: string;
 	cursorWidth?: string | number;
 	enableCursor?: boolean;
+	// Accessibility options
+	ariaLive?: 'polite' | 'assertive' | 'off';
+	ariaLabel?: string;
+	ariaDescribedBy?: string;
+	role?: 'status' | 'log' | 'alert' | 'marquee';
+	screenReaderText?: string;
+	announceCompletion?: boolean;
+	respectReducedMotion?: boolean;
+	reducedMotionFallback?: 'instant' | 'none';
+	// Keyboard navigation options
+	enableKeyboardControls?: boolean;
+	keyboardShortcuts?: {
+		pause?: string[];
+		resume?: string[];
+		skip?: string[];
+		reset?: string[];
+	};
+	manageFocus?: boolean;
+	focusOnComplete?: boolean;
 };
 
 export type TextSegment = {
@@ -32,12 +58,19 @@ export type TypewriterState = {
 	currentText: string;
 	visibleText: string;
 	cursorVisible: boolean;
+	// Accessibility state
+	screenReaderAnnouncement?: string;
+	isComplete?: boolean;
+	reducedMotion?: boolean;
+	// Keyboard control state
+	isPaused?: boolean;
+	canBePaused?: boolean;
 };
 
 export type TypewriterStateUpdater = (state: TypewriterState) => void;
 
 export type TypewriterBaseType = {
-	type: (text: string, options?: { speed?: number }) => TypewriterBaseType;
+	type: (text: string, options?: TypeMethodOptions) => TypewriterBaseType;
 	deleteLetters: (letterCount: number) => TypewriterBaseType;
 	deleteWords: (wordCount: number) => TypewriterBaseType;
 	deleteAll: () => TypewriterBaseType;
@@ -51,6 +84,11 @@ export type TypewriterBaseType = {
 	stop: () => void;
 	reset: () => TypewriterBaseType;
 	getState: () => TypewriterState;
+	// Keyboard control methods
+	pause: () => void;
+	resume: () => void;
+	skip: () => void;
+	isPaused: () => boolean;
 };
 
 // CSS-in-JS styles to eliminate global style injection
@@ -73,6 +111,30 @@ export const typewriterStyles = {
 		willChange: 'contents',
 		contain: 'layout style' as const,
 	},
+	// Accessibility styles
+	screenReaderOnly: {
+		position: 'absolute' as const,
+		width: '1px',
+		height: '1px',
+		padding: '0',
+		margin: '-1px',
+		overflow: 'hidden',
+		clip: 'rect(0, 0, 0, 0)',
+		whiteSpace: 'nowrap' as const,
+		border: '0',
+	},
+	reducedMotionCursor: {
+		display: 'inline-block',
+		animation: 'none',
+		opacity: 1,
+	},
+	highContrastMode: {
+		// Ensure visibility in high contrast mode
+		'@media (prefers-contrast: high)': {
+			borderColor: 'currentColor',
+			backgroundColor: 'transparent',
+		},
+	},
 };
 
 // CSS keyframes for cursor blinking and typing animations
@@ -92,7 +154,33 @@ export const typewriterKeyframes = `
 		50% { background-color: rgba(255, 255, 0, 0.3); }
 		100% { background-color: var(--highlight-color, transparent); }
 	}
+	
+	/* Respect reduced motion preferences */
+	@media (prefers-reduced-motion: reduce) {
+		@keyframes typewriter-blink {
+			from, to { opacity: 1; }
+		}
+		
+		@keyframes typewriter-appear {
+			from, to { opacity: 1; transform: translateY(0); }
+		}
+		
+		@keyframes typewriter-highlight {
+			from, to { background-color: var(--highlight-color, transparent); }
+		}
+	}
 `;
+
+// Accessibility utility functions
+export const detectReducedMotion = (): boolean => {
+	if (typeof window === 'undefined') return false;
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
+export const detectHighContrast = (): boolean => {
+	if (typeof window === 'undefined') return false;
+	return window.matchMedia('(prefers-contrast: high)').matches;
+};
 
 export function createTypewriterBase(onStateChange: TypewriterStateUpdater, options: TypewriterBaseOptions = {}): TypewriterBaseType {
 	const actionQueue: QueueAction[] = [];
@@ -102,6 +190,10 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 		loop: [],
 	};
 
+	// Detect accessibility preferences
+	const hasReducedMotion = options.respectReducedMotion !== false && detectReducedMotion();
+	const shouldRespectReducedMotion = options.respectReducedMotion ?? true;
+
 	let currentState: TypewriterState = {
 		segments: [],
 		isTyping: false,
@@ -109,6 +201,10 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 		currentText: '',
 		visibleText: '',
 		cursorVisible: true,
+		// Accessibility state
+		screenReaderAnnouncement: '',
+		isComplete: false,
+		reducedMotion: hasReducedMotion && shouldRespectReducedMotion,
 	};
 
 	let typeSpeed = options.typeSpeed || 30;
@@ -118,6 +214,9 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 	let isRunning = false;
 	let activeTimeouts: Set<ReturnType<typeof setTimeout>> = new Set();
 	let isDestroyed = false;
+	// Keyboard control state
+	let isPaused = false;
+	let pausedResolvers: (() => void)[] = [];
 
 	// Batched state updates for better performance
 	let pendingUpdates: Partial<TypewriterState> | null = null;
@@ -189,12 +288,39 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 					updateState({ isTyping: true }, true); // Immediate update for critical state
 				}
 
+				// Handle reduced motion - instant display
+				if (currentState.reducedMotion && options.reducedMotionFallback !== 'none') {
+					const segmentId = generateSegmentId();
+					const newSegments: TextSegment[] = text.split('').map((char, index) => ({
+						id: `${segmentId}-${index}`,
+						content: char,
+						...(currentColor ? { color: currentColor } : {}),
+						isNewLine: false,
+					}));
+
+					updateState({
+						segments: [...currentState.segments, ...newSegments],
+						currentText: currentState.currentText + text,
+						visibleText: currentState.visibleText + text,
+						screenReaderAnnouncement: options.screenReaderText || text,
+					});
+					
+					resolve();
+					return;
+				}
+
 				let charIndex = 0;
 				const speed = options.speed || typeSpeed;
 				const segmentId = generateSegmentId();
 
 				const typeNextChar = () => {
 					if (isDestroyed || charIndex >= text.length) {
+						// Announce completion for screen readers
+						if (charIndex >= text.length && options.announceCompletion) {
+							updateState({
+								screenReaderAnnouncement: `Finished typing: ${text}`,
+							});
+						}
 						resolve();
 						return;
 					}
@@ -211,6 +337,9 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 						segments: [...currentState.segments, newSegment],
 						currentText: currentState.currentText + char,
 						visibleText: currentState.visibleText + char,
+						// Progressive announcement for screen readers
+						screenReaderAnnouncement: charIndex === text.length - 1 ? 
+							(options.screenReaderText || text) : '',
 					});
 
 					charIndex++;
@@ -443,12 +572,41 @@ export function createTypewriterBase(onStateChange: TypewriterStateUpdater, opti
 				currentText: '',
 				visibleText: '',
 				cursorVisible: true,
+				screenReaderAnnouncement: '',
+				isComplete: false,
+				reducedMotion: hasReducedMotion && shouldRespectReducedMotion,
 			});
 			currentColor = '';
 			isRunning = false;
 			return this;
 		},
 		getState: () => ({ ...currentState }),
+		// Keyboard control methods
+		pause: () => {
+			if (!isPaused && isRunning) {
+				isPaused = true;
+				updateState({ isPaused: true });
+			}
+		},
+		resume: () => {
+			if (isPaused) {
+				isPaused = false;
+				updateState({ isPaused: false });
+				// Resume any paused operations
+				pausedResolvers.forEach(resolve => resolve());
+				pausedResolvers = [];
+			}
+		},
+		skip: () => {
+			// Skip current animation by clearing timeouts and advancing to end
+			clearAllTimeouts();
+			if (isRunning) {
+				eventCallbacks.end.forEach(callback => callback());
+				updateState({ isTyping: false, isLooping: false });
+				isRunning = false;
+			}
+		},
+		isPaused: () => isPaused,
 	};
 
 	// Cleanup function to be called when component unmounts

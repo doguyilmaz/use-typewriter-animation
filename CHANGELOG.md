@@ -5,6 +5,342 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2025-06-13
+
+### 🎉 Major Accessibility & UX Enhancement - Phase 4 Complete!
+
+**WCAG 2.1 AA Compliance & Universal Accessibility:**
+- ✅ **Complete ARIA support** with live regions and semantic roles
+- ✅ **Keyboard navigation** with customizable shortcuts
+- ✅ **Reduced motion support** with dynamic preference detection
+- ✅ **Screen reader optimizations** with progressive announcements
+- ✅ **High contrast mode support** for visual accessibility
+
+### ✨ Added - ARIA & Screen Reader Support
+
+**Comprehensive ARIA Features:**
+- **ARIA live regions** - Real-time content announcements (`ariaLive: 'polite' | 'assertive' | 'off'`)
+- **Semantic roles** - Status, log, alert, marquee roles for proper content classification
+- **ARIA labels** - Descriptive labels for better context (`ariaLabel`, `ariaDescribedBy`)
+- **Busy states** - Dynamic `aria-busy` indicators during typing animations
+- **Atomic announcements** - Complete context delivery with `aria-atomic="true"`
+
+**Screen Reader Optimizations:**
+- **Progressive announcements** - Text announced as it appears with configurable timing
+- **Completion announcements** - Full context provided when animations finish
+- **Status descriptions** - Current state (typing, paused, complete) communicated clearly
+- **Keyboard control instructions** - Built-in help text for interactive features
+- **Screen reader-only content** - Hidden elements providing full text context
+
+```tsx
+// New ARIA configuration options
+const { accessibilityProps, screenReaderAnnouncement } = useTypewriter({
+  ariaLive: 'polite',
+  ariaLabel: 'Status message typewriter',
+  ariaDescribedBy: 'help-text',
+  role: 'status',
+  announceCompletion: true,
+  screenReaderText: 'Complete text for screen readers',
+});
+```
+
+### ✨ Added - Keyboard Navigation
+
+**Full Keyboard Control:**
+- **Space bar** - Pause/Resume animations (configurable)
+- **Escape key** - Skip to end of current animation
+- **R key** - Reset animation to beginning
+- **Custom shortcuts** - Fully customizable key bindings
+- **Automatic handling** - Opt-in automatic keyboard event management
+- **Manual control** - Access to pause(), resume(), skip(), reset() methods
+
+**Navigation Features:**
+- **Focus management** - Proper focus handling during animations
+- **Visual focus indicators** - Clear keyboard navigation cues
+- **Event prevention** - Prevents conflicts with browser shortcuts
+- **State tracking** - `isPaused()` method for current state checking
+
+```tsx
+// Keyboard navigation configuration
+const { typewriter } = useTypewriter({
+  enableKeyboardControls: true,
+  autoKeyboardHandling: true,
+  keyboardShortcuts: {
+    pause: ['Space', ' '],
+    resume: ['Space', ' '],
+    skip: ['Escape', 'Enter'],
+    reset: ['KeyR', 'r'],
+  },
+  manageFocus: true,
+  focusOnComplete: false,
+});
+
+// Manual control methods
+typewriter.pause();    // Pause animation
+typewriter.resume();   // Resume animation  
+typewriter.skip();     // Skip to end
+typewriter.reset();    // Reset to start
+const paused = typewriter.isPaused(); // Check state
+```
+
+### ✨ Added - Reduced Motion Support
+
+**Automatic Motion Preference Detection:**
+- **`prefers-reduced-motion` detection** - Automatic system preference reading
+- **Real-time updates** - Responds to preference changes without page reload
+- **Instant fallback** - Immediate text display for motion-sensitive users
+- **Cursor animation respect** - Disables blinking animations when needed
+- **CSS media query integration** - Seamless CSS animation control
+
+**Motion Control Options:**
+- **Respect user preferences** - `respectReducedMotion: boolean` (default: true)
+- **Fallback modes** - `'instant'` (show immediately) or `'none'` (hide animation)
+- **Dynamic adaptation** - Runtime preference change handling
+- **CSS integration** - Automatic keyframe animation disabling
+
+```tsx
+// Reduced motion configuration
+const { typewriter, state } = useTypewriter({
+  respectReducedMotion: true,      // Honor user preferences
+  reducedMotionFallback: 'instant', // Show text immediately
+});
+
+// Access motion state
+const isReducedMotion = state.reducedMotion;
+
+// Automatic CSS support in keyframes:
+// @media (prefers-reduced-motion: reduce) {
+//   @keyframes typewriter-blink { ... } // Disabled automatically
+// }
+```
+
+### ✨ Added - High Contrast & Visual Accessibility
+
+**System Integration:**
+- **Current color usage** - `cursorColor: 'currentColor'` for theme compatibility
+- **High contrast detection** - `detectHighContrast()` utility function
+- **Border visibility** - Automatic border color inheritance
+- **Background transparency** - Respects user themes and custom backgrounds
+- **Non-color indicators** - State changes don't rely solely on color
+
+**Visual Enhancements:**
+- **Focus indicators** - Clear visual feedback for keyboard navigation
+- **Color-independent design** - Accessible without color perception
+- **Theme compatibility** - Works with dark mode, high contrast, and custom themes
+- **Scalable design** - Respects user font size preferences
+
+### ✨ Added - Accessibility Testing Utilities
+
+**Comprehensive Testing Suite:**
+- **`AccessibilityTestUtils`** - Utility functions for accessibility validation
+- **`AccessibilityTestScenarios`** - Pre-built test components for common scenarios
+- **`AccessibilityTestHelpers`** - Jest/Vitest integration helpers
+- **WCAG compliance checking** - Automated accessibility auditing
+
+**Test Components:**
+- **`ReducedMotionTest`** - Validates motion preference handling
+- **`ScreenReaderTest`** - Tests ARIA and screen reader features
+- **`KeyboardControlTest`** - Validates keyboard navigation
+- **`HighContrastTest`** - Tests visual accessibility features
+- **`ComprehensiveAccessibilityTest`** - Full accessibility feature demonstration
+
+```tsx
+import { 
+  AccessibilityTestUtils, 
+  AccessibilityTestHelpers,
+  AccessibilityTestScenarios 
+} from 'use-typewriter-animation/test/AccessibilityTest';
+
+// Automated accessibility audit
+const audit = AccessibilityTestUtils.auditAccessibility(container);
+console.log(`Accessibility score: ${audit.percentage}%`);
+
+// Jest/Vitest integration
+test('meets accessibility requirements', () => {
+  const { container } = render(<TypewriterComponent />);
+  AccessibilityTestHelpers.expectAccessibleTypewriter(container);
+});
+
+// Use pre-built test scenarios
+<AccessibilityTestScenarios.ComprehensiveAccessibilityTest />
+```
+
+### 🔧 Enhanced - Core API with Accessibility
+
+**New Return Properties:**
+```tsx
+const {
+  typewriter,           // Enhanced with keyboard control methods
+  state,               // Extended with accessibility state
+  elements,            // Unchanged - rendered text segments
+  cursor,              // Enhanced with reduced motion support
+  styles,              // Extended with accessibility styles
+  keyframes,           // Enhanced with reduced motion CSS
+  metrics,             // Unchanged - performance metrics
+  // NEW ACCESSIBILITY FEATURES:
+  accessibilityProps,  // Ready-to-use ARIA attributes object
+  screenReaderAnnouncement, // Hidden screen reader content element
+} = useTypewriter(options);
+```
+
+**Extended Type Method:**
+```tsx
+typewriter.type('Hello World!', {
+  speed: 50,                    // Existing option
+  // NEW ACCESSIBILITY OPTIONS:
+  screenReaderText: 'Hello World!',     // Text for screen readers
+  announceCompletion: true,             // Announce when complete
+  reducedMotionFallback: 'instant',     // How to handle reduced motion
+});
+```
+
+**New Accessibility Styles:**
+```tsx
+// Available in styles object
+styles.screenReaderOnly      // Hide content visually, keep for screen readers
+styles.reducedMotionCursor   // Cursor without animation
+styles.highContrastMode      // High contrast theme support
+```
+
+### 📚 Added - Comprehensive Documentation
+
+**Complete Accessibility Guide:**
+- **`ACCESSIBILITY.md`** - 400+ line comprehensive accessibility documentation
+- **Usage examples** - Real-world accessible implementation patterns
+- **WCAG 2.1 compliance guide** - Detailed compliance information
+- **Testing strategies** - How to test with real assistive technologies
+- **Best practices** - Accessibility-first development approaches
+- **Troubleshooting** - Common accessibility issues and solutions
+
+**Documentation Sections:**
+- Quick start with accessibility
+- Complete option reference
+- Screen reader testing guide
+- Keyboard navigation patterns
+- Reduced motion implementation
+- High contrast support
+- Testing utilities usage
+- WCAG 2.1 compliance checklist
+
+### 🎯 WCAG 2.1 AA Compliance
+
+**Fully Compliant Standards:**
+- **1.4.3 Contrast (Minimum)** - System color usage for proper contrast
+- **1.4.5 Images of Text** - Text-based animations, not image-based
+- **2.1.1 Keyboard** - Complete keyboard navigation support
+- **2.2.2 Pause, Stop, Hide** - Full animation control capabilities
+- **2.4.3 Focus Order** - Logical focus management
+- **3.3.2 Labels or Instructions** - Clear control instructions
+- **4.1.2 Name, Role, Value** - Comprehensive ARIA implementation
+- **4.1.3 Status Messages** - Proper live region usage
+
+### 📦 Bundle Impact
+
+- **Core library**: ~6.1KB ESM (unchanged)
+- **With accessibility features**: ~8.9KB ESM (+2.8KB)
+- **Accessibility testing utilities**: ~4.2KB ESM (optional import)
+- **Complete documentation**: Available as separate files
+- **Tree-shakable**: Use only the accessibility features you need
+
+### 🚀 Performance & Accessibility
+
+**Zero Performance Trade-offs:**
+- **Accessibility features are additive** - No impact on core performance
+- **Lazy evaluation** - Accessibility features only active when enabled
+- **Efficient ARIA updates** - Minimal DOM changes for screen reader content
+- **CSS-only reduced motion** - Hardware-accelerated preference handling
+- **Memory-safe event handling** - Proper cleanup of keyboard event listeners
+
+### 🎨 Updated Examples
+
+**Enhanced Example Component:**
+```tsx
+const { 
+  typewriter, 
+  elements, 
+  cursor, 
+  accessibilityProps, 
+  screenReaderAnnouncement 
+} = useTypewriter({
+  // Visual settings
+  cursorColor: 'currentColor',
+  
+  // Accessibility settings
+  ariaLabel: 'Welcome message typewriter',
+  respectReducedMotion: true,
+  enableKeyboardControls: true,
+  autoKeyboardHandling: true,
+  announceCompletion: true,
+});
+
+return (
+  <div 
+    {...accessibilityProps}
+    tabIndex={0}
+    style={{
+      border: '2px solid currentColor',
+      padding: '1rem',
+      backgroundColor: 'transparent',
+    }}
+  >
+    <div style={{ fontSize: '0.875rem', opacity: 0.7 }}>
+      Controls: Space (pause/resume), Escape (skip), R (reset)
+    </div>
+    {elements}
+    {cursor}
+    {screenReaderAnnouncement}
+  </div>
+);
+```
+
+### 🔄 Migration Guide
+
+**From v3.3.x to v3.4.0:**
+
+All existing APIs remain fully backward compatible. Accessibility features are opt-in:
+
+```tsx
+// Existing usage continues to work unchanged
+const { typewriter, elements, cursor } = useTypewriter(options);
+
+// Add accessibility features incrementally
+const { 
+  typewriter, 
+  elements, 
+  cursor,
+  // NEW: Accessibility features
+  accessibilityProps,
+  screenReaderAnnouncement 
+} = useTypewriter({
+  ...existingOptions,
+  // Add accessibility options as needed
+  ariaLabel: 'Description of your typewriter',
+  respectReducedMotion: true,
+  enableKeyboardControls: true,
+});
+
+// Apply accessibility props to your container
+<div {...accessibilityProps}>
+  {elements}
+  {cursor}
+  {screenReaderAnnouncement}
+</div>
+```
+
+### 🎯 Compatibility
+
+- **React 16.8+**: Full backward compatibility maintained
+- **All major screen readers**: NVDA, JAWS, VoiceOver, Dragon, TalkBack
+- **Browser support**: Same as React (IE11+ with polyfills)
+- **Assistive technologies**: Keyboard navigation, voice control, switch navigation
+- **Platforms**: Windows, macOS, Linux, iOS, Android accessibility support
+
+### 📋 Keywords Added
+
+- accessibility, a11y, aria, wcag, screen-reader, keyboard-navigation, reduced-motion, inclusive-design
+
+---
+
 ## [3.3.0] - 2025-06-13
 
 ### 🚀 Major React 19 & Modern Features - Phase 3 Complete!

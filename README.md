@@ -71,6 +71,7 @@ const MyTypewriterComponent = () => {
       announceCompletion: true,
     });
 
+  // ✅ Simple and clean - works perfectly with React StrictMode!
   useEffect(() => {
     typewriter
       .on('start', () => console.log('Typing started!'))
@@ -83,7 +84,7 @@ const MyTypewriterComponent = () => {
       .colorize('blue')
       .type(" Now it's blue!")
       .start();
-  }, []); // ✅ Empty dependency array - typewriter object is stable
+  }, []); // Empty dependency array - works perfectly!
 
   return (
     <>
@@ -348,6 +349,7 @@ return (
 ### Common Issues
 
 **Import/Resolution Errors:**
+
 ```bash
 # Error: Failed to resolve entry for package "use-typewriter-animation"
 # Solution: Update to v3.4.1+ which includes proper build artifacts
@@ -355,19 +357,21 @@ npm install use-typewriter-animation@latest
 ```
 
 **Infinite Re-renders:**
+
 ```tsx
 // ❌ Don't include typewriter in dependency array
 useEffect(() => {
   typewriter.type('Hello').start();
 }, [typewriter]); // This causes infinite loops!
 
-// ✅ Use empty dependency array instead
+// ✅ Use empty dependency array - works perfectly!
 useEffect(() => {
   typewriter.type('Hello').start();
-}, []); // Runs only once
+}, []); // Works perfectly even in React StrictMode
 ```
 
 **Bundler Compatibility:**
+
 ```json
 // For older bundlers, ensure proper module resolution
 {
@@ -378,6 +382,7 @@ useEffect(() => {
 ```
 
 **TypeScript Errors:**
+
 ```tsx
 // If you get type errors, ensure you have React types installed
 npm install --save-dev @types/react @types/react-dom

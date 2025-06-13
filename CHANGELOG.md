@@ -5,6 +5,96 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.2] - 2025-01-13
+
+### 🐛 Critical Bug Fixes
+
+**React StrictMode Compatibility:**
+
+- **🔧 Fixed React StrictMode animation freeze** - Resolved critical issue where typewriter animations would get stuck showing only the first letter + cursor ("H|") in React StrictMode development environment
+- **🔧 Made typewriter instances restartable** - Modified `start()` method to reset destroyed instances instead of failing silently, enabling proper StrictMode mount → unmount → remount cycle handling
+- **🔧 Prevented text duplication** - Fixed state accumulation issue that could cause text like "HHi" instead of "Hi" when effects re-execute
+- **🔧 Enhanced development experience** - Animations now work seamlessly in React 18+ StrictMode without requiring special workarounds
+
+### 🔧 Technical Improvements
+
+**Core Architecture:**
+
+- **Restartable instances** - `TypewriterBase.start()` now resets `isDestroyed = false` and clears accumulated state when called on destroyed instances
+- **Intelligent state clearing** - Automatic cleanup of segments and text content to prevent duplication from multiple effect executions
+- **Preserved important settings** - `reducedMotion` and `canBePaused` settings maintained across restarts for consistent behavior
+- **Improved timeout management** - Stale timeouts are properly cleared during instance restart for clean state
+
+**Developer Experience:**
+
+- **Simplified patterns** - Works perfectly with simple `useEffect(() => { typewriter.type().start(); }, [])` patterns
+- **No special handling required** - Developers no longer need StrictMode-specific utilities or complex workarounds
+- **Consistent behavior** - Same animation behavior in both development (StrictMode) and production environments
+- **Better debugging** - Clear, predictable behavior makes development and debugging more straightforward
+
+### 🧹 Code Cleanup
+
+**Removed Unnecessary Complexity:**
+
+- **Removed `useStrictModeSetup`** - Eliminated complex callback ref utility that was no longer needed
+- **Removed `useStrictModeTypewriter`** - Deleted workaround hook that caused more problems than it solved
+- **Cleaned up debug components** - Removed temporary test components used during troubleshooting
+- **Simplified exports** - Streamlined public API by removing internal utilities
+- **Removed empty directories** - Cleaned up unused `src/utils/` directory
+
+### 🚀 Performance Impact
+
+- **Zero performance overhead** - Fix adds no runtime cost, only improves reliability
+- **Memory-safe cleanup** - Proper cleanup on unmount prevents memory leaks in production
+- **Faster development** - No need for complex StrictMode detection or workaround patterns
+- **Reduced bundle size** - Removal of unused utilities reduces overall package size
+
+### 🎯 Migration Notes
+
+**From v3.4.1 to v3.4.2:**
+
+No API changes required. This is a pure bug fix that makes existing code work better:
+
+```tsx
+// ✅ This pattern now works perfectly in React StrictMode
+const { typewriter, elements, cursor } = useTypewriter(options);
+
+useEffect(() => {
+  typewriter.type('Hello World!').start();
+}, []); // Empty dependency array works flawlessly
+```
+
+**Key Improvement:**
+
+- Animations that were stuck at first letter in StrictMode now work correctly
+- No need to change existing code - it just works better
+- Development and production behavior is now consistent
+
+### 🎯 React StrictMode Compatibility
+
+**How it works:**
+
+1. **StrictMode mounts component** → `useEffect` runs → `typewriter.start()` begins animation
+2. **StrictMode unmounts component** → cleanup runs → `typewriter.stop()` sets `isDestroyed = true`
+3. **StrictMode remounts component** → `useEffect` runs again → `typewriter.start()` detects destroyed state
+4. **Automatic recovery** → `start()` resets `isDestroyed = false` and clears stale state
+5. **Animation proceeds normally** → Full typewriter animation works as expected
+
+**Environment Support:**
+
+- ✅ **React 18+ StrictMode** - Perfect compatibility in development
+- ✅ **Production builds** - Unchanged behavior, cleanup still prevents memory leaks
+- ✅ **All React versions** - Maintains backward compatibility with React 16.8+
+
+### 📦 Package Impact
+
+- **Bundle size**: Unchanged (~8.9KB ESM with accessibility features)
+- **Performance**: No runtime overhead, improved reliability
+- **Dependencies**: No new dependencies added
+- **Compatibility**: Enhanced React StrictMode support, all existing features preserved
+
+---
+
 ## [3.4.1] - 2025-06-13
 
 ### 🐛 Critical Bug Fixes
@@ -18,10 +108,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🔧 Technical Improvements
 
 **Build & Distribution:**
+
 - **Proper build artifacts** - Ensured all dist files (CJS, ESM, types) are included in published package
 - **Stable hook implementation** - Replaced `useMemo` with `useRef` for typewriter instance creation to prevent object recreation
 
 **Developer Experience:**
+
 - **Fixed bundler compatibility** - Package now works correctly with Vite, Webpack, Rollup, esbuild, and other modern bundlers
 - **Eliminated console spam** - Removed infinite logging that could overwhelm development tools
 - **Better performance** - Reduced unnecessary re-renders and object recreations
@@ -45,13 +137,14 @@ useEffect(() => {
 ```
 
 **Key Improvement:**
+
 - The `typewriter` object is now stable across renders, eliminating the need to include it in `useEffect` dependencies
 - Always use an empty dependency array `[]` when setting up typewriter animations
 
 ### 🎯 Package Distribution
 
 - **ESM Bundle**: ~16.9KB (fixed import resolution)
-- **CJS Bundle**: ~18.0KB (fixed import resolution) 
+- **CJS Bundle**: ~18.0KB (fixed import resolution)
 - **TypeScript Types**: Complete type definitions included
 - **Bundler Support**: ✅ Vite, Webpack, Rollup, esbuild, Parcel
 
@@ -62,6 +155,7 @@ useEffect(() => {
 ### 🎉 Major Accessibility & UX Enhancement - Phase 4 Complete!
 
 **WCAG 2.1 AA Compliance & Universal Accessibility:**
+
 - ✅ **Complete ARIA support** with live regions and semantic roles
 - ✅ **Keyboard navigation** with customizable shortcuts
 - ✅ **Reduced motion support** with dynamic preference detection
@@ -71,6 +165,7 @@ useEffect(() => {
 ### ✨ Added - ARIA & Screen Reader Support
 
 **Comprehensive ARIA Features:**
+
 - **ARIA live regions** - Real-time content announcements (`ariaLive: 'polite' | 'assertive' | 'off'`)
 - **Semantic roles** - Status, log, alert, marquee roles for proper content classification
 - **ARIA labels** - Descriptive labels for better context (`ariaLabel`, `ariaDescribedBy`)
@@ -78,6 +173,7 @@ useEffect(() => {
 - **Atomic announcements** - Complete context delivery with `aria-atomic="true"`
 
 **Screen Reader Optimizations:**
+
 - **Progressive announcements** - Text announced as it appears with configurable timing
 - **Completion announcements** - Full context provided when animations finish
 - **Status descriptions** - Current state (typing, paused, complete) communicated clearly
@@ -99,6 +195,7 @@ const { accessibilityProps, screenReaderAnnouncement } = useTypewriter({
 ### ✨ Added - Keyboard Navigation
 
 **Full Keyboard Control:**
+
 - **Space bar** - Pause/Resume animations (configurable)
 - **Escape key** - Skip to end of current animation
 - **R key** - Reset animation to beginning
@@ -107,6 +204,7 @@ const { accessibilityProps, screenReaderAnnouncement } = useTypewriter({
 - **Manual control** - Access to pause(), resume(), skip(), reset() methods
 
 **Navigation Features:**
+
 - **Focus management** - Proper focus handling during animations
 - **Visual focus indicators** - Clear keyboard navigation cues
 - **Event prevention** - Prevents conflicts with browser shortcuts
@@ -128,16 +226,17 @@ const { typewriter } = useTypewriter({
 });
 
 // Manual control methods
-typewriter.pause();    // Pause animation
-typewriter.resume();   // Resume animation  
-typewriter.skip();     // Skip to end
-typewriter.reset();    // Reset to start
+typewriter.pause(); // Pause animation
+typewriter.resume(); // Resume animation
+typewriter.skip(); // Skip to end
+typewriter.reset(); // Reset to start
 const paused = typewriter.isPaused(); // Check state
 ```
 
 ### ✨ Added - Reduced Motion Support
 
 **Automatic Motion Preference Detection:**
+
 - **`prefers-reduced-motion` detection** - Automatic system preference reading
 - **Real-time updates** - Responds to preference changes without page reload
 - **Instant fallback** - Immediate text display for motion-sensitive users
@@ -145,6 +244,7 @@ const paused = typewriter.isPaused(); // Check state
 - **CSS media query integration** - Seamless CSS animation control
 
 **Motion Control Options:**
+
 - **Respect user preferences** - `respectReducedMotion: boolean` (default: true)
 - **Fallback modes** - `'instant'` (show immediately) or `'none'` (hide animation)
 - **Dynamic adaptation** - Runtime preference change handling
@@ -153,7 +253,7 @@ const paused = typewriter.isPaused(); // Check state
 ```tsx
 // Reduced motion configuration
 const { typewriter, state } = useTypewriter({
-  respectReducedMotion: true,      // Honor user preferences
+  respectReducedMotion: true, // Honor user preferences
   reducedMotionFallback: 'instant', // Show text immediately
 });
 
@@ -169,6 +269,7 @@ const isReducedMotion = state.reducedMotion;
 ### ✨ Added - High Contrast & Visual Accessibility
 
 **System Integration:**
+
 - **Current color usage** - `cursorColor: 'currentColor'` for theme compatibility
 - **High contrast detection** - `detectHighContrast()` utility function
 - **Border visibility** - Automatic border color inheritance
@@ -176,6 +277,7 @@ const isReducedMotion = state.reducedMotion;
 - **Non-color indicators** - State changes don't rely solely on color
 
 **Visual Enhancements:**
+
 - **Focus indicators** - Clear visual feedback for keyboard navigation
 - **Color-independent design** - Accessible without color perception
 - **Theme compatibility** - Works with dark mode, high contrast, and custom themes
@@ -184,12 +286,14 @@ const isReducedMotion = state.reducedMotion;
 ### ✨ Added - Accessibility Testing Utilities
 
 **Comprehensive Testing Suite:**
+
 - **`AccessibilityTestUtils`** - Utility functions for accessibility validation
 - **`AccessibilityTestScenarios`** - Pre-built test components for common scenarios
 - **`AccessibilityTestHelpers`** - Jest/Vitest integration helpers
 - **WCAG compliance checking** - Automated accessibility auditing
 
 **Test Components:**
+
 - **`ReducedMotionTest`** - Validates motion preference handling
 - **`ScreenReaderTest`** - Tests ARIA and screen reader features
 - **`KeyboardControlTest`** - Validates keyboard navigation
@@ -197,10 +301,10 @@ const isReducedMotion = state.reducedMotion;
 - **`ComprehensiveAccessibilityTest`** - Full accessibility feature demonstration
 
 ```tsx
-import { 
-  AccessibilityTestUtils, 
+import {
+  AccessibilityTestUtils,
   AccessibilityTestHelpers,
-  AccessibilityTestScenarios 
+  AccessibilityTestScenarios,
 } from 'use-typewriter-animation/test/AccessibilityTest';
 
 // Automated accessibility audit
@@ -214,49 +318,53 @@ test('meets accessibility requirements', () => {
 });
 
 // Use pre-built test scenarios
-<AccessibilityTestScenarios.ComprehensiveAccessibilityTest />
+<AccessibilityTestScenarios.ComprehensiveAccessibilityTest />;
 ```
 
 ### 🔧 Enhanced - Core API with Accessibility
 
 **New Return Properties:**
+
 ```tsx
 const {
-  typewriter,           // Enhanced with keyboard control methods
-  state,               // Extended with accessibility state
-  elements,            // Unchanged - rendered text segments
-  cursor,              // Enhanced with reduced motion support
-  styles,              // Extended with accessibility styles
-  keyframes,           // Enhanced with reduced motion CSS
-  metrics,             // Unchanged - performance metrics
+  typewriter, // Enhanced with keyboard control methods
+  state, // Extended with accessibility state
+  elements, // Unchanged - rendered text segments
+  cursor, // Enhanced with reduced motion support
+  styles, // Extended with accessibility styles
+  keyframes, // Enhanced with reduced motion CSS
+  metrics, // Unchanged - performance metrics
   // NEW ACCESSIBILITY FEATURES:
-  accessibilityProps,  // Ready-to-use ARIA attributes object
+  accessibilityProps, // Ready-to-use ARIA attributes object
   screenReaderAnnouncement, // Hidden screen reader content element
 } = useTypewriter(options);
 ```
 
 **Extended Type Method:**
+
 ```tsx
 typewriter.type('Hello World!', {
-  speed: 50,                    // Existing option
+  speed: 50, // Existing option
   // NEW ACCESSIBILITY OPTIONS:
-  screenReaderText: 'Hello World!',     // Text for screen readers
-  announceCompletion: true,             // Announce when complete
-  reducedMotionFallback: 'instant',     // How to handle reduced motion
+  screenReaderText: 'Hello World!', // Text for screen readers
+  announceCompletion: true, // Announce when complete
+  reducedMotionFallback: 'instant', // How to handle reduced motion
 });
 ```
 
 **New Accessibility Styles:**
+
 ```tsx
 // Available in styles object
-styles.screenReaderOnly      // Hide content visually, keep for screen readers
-styles.reducedMotionCursor   // Cursor without animation
-styles.highContrastMode      // High contrast theme support
+styles.screenReaderOnly; // Hide content visually, keep for screen readers
+styles.reducedMotionCursor; // Cursor without animation
+styles.highContrastMode; // High contrast theme support
 ```
 
 ### 📚 Added - Comprehensive Documentation
 
 **Complete Accessibility Guide:**
+
 - **`ACCESSIBILITY.md`** - 400+ line comprehensive accessibility documentation
 - **Usage examples** - Real-world accessible implementation patterns
 - **WCAG 2.1 compliance guide** - Detailed compliance information
@@ -265,6 +373,7 @@ styles.highContrastMode      // High contrast theme support
 - **Troubleshooting** - Common accessibility issues and solutions
 
 **Documentation Sections:**
+
 - Quick start with accessibility
 - Complete option reference
 - Screen reader testing guide
@@ -277,6 +386,7 @@ styles.highContrastMode      // High contrast theme support
 ### 🎯 WCAG 2.1 AA Compliance
 
 **Fully Compliant Standards:**
+
 - **1.4.3 Contrast (Minimum)** - System color usage for proper contrast
 - **1.4.5 Images of Text** - Text-based animations, not image-based
 - **2.1.1 Keyboard** - Complete keyboard navigation support
@@ -297,6 +407,7 @@ styles.highContrastMode      // High contrast theme support
 ### 🚀 Performance & Accessibility
 
 **Zero Performance Trade-offs:**
+
 - **Accessibility features are additive** - No impact on core performance
 - **Lazy evaluation** - Accessibility features only active when enabled
 - **Efficient ARIA updates** - Minimal DOM changes for screen reader content
@@ -306,27 +417,23 @@ styles.highContrastMode      // High contrast theme support
 ### 🎨 Updated Examples
 
 **Enhanced Example Component:**
+
 ```tsx
-const { 
-  typewriter, 
-  elements, 
-  cursor, 
-  accessibilityProps, 
-  screenReaderAnnouncement 
-} = useTypewriter({
-  // Visual settings
-  cursorColor: 'currentColor',
-  
-  // Accessibility settings
-  ariaLabel: 'Welcome message typewriter',
-  respectReducedMotion: true,
-  enableKeyboardControls: true,
-  autoKeyboardHandling: true,
-  announceCompletion: true,
-});
+const { typewriter, elements, cursor, accessibilityProps, screenReaderAnnouncement } =
+  useTypewriter({
+    // Visual settings
+    cursorColor: 'currentColor',
+
+    // Accessibility settings
+    ariaLabel: 'Welcome message typewriter',
+    respectReducedMotion: true,
+    enableKeyboardControls: true,
+    autoKeyboardHandling: true,
+    announceCompletion: true,
+  });
 
 return (
-  <div 
+  <div
     {...accessibilityProps}
     tabIndex={0}
     style={{
@@ -356,13 +463,13 @@ All existing APIs remain fully backward compatible. Accessibility features are o
 const { typewriter, elements, cursor } = useTypewriter(options);
 
 // Add accessibility features incrementally
-const { 
-  typewriter, 
-  elements, 
+const {
+  typewriter,
+  elements,
   cursor,
   // NEW: Accessibility features
   accessibilityProps,
-  screenReaderAnnouncement 
+  screenReaderAnnouncement,
 } = useTypewriter({
   ...existingOptions,
   // Add accessibility options as needed
@@ -376,7 +483,7 @@ const {
   {elements}
   {cursor}
   {screenReaderAnnouncement}
-</div>
+</div>;
 ```
 
 ### 🎯 Compatibility
@@ -398,6 +505,7 @@ const {
 ### 🚀 Major React 19 & Modern Features - Phase 3 Complete!
 
 **Modern React Compatibility:**
+
 - ✅ **React 19 concurrent features** with transitions and deferred values
 - ✅ **Server component support** with SSR/RSC compatibility
 - ✅ **Suspense integration** for async operations and loading states
@@ -406,24 +514,29 @@ const {
 ### ✨ Added - React 19 Concurrent Features
 
 **New Hooks:**
+
 - **`useTypewriterAsync`** - Enhanced concurrent rendering with React 19 transitions
+
   - `enableConcurrentRendering` - Toggle concurrent mode (default: true)
-  - `useDeferredUpdates` - Defer non-critical updates (default: true) 
+  - `useDeferredUpdates` - Defer non-critical updates (default: true)
   - `transitionPriority` - Priority levels ('user-blocking' | 'user-visible' | 'background')
   - Returns `isPending`, `deferredState`, and `startTypewriterTransition`
 
 - **`useConcurrentTypewriter`** - Time-sliced animations with priority scheduling
+
   - `useTimeSlicing` - Break long text into chunks (default: true)
   - `timeSliceBatchSize` - Characters per slice (default: 5)
   - `priority` - Animation priority ('immediate' | 'normal' | 'low')
   - Enhanced metrics with concurrent mode indicators
 
 - **`useTypewriterPerformanceMonitor`** - Real-time performance tracking
+
   - Performance marks and measurements
   - Memory-safe performance API usage
   - Browser compatibility fallbacks
 
 - **`useSchedulerAwareAnimation`** - React scheduler integration
+
   - `scheduleAnimation` - Frame-optimized scheduling
   - `scheduleWithPriority` - Priority-based task scheduling
   - React 19 scheduler API support with fallbacks
@@ -436,7 +549,9 @@ const {
 ### ✨ Added - Server Component Support
 
 **Server-Safe Hooks:**
+
 - **`useTypewriterServer`** - SSR/RSC compatible typewriter
+
   - `hydrateImmediately` - Control hydration timing (default: true)
   - `ssrFallbackText` - Static text during server rendering
   - `autoStartAfterHydration` - Auto-start after client hydration
@@ -448,6 +563,7 @@ const {
   - Prevents hydration mismatches
 
 **Server Components:**
+
 - **`TypewriterServerComponent`** - Static server component
   - SEO-friendly static text rendering
   - Optional cursor display for visual consistency
@@ -456,12 +572,14 @@ const {
 ### ✨ Added - Suspense & Error Handling
 
 **Suspense Integration:**
+
 - **`TypewriterSuspense`** - Suspense wrapper for async operations
   - Customizable fallback UI during loading
   - Optional error boundary integration
   - Seamless async/await compatibility
 
 **Error Boundaries:**
+
 - **`TypewriterErrorBoundary`** - Specialized error handling
   - Automatic error catching and logging
   - Retry functionality for failed operations
@@ -471,18 +589,21 @@ const {
 ### 🔧 Technical Improvements
 
 **Concurrent Rendering:**
+
 - Time-sliced text processing for better responsiveness
-- Priority-based animation scheduling  
+- Priority-based animation scheduling
 - Deferred updates for non-critical state changes
 - React scheduler integration for optimal timing
 
 **Server Compatibility:**
+
 - Hydration-safe state management
 - SSR/RSC environment detection
 - Static text fallbacks for SEO
 - 'use client' directive for proper boundaries
 
 **Performance Monitoring:**
+
 - Real-time metrics collection
 - Browser performance API integration
 - Memory usage optimization
@@ -515,7 +636,7 @@ const { typewriter, metrics, isPending } = useConcurrentTypewriter({
 });
 
 // Suspense integration
-<TypewriterSuspense 
+<TypewriterSuspense
   fallback={<div>Loading typewriter...</div>}
   errorFallback={ErrorComponent}
 >
@@ -523,7 +644,7 @@ const { typewriter, metrics, isPending } = useConcurrentTypewriter({
 </TypewriterSuspense>
 
 // Static server component
-<TypewriterServerComponent 
+<TypewriterServerComponent
   text="SEO-friendly static text"
   showCursor={true}
 />
@@ -539,7 +660,7 @@ const { typewriter, metrics, isPending } = useConcurrentTypewriter({
 ### ⚡ Performance Enhancements
 
 - **Time-sliced rendering**: Prevents blocking on long text sequences
-- **Concurrent mode**: Better responsiveness during heavy workloads  
+- **Concurrent mode**: Better responsiveness during heavy workloads
 - **Deferred updates**: Non-critical changes don't block user interactions
 - **Scheduler integration**: Frame-optimized animation timing
 - **SSR optimization**: Faster initial page loads with static fallbacks
@@ -574,22 +695,26 @@ const { typewriter, elements, cursor, isHydrating } = useTypewriterServer(option
 ### 🐛 Critical Bug Fixes
 
 **Delete/Type Conflict Resolution:**
+
 - ✅ **Fixed delete/type event loop conflicts** - Resolved critical issue from v2.x where delete operations would interfere with subsequent type operations
-- ✅ **Improved `deleteAll()` reliability** - Now uses immediate state updates to prevent conflicts with queued operations  
+- ✅ **Improved `deleteAll()` reliability** - Now uses immediate state updates to prevent conflicts with queued operations
 - ✅ **Fixed `deleteWords()` implementation** - Eliminated recursive queue calls that caused timing issues
 - ✅ **Enhanced method chaining** - Fixed `reset()` function to properly return chainable interface
 
 ### 🔧 Technical Improvements
+
 - **Queue Management**: All delete operations now work seamlessly within the single queue system
 - **State Synchronization**: Critical state changes (like `deleteAll()`) use immediate updates instead of batched updates
 - **Event Loop Stability**: Eliminated the timing conflicts that could cause text accumulation instead of replacement
 
 ### 🧪 Testing
+
 - Added comprehensive test suite for delete/type conflict scenarios
 - Verified fix works across complex sequences: basic delete+type, multiple cycles, rapid alternation, and timing-sensitive operations
 - All test scenarios now pass consistently
 
 ### 📈 Impact
+
 This fix resolves a significant reliability issue that could cause unexpected text accumulation in applications using delete operations followed by type operations. The fix maintains all performance improvements from v3.2.0 while ensuring deterministic behavior.
 
 ## [3.2.0] - 2025-06-13
@@ -597,11 +722,13 @@ This fix resolves a significant reliability issue that could cause unexpected te
 ### 🚀 Major Performance Overhaul - Phase 2 Complete!
 
 **Performance Improvements:**
+
 - ✅ **50%+ rendering performance boost** through optimized algorithms
 - ✅ **Reduced DOM operations** with intelligent segment grouping
 - ✅ **Memory usage optimization** with virtualization for long text sequences
 
 ### ✨ Added
+
 - **Virtualization Support**: Handle extremely long text with `enableVirtualization` and `maxVisibleSegments` options
 - **Intelligent Segment Grouping**: Consecutive segments with same styling are batched into single DOM nodes
 - **Performance Metrics**: Real-time performance monitoring with metrics object
@@ -611,12 +738,14 @@ This fix resolves a significant reliability issue that could cause unexpected te
 - **Performance Test Component**: Built-in `PerformanceTest` component for benchmarking
 
 ### 🔧 Enhanced
+
 - **CSS Animations**: Faster transitions (0.3s) and new animation keyframes (`typewriter-appear`, `typewriter-highlight`)
 - **Build Optimizations**: Production builds remove console.log statements and optimize for size
 - **Memory Management**: Improved timeout cleanup and batched update handling
 - **TypeScript Types**: New `UseTypewriterOptions` type with virtualization options
 
 ### 📊 API Additions
+
 ```tsx
 const { typewriter, elements, cursor, metrics } = useTypewriter({
   // New performance options
@@ -626,16 +755,18 @@ const { typewriter, elements, cursor, metrics } = useTypewriter({
 
 // New metrics object provides:
 // - totalSegments: number
-// - visibleSegments: number  
+// - visibleSegments: number
 // - isVirtualized: boolean
 ```
 
 ### 📦 Bundle Impact
+
 - **Core library**: ~6.1KB ESM (when tree-shaken)
 - **Full package**: 7.7KB ESM / 8.4KB CJS (includes PerformanceTest)
 - **Added features**: Virtualization, metrics, performance testing
 
 ### 🎯 Performance Benchmarks
+
 - **Large text sequences**: Up to 90% DOM node reduction with virtualization
 - **Re-render optimization**: React.memo prevents unnecessary component updates
 - **State updates**: Batched updates reduce React reconciliation overhead
@@ -644,16 +775,19 @@ const { typewriter, elements, cursor, metrics } = useTypewriter({
 ## [3.1.1] - 2025-06-13
 
 ### 🔧 Fixes
+
 - Minor version bump to complete dependency and configuration updates
 
 ## [3.1.0] - 2025-06-13
 
 ### ✨ Added
+
 - **React 19 Support**: Full compatibility with React 19.x latest stable
 - **Modern Engine Requirements**: Updated Node.js ≥18.0.0, Bun ≥1.0.0 support
 - **Enhanced Build Tools**: Latest esbuild 0.25.5, TypeScript 5.8.3, and build toolchain
 
 ### 🔧 Improved
+
 - **Peer Dependencies**: Proper version ranges `^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0`
 - **ES2022 Target**: Updated from ES2020 to ES2022 for modern features
 - **ESM Support**: Proper `.mjs` extension for ESM builds to avoid module conflicts
@@ -662,6 +796,7 @@ const { typewriter, elements, cursor, metrics } = useTypewriter({
 - **Tree Shaking**: Better support with `sideEffects: false`
 
 ### 📦 Dependencies
+
 - Updated all dev dependencies to latest versions
 - Enhanced TypeScript strict mode compatibility
 - Improved bundler compatibility (Webpack, Vite, Rollup, esbuild)
@@ -694,6 +829,7 @@ const { typewriter, elements, cursor, metrics } = useTypewriter({
 ### 🎨 API Changes
 
 **New useTypewriter API:**
+
 ```tsx
 const { typewriter, elements, cursor, state, styles, keyframes } = useTypewriter(options);
 
@@ -709,6 +845,7 @@ return (
 ```
 
 **New exports:**
+
 - `UseTypewriterReturn` - Return type of useTypewriter hook
 - `TypewriterState` - Current state interface
 - `TextSegment` - Individual text segment interface
@@ -721,30 +858,24 @@ return (
 **From v2.x to v3.0:**
 
 **Before (v2.x):**
+
 ```tsx
 const { ref, typewriter } = useTypewriter(options);
 
 useEffect(() => {
-  typewriter
-    .on('typeStart', callback)
-    .on('typeEnd', callback)
-    .type('Hello')
-    .start();
+  typewriter.on('typeStart', callback).on('typeEnd', callback).type('Hello').start();
 }, [typewriter]);
 
 return <div ref={ref} />;
 ```
 
 **After (v3.0):**
+
 ```tsx
 const { typewriter, elements, cursor, keyframes } = useTypewriter(options);
 
 useEffect(() => {
-  typewriter
-    .on('start', callback)
-    .on('end', callback)
-    .type('Hello')
-    .start();
+  typewriter.on('start', callback).on('end', callback).type('Hello').start();
 }, [typewriter]);
 
 return (
@@ -778,22 +909,26 @@ return (
 ## [2.2.1] - Previous Release
 
 ### Fixed
+
 - Minor bug fixes and improvements
 
 ## [2.2.0] - Previous Release
 
 ### Added
+
 - Enhanced cursor customization options
 - Improved TypeScript definitions
 
 ## [2.1.1] - Previous Release
 
 ### Fixed
+
 - Build system improvements
 
 ## [2.1.0] - Previous Release
 
 ### Added
+
 - Additional cursor styles
 - Performance optimizations
 

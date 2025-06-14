@@ -1,11 +1,22 @@
-# Speed Variations Demo
+---
+sidebar_position: 3
+title: Speed Variations
+description: Dynamic typing speed control for dramatic effects and emphasis
+tags: [speed, timing, dramatic, effects, pacing]
+---
 
-This example demonstrates how to create dramatic effects using different typing speeds within a single animation sequence.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { SpeedVariationsExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={SpeedVariationsExample}
+difficulty="Beginner"
+description="Master dynamic typing speed control for dramatic effects, creating emphasis through variable pacing and strategic timing. Perfect for storytelling, presentations, and creating engaging content with natural rhythm."
+tags={["Speed control", "Dramatic effects", "Variable pacing", "Timing control", "Emphasis techniques"]}
+code={`import React, { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function SpeedVariationsDemo() {
+const SpeedVariationsExample: React.FC = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 100,
     cursorStyle: 'block',
@@ -42,51 +53,39 @@ function SpeedVariationsDemo() {
           fontFamily: '"Courier New", monospace',
           fontSize: '1.1rem',
           lineHeight: '1.8',
-          padding: '2rem',
+          padding: '2.5rem',
           backgroundColor: '#f8fafc',
-          border: '2px solid #e2e8f0',
-          borderRadius: '12px',
-          minHeight: '200px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          border: '2px solid #3b82f6',
+          borderRadius: '16px',
+          minHeight: '300px',
+          color: '#1e293b',
+          whiteSpace: 'pre-wrap',
+          wordWrap: 'break-word',
+          boxShadow: '0 20px 40px rgba(59, 130, 246, 0.15)',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
         }}
       >
-        <div
-          style={{
-            marginBottom: '1rem',
-            fontSize: '0.9rem',
-            color: '#64748b',
-            fontWeight: '500',
-          }}
-        >
-          📈 Speed Variations Demo
-        </div>
-        <div style={{ color: '#1e293b' }}>
-          {elements}
-          {cursor}
-        </div>
+        {elements}
+        {cursor}
       </div>
     </>
   );
-}
-```
+};
 
-## Key Features
-
-- **Variable Speed Control**: Each text segment uses different typing speeds
-- **Dramatic Timing**: Combines slow suspense with fast excitement
-- **Visual Hierarchy**: Speed changes emphasize different content types
-- **Smooth Transitions**: Natural pauses between speed changes
-
-## Speed Guidelines
-
-- **Very Slow (100-200ms)**: For emphasis and suspense
-- **Fast (5-20ms)**: For excitement and energy
-- **Normal (40-80ms)**: For comfortable reading
-- **Custom speeds**: Match content emotion and importance
+export default SpeedVariationsExample;`}
+instructions={[
+"Use speed parameter in type() method to override default typeSpeed for individual segments",
+"Apply very slow speeds (100-200ms) for suspense and dramatic emphasis",
+"Use fast speeds (5-20ms) for excitement, urgency, or action sequences",
+"Combine different speeds strategically to match content emotion and importance",
+"Include pauseFor() between speed changes to let the effect register with users"
+]}
+/>
 
 ## Use Cases
 
-- **Presentations**: Emphasize key points with speed changes
-- **Storytelling**: Build tension and release with pacing
-- **UI Animations**: Guide user attention through speed variation
-- **Educational Content**: Slow for complex concepts, fast for simple ones
+- **Presentations**: Emphasize key points with speed changes for maximum impact
+- **Storytelling**: Build tension and release with strategic pacing variations
+- **Marketing Content**: Create urgency with fast typing for calls-to-action
+- **Educational Tools**: Slow down for complex concepts, speed up for familiar content
+- **Creative Writing**: Match typing rhythm to narrative mood and story beats

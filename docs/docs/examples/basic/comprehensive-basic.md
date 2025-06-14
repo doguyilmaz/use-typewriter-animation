@@ -1,8 +1,8 @@
 ---
-sidebar_position: 4
+sidebar_position: 7
 title: Comprehensive Basic
-description: A complete showcase of basic features and accessibility
-tags: [basic, accessibility, keyboard, comprehensive]
+description: Complete showcase of accessibility features with screen reader support and WCAG compliance
+tags: [accessibility, comprehensive, wcag, screen-reader, complete]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
@@ -10,32 +10,26 @@ import { ComprehensiveBasicExample } from '@site/src/components/AdvancedExamples
 
 <ExamplePage
 component={ComprehensiveBasicExample}
-difficulty="Intermediate"
-description="A comprehensive demonstration of essential typewriter features including colorization, deletion, and full accessibility support. Perfect for learning advanced techniques while maintaining inclusive design."
-tags={["Text colorization", "Delete operations", "Accessibility", "Keyboard controls", "Screen reader support"]}
+difficulty="Beginner"
+description="Master comprehensive typewriter animations with full accessibility support including screen reader announcements, WCAG 2.1 AA compliance, and keyboard navigation. Perfect for production applications requiring inclusive design."
+tags={["Accessibility", "Screen readers", "WCAG compliance", "Keyboard navigation", "Inclusive design"]}
 code={`import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
 
 const ComprehensiveBasicExample: React.FC = () => {
-  const { 
-    typewriter, 
-    elements, 
-    cursor, 
-    keyframes, 
-    accessibilityProps, 
-    screenReaderAnnouncement 
-  } = useTypewriter({
-    typeSpeed: 50,
-    loop: false,
-    cursorStyle: 'bar',
-    cursorBlinkSpeed: 500,
-    cursorColor: 'currentColor',
-    enableCursor: true,
-    ariaLabel: 'Comprehensive typewriter animation demonstration',
-    ariaLive: 'polite',
-    respectReducedMotion: true,
-    announceCompletion: true,
-  });
+  const { typewriter, elements, cursor, keyframes, accessibilityProps, screenReaderAnnouncement } =
+    useTypewriter({
+      typeSpeed: 50,
+      loop: false,
+      cursorStyle: 'bar',
+      cursorBlinkSpeed: 500,
+      cursorColor: 'currentColor',
+      enableCursor: true,
+      ariaLabel: 'Comprehensive typewriter animation demonstration',
+      ariaLive: 'polite',
+      respectReducedMotion: true,
+      announceCompletion: true,
+    });
 
   useEffect(() => {
     typewriter
@@ -52,7 +46,7 @@ const ComprehensiveBasicExample: React.FC = () => {
       .pauseFor(500)
       .deleteLetters(5)
       .colorize('#3b82f6')
-      .type(" Now it's blue!", {
+      .type("Now it's blue!", {
         speed: 100,
         screenReaderText: "Now it's blue!",
         announceCompletion: true,
@@ -106,10 +100,18 @@ const ComprehensiveBasicExample: React.FC = () => {
 
 export default ComprehensiveBasicExample;`}
 instructions={[
-"Focus on the container and make it keyboard accessible",
-"Use proper ARIA attributes for screen readers",
-"Implement colorization with modern color palette",
-"Add delete operations to show text manipulation",
-"Configure announcements for completion events"
+"Include accessibilityProps in your container div for proper ARIA attributes",
+"Add screenReaderText to type() calls for better screen reader experience",
+"Use announceCompletion flag to control when screen readers announce text",
+"Set respectReducedMotion: true to honor user's motion preferences",
+"Make components keyboard accessible with proper tabIndex and focus management"
 ]}
 />
+
+## Use Cases
+
+- **Production Applications**: Enterprise applications requiring full accessibility compliance
+- **Educational Platforms**: Learning tools that must be inclusive for all users
+- **Government Websites**: Public services requiring WCAG 2.1 AA compliance
+- **Healthcare Systems**: Medical applications with strict accessibility requirements
+- **Corporate Intranets**: Internal tools supporting diverse user needs and abilities

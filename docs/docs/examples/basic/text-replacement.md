@@ -1,11 +1,22 @@
-# Text Replacement Demo
+---
+sidebar_position: 6
+title: Text Replacement
+description: Strategic word substitution using deleteLetters() for dynamic text editing and live updates
+tags: [replacement, deleteLetters, editing, dynamic, substitution]
+---
 
-This example demonstrates sophisticated text replacement techniques using strategic deletion and retyping to create word substitution effects.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { TextReplacementExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={TextReplacementExample}
+difficulty="Beginner"
+description="Master strategic word substitution using the deleteLetters() method for dynamic text editing and live content updates. Perfect for showing progress, mood changes, and interactive text transformations."
+tags={["Text replacement", "Delete letters", "Live editing", "Dynamic updates", "Word substitution"]}
+code={`import React, { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function TextReplacementDemo() {
+const TextReplacementExample: React.FC = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 50,
     cursorStyle: 'block',
@@ -135,35 +146,22 @@ function TextReplacementDemo() {
       </div>
     </>
   );
-}
-```
+};
 
-## Key Features
-
-- **Smart Word Replacement**: Delete exact number of characters and replace
-- **Emotional Progression**: Words evolve from negative to positive
-- **Status Updates**: Perfect for dynamic status indicators
-- **Technology Stack**: Show progression through learning technologies
-- **Visual Feedback**: Colors indicate different states and emotions
-
-## Replacement Patterns
-
-1. **Emotion Evolution**: happy → excited → thrilled
-2. **Opinion Changes**: difficult → amazing → powerful → fantastic
-3. **Technology Progression**: JavaScript → TypeScript → React → Next.js
-4. **Status Updates**: Offline → Connecting → Online
-
-## Technical Implementation
-
-- Use `deleteLetters(n)` with exact character count
-- Apply different colors to highlight the replacement
-- Add appropriate pauses for readability
-- Create logical word progression chains
+export default TextReplacementExample;`}
+instructions={[
+"Use deleteLetters(count) to remove specific number of characters from the end",
+"Count characters carefully to ensure precise replacement without leftover text",
+"Combine pauseFor() before deletion to let users read the original text",
+"Apply colorize() to new replacement text to highlight the change visually",
+"Create meaningful word progressions that tell a story or show evolution"
+]}
+/>
 
 ## Use Cases
 
-- **Dynamic Status Displays**: Connection states, loading progress
-- **Sentiment Analysis**: Show changing opinions or emotions
-- **Learning Progress**: Display skill development over time
-- **Product Features**: Highlight different capabilities or benefits
-- **User Onboarding**: Guide users through different concepts
+- **Status Updates**: Show real-time changes in application or connection states
+- **Progressive Disclosure**: Reveal information step-by-step with text replacements
+- **Sentiment Analysis**: Demonstrate mood or opinion changes through word substitution
+- **Learning Platforms**: Show skill progression and improvement over time
+- **Live Demos**: Update content dynamically to reflect changing conditions

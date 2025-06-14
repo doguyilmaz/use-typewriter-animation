@@ -1,21 +1,22 @@
 ---
+sidebar_position: 1
 title: Simple Typewriter
-description: The most basic typewriter animation with typing and deleting
+description: Basic typewriter effect with clean, professional styling
+tags: [typewriter, basic, beginner, react, simple]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { SimpleExample } from '@site/src/components/LiveExample';
+import { SimpleTypewriterExample } from '@site/src/components/AdvancedExamples';
 
 <ExamplePage
-title="Simple Typewriter Animation"
-description="Learn the fundamentals of typewriter animations with this basic example. Perfect for getting started - shows typing, pausing, deleting, and retyping text with clean, readable code."
-component={SimpleExample}
+component={SimpleTypewriterExample}
 difficulty="Beginner"
-features={["Basic typing", "Delete operations", "Pause timing", "Clean styling"]}
+description="Master the fundamentals of typewriter animations with this clean, minimalist example. Perfect for getting started with the library and understanding core concepts like typing speed, cursor styles, and basic text rendering."
+tags={["Typewriter effect", "Basic animation", "Getting started", "Clean design", "Minimal setup"]}
 code={`import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
 
-function SimpleTypewriter() {
+const SimpleTypewriterExample: React.FC = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 60,
     cursorStyle: 'bar',
@@ -24,21 +25,33 @@ function SimpleTypewriter() {
 
   useEffect(() => {
     typewriter
-      .type('Hello, World! 👋')
+      .type('Hello, World!')
       .pauseFor(1000)
-      .deleteLetters(9)
-      .type('React!')
+      .newLine()
+      .type('Welcome to typewriter animations.')
+      .pauseFor(800)
+      .newLine()
+      .type('This is a simple example to get you started.')
       .start();
   }, []);
 
   return (
     <>
       <style>{keyframes}</style>
-      <div 
-        style={{ 
-          fontSize: '1.5rem', 
-          fontFamily: 'monospace',
-          color: 'var(--ifm-color-content)'
+      <div
+        style={{
+          fontFamily: '"Inter", sans-serif',
+          fontSize: '1.1rem',
+          lineHeight: '1.6',
+          padding: '2rem',
+          backgroundColor: '#ffffff',
+          border: '2px solid #e5e7eb',
+          borderRadius: '12px',
+          minHeight: '200px',
+          color: '#1f2937',
+          whiteSpace: 'pre-wrap',
+          wordWrap: 'break-word',
+          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
         }}
       >
         {elements}
@@ -46,7 +59,22 @@ function SimpleTypewriter() {
       </div>
     </>
   );
-}
+};
 
-export default SimpleTypewriter;`}
+export default SimpleTypewriterExample;`}
+instructions={[
+"Start with basic typeSpeed and cursorStyle configuration",
+"Use pauseFor() to add natural pauses between sentences",
+"Include newLine() for proper text structure and readability",
+"Apply clean, professional styling with subtle shadows",
+"Always include keyframes style for proper cursor animation"
+]}
 />
+
+## Use Cases
+
+- **Learning**: Perfect first example for understanding typewriter basics
+- **Documentation**: Simple demos in technical documentation
+- **Landing Pages**: Clean hero text animations for websites
+- **Tutorials**: Step-by-step instruction display
+- **Prototyping**: Quick mockups and proof-of-concepts

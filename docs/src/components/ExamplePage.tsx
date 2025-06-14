@@ -197,46 +197,6 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
         </div>
       )}
 
-      {/* Navigation */}
-      <div
-        style={{
-          ...commonStyles.flexCenter,
-          marginTop: '3rem',
-          gap: '1rem',
-          flexWrap: 'wrap',
-        }}
-      >
-        <a
-          href='/use-typewriter-animation/docs/getting-started/installation'
-          style={{
-            ...commonStyles.button,
-            backgroundColor: isDark ? '#16a34a' : '#22c55e',
-            color: 'white',
-            textDecoration: 'none',
-            fontWeight: '600',
-            fontSize: '0.95rem',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-          }}
-        >
-          📦 Get Started
-        </a>
-        <a
-          href='/use-typewriter-animation/docs/api/use-typewriter'
-          style={{
-            ...commonStyles.button,
-            backgroundColor: isDark ? '#2563eb' : '#3b82f6',
-            color: 'white',
-            textDecoration: 'none',
-            fontWeight: '600',
-            fontSize: '0.95rem',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-          }}
-        >
-          📚 API Docs
-        </a>
-      </div>
     </div>
   );
 };

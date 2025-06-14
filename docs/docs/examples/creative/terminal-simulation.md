@@ -1,8 +1,8 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 title: Terminal Simulation
-description: Simulate a terminal interface with typewriter animations
-tags: [terminal, simulation, advanced]
+description: Realistic terminal interface with command execution and system responses
+tags: [terminal, command-line, system, developer, simulation]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
@@ -10,86 +10,304 @@ import { TerminalExample } from '@site/src/components/AdvancedExamples';
 
 <ExamplePage
 component={TerminalExample}
-difficulty="Beginner"
-description="Create authentic terminal experiences with command-line simulations. Perfect for developer portfolios, tutorials, or interactive demos that showcase CLI tools and terminal workflows."
-tags={["Terminal", "Command line", "CLI simulation", "Real-time clock", "Developer tools"]}
+difficulty="Intermediate"
+description="Create authentic terminal experiences with command execution, system responses, and developer workflow simulation. Perfect for documentation, tutorials, and developer tool demonstrations."
+tags={["Terminal interface", "Command execution", "Developer tools", "System simulation", "CLI experience"]}
 code={`import React, { useEffect, useState } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
 
 const TerminalExample: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 40,
-    cursorStyle: 'block',
-    cursorColor: '#00ff00',
-  });
+const [currentCommand, setCurrentCommand] = useState(0);
+const [isOnline, setIsOnline] = useState(true);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000);
+const { typewriter, elements, cursor, keyframes } = useTypewriter({
+typeSpeed: 30,
+cursorStyle: 'block',
+cursorColor: '#22c55e',
+});
 
-    typewriter
-      .type('$ ')
-      .colorize('#00ff00')
-      .type('whoami')
-      .pauseFor(1000)
-      .newLine()
-      .colorize('#ffffff')
-      .type('developer')
-      .newLine()
-      .type('$ ')
-      .colorize('#00ff00')
-      .type('ls -la')
-      .pauseFor(800)
-      .newLine()
-      .colorize('#ffffff')
-      .type('drwxr-xr-x  projects/')
-      .newLine()
-      .type('-rw-r--r--  README.md')
-      .newLine()
-      .type('$ ')
-      .colorize('#00ff00')
-      .type('echo "Hello, World!"')
-      .pauseFor(600)
-      .newLine()
-      .colorize('#ffffff')
-      .type('Hello, World!')
-      .start();
+const commands = [
+'npm install',
+'git status',
+'docker build',
+'yarn dev',
+];
 
-    return () => clearInterval(timer);
-  }, []);
+useEffect(() => {
+typewriter
+.colorize('#22c55e')
+.type('user@dev-machine')
+.colorize('#3b82f6')
+.type(':')
+.colorize('#8b5cf6')
+.type('~/projects/my-app')
+.colorize('#f8fafc')
+.type('$ ')
+.pauseFor(800)
+.type('ls -la')
+.newLine()
+.colorize('#6b7280')
+.type('total 24')
+.newLine()
+.type('drwxr-xr-x 8 user staff 256 Oct 15 14:30 .')
+.newLine()
+.type('drwxr-xr-x 3 user staff 96 Oct 15 14:20 ..')
+.newLine()
+.type('drw-r--r-- 1 user staff 1024 Oct 15 14:29 .git')
+.newLine()
+.type('-rw-r--r-- 1 user staff 123 Oct 15 14:25 .gitignore')
+.newLine()
+.type('-rw-r--r-- 1 user staff 2048 Oct 15 14:30 package.json')
+.newLine()
+.type('drwxr-xr-x 4 user staff 128 Oct 15 14:28 src')
+.newLine()
+.type('drwxr-xr-x 2 user staff 64 Oct 15 14:25 docs')
+.colorize('#f8fafc')
+.newLine()
+.newLine()
+.colorize('#22c55e')
+.type('user@dev-machine')
+.colorize('#3b82f6')
+.type(':')
+.colorize('#8b5cf6')
+.type('~/projects/my-app')
+.colorize('#f8fafc')
+.type('$ ')
+.pauseFor(1000)
+.type('git status')
+.newLine()
+.colorize('#fbbf24')
+.type('On branch ')
+.colorize('#22c55e')
+.type('main')
+.colorize('#f8fafc')
+.newLine()
+.colorize('#3b82f6')
+.type('Your branch is up to date with \\'origin/main\\'.')
+.colorize('#f8fafc')
+.newLine()
+.newLine()
+.colorize('#22c55e')
+.type('Changes to be committed:')
+.colorize('#f8fafc')
+.newLine()
+.colorize('#6b7280')
+.type(' (use "git reset HEAD <file>..." to unstage)')
+.colorize('#f8fafc')
+.newLine()
+.newLine()
+.colorize('#22c55e')
+.type('\\tnew file: ')
+.colorize('#f8fafc')
+.type('src/components/Typewriter.tsx')
+.newLine()
+.colorize('#fbbf24')
+.type('\\tmodified: ')
+.colorize('#f8fafc')
+.type('package.json')
+.newLine()
+.newLine()
+.colorize('#22c55e')
+.type('user@dev-machine')
+.colorize('#3b82f6')
+.type(':')
+.colorize('#8b5cf6')
+.type('~/projects/my-app')
+.colorize('#f8fafc')
+.type('$ ')
+.pauseFor(1200)
+.type('npm run build')
+.newLine()
+.newLine()
+.colorize('#6b7280')
+.type('> my-app@1.0.0 build')
+.newLine()
+.type('> webpack --mode=production')
+.colorize('#f8fafc')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#3b82f6')
+.type('📦 Bundling assets...')
+.colorize('#f8fafc')
+.newLine()
+.colorize('#22c55e')
+.type('✓ ')
+.colorize('#f8fafc')
+.type('Compiled successfully in 2.34s')
+.newLine()
+.colorize('#22c55e')
+.type('✓ ')
+.colorize('#f8fafc')
+.type('Asset optimization complete')
+.newLine()
+.colorize('#22c55e')
+.type('✓ ')
+.colorize('#f8fafc')
+.type('Bundle size: 1.2MB → 342KB (gzipped)')
+.newLine()
+.newLine()
+.colorize('#10b981')
+.type('🎉 Build completed successfully!')
+.colorize('#f8fafc')
+.newLine()
+.newLine()
+.colorize('#22c55e')
+.type('user@dev-machine')
+.colorize('#3b82f6')
+.type(':')
+.colorize('#8b5cf6')
+.type('~/projects/my-app')
+.colorize('#f8fafc')
+.type('$ ')
+.pauseFor(500)
+.type('echo "Ready for deployment! 🚀"')
+.newLine()
+.colorize('#fbbf24')
+.type('Ready for deployment! 🚀')
+.colorize('#f8fafc')
+.newLine()
+.newLine()
+.colorize('#22c55e')
+.type('user@dev-machine')
+.colorize('#3b82f6')
+.type(':')
+.colorize('#8b5cf6')
+.type('~/projects/my-app')
+.colorize('#f8fafc')
+.type('$ ')
+.start();
+}, []);
 
-  return (
-    <>
-      <style>{keyframes}</style>
+// Simulate terminal activity
+useEffect(() => {
+const interval = setInterval(() => {
+setCurrentCommand(prev => (prev + 1) % commands.length);
+setIsOnline(prev => Math.random() > 0.1 ? true : !prev);
+}, 4000);
+
+    return () => clearInterval(interval);
+
+}, []);
+
+return (
+<>
+
+<style>
+{keyframes}
+{\`
+@keyframes blink {
+0%, 50% { opacity: 1; }
+51%, 100% { opacity: 0; }
+}
+
+          @keyframes terminal-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(34, 197, 94, 0.5); }
+          }
+
+          .terminal-window {
+            animation: terminal-glow 4s ease-in-out infinite;
+          }
+
+          .status-indicator {
+            animation: blink 2s infinite;
+          }
+        \`}
+      </style>
+
       <div
+        className="terminal-window"
         style={{
-          backgroundColor: '#000',
-          color: '#00ff00',
-          fontFamily: 'Monaco, Consolas, monospace',
-          fontSize: '0.9rem',
-          padding: '1.5rem',
-          borderRadius: '8px',
-          minHeight: '200px',
-          whiteSpace: 'pre-line',
-          border: '2px solid #333',
-          width: '100%',
-          boxSizing: 'border-box',
-          wordWrap: 'break-word',
-          overflowWrap: 'break-word',
-          overflow: 'auto',
+          backgroundColor: '#0d1117',
+          borderRadius: '12px',
+          padding: '0',
+          fontFamily: 'JetBrains Mono, Consolas, monospace',
+          fontSize: '0.85rem',
+          color: '#f0f6fc',
+          lineHeight: '1.4',
+          minHeight: '500px',
+          border: '1px solid #30363d',
+          overflow: 'hidden',
         }}
       >
-        <div style={{ color: '#666', marginBottom: '0.5rem' }}>
-          Terminal - {currentTime}
+        {/* Terminal header */}
+        <div
+          style={{
+            backgroundColor: '#21262d',
+            padding: '12px 16px',
+            borderBottom: '1px solid #30363d',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ff5f57' }} />
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ffbd2e' }} />
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#28ca42' }} />
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#8b949e' }}>
+            Terminal — bash
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              className={isOnline ? 'status-indicator' : ''}
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: isOnline ? '#22c55e' : '#ef4444',
+              }}
+            />
+            <span style={{ fontSize: '0.7rem', color: '#8b949e' }}>
+              {isOnline ? 'Connected' : 'Offline'}
+            </span>
+          </div>
         </div>
-        {elements}
-        {cursor}
+
+        {/* Terminal content */}
+        <div style={{ padding: '16px', whiteSpace: 'pre-line' }}>
+          {elements}
+          {cursor}
+        </div>
+
+        {/* Current command indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '16px',
+            right: '16px',
+            backgroundColor: 'rgba(33, 38, 45, 0.8)',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            fontSize: '0.7rem',
+            color: '#8b949e',
+            border: '1px solid #30363d',
+          }}
+        >
+          Next: {commands[currentCommand]}
+        </div>
       </div>
     </>
-  );
+
+);
 };
 
 export default TerminalExample;`}
+instructions={[
+"Implement authentic terminal styling with proper color schemes",
+"Include realistic command outputs and system responses",
+"Add terminal header with standard window controls",
+"Show connection status and system information",
+"Create smooth typing effects that mimic real terminal usage"
+]}
 />
+
+## Use Cases
+
+- **Developer Documentation**: Demonstrate CLI tools and command usage
+- **Tutorial Platforms**: Step-by-step terminal instruction guides
+- **Portfolio Projects**: Showcase development workflow and expertise
+- **Educational Content**: Teach command-line interfaces and system administration
+- **Product Demos**: Display developer tool capabilities and features

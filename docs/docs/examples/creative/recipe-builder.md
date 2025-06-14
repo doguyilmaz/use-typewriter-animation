@@ -1,340 +1,350 @@
-# Recipe Builder Demo
+---
+sidebar_position: 7
+title: Recipe Builder
+description: Interactive recipe builder with ingredient tracking and cooking instructions
+tags: [cooking, recipe, builder, interactive, food]
+---
 
-This example creates an interactive recipe builder that types out cooking instructions step-by-step with ingredients, timing, and cooking tips.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { RecipeBuilderExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={RecipeBuilderExample}
+difficulty="Intermediate"
+description="Build an interactive recipe creator with ingredient tracking, step-by-step cooking instructions, and nutritional information display. Perfect for cooking apps, food blogs, and culinary education platforms."
+tags={["Recipe creation", "Cooking instructions", "Ingredient tracking", "Food apps", "Culinary education"]}
+code={`import React, { useEffect, useState } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function RecipeBuilderDemo() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [cookingTime, setCookingTime] = useState('0:00');
-  
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 50,
-    cursorStyle: 'bar',
-    cursorColor: '#f97316',
-  });
+const RecipeBuilderExample: React.FC = () => {
+const [currentStep, setCurrentStep] = useState(1);
+const [currentIngredient, setCurrentIngredient] = useState(0);
 
-  useEffect(() => {
-    typewriter
-      .colorize('#f97316')
-      .type('👨‍🍳 RECIPE BUILDER 👩‍🍳')
-      .colorize('#374151')
-      .newLine()
-      .type('▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#dc2626')
-      .type('📋 Recipe: ')
-      .colorize('#374151')
-      .type('Perfect Chocolate Chip Cookies')
-      .newLine()
-      .colorize('#059669')
-      .type('⏱️  Total Time: ')
-      .colorize('#374151')
-      .type('25 minutes')
-      .newLine()
-      .colorize('#3b82f6')
-      .type('👥 Serves: ')
-      .colorize('#374151')
-      .type('24 cookies')
-      .newLine()
-      .colorize('#8b5cf6')
-      .type('📊 Difficulty: ')
-      .colorize('#fbbf24')
-      .type('★★☆☆☆ Easy')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(1000)
-      .colorize('#f97316')
-      .type('🛒 Ingredients:')
-      .colorize('#374151')
-      .newLine()
-      .colorize('#059669')
-      .type('✓ ')
-      .colorize('#374151')
-      .type('2¼ cups all-purpose flour')
-      .newLine()
-      .colorize('#059669')
-      .type('✓ ')
-      .colorize('#374151')
-      .type('1 cup butter, softened')
-      .newLine()
-      .colorize('#059669')
-      .type('✓ ')
-      .colorize('#374151')
-      .type('¾ cup brown sugar')
-      .newLine()
-      .colorize('#059669')
-      .type('✓ ')
-      .colorize('#374151')
-      .type('½ cup white sugar')
-      .newLine()
-      .colorize('#059669')
-      .type('✓ ')
-      .colorize('#374151')
-      .type('2 large eggs')
-      .newLine()
-      .colorize('#059669')
-      .type('✓ ')
-      .colorize('#374151')
-      .type('2 cups chocolate chips')
-      .newLine()
-      .newLine()
-      .pauseFor(1200)
-      .colorize('#f97316')
-      .type('👨‍🍳 Instructions:')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .colorize('#3b82f6')
-      .type('Step 1: ')
-      .colorize('#374151')
-      .type('Preheat oven to 375°F (190°C)')
-      .newLine()
-      .colorize('#6b7280')
-      .type('💡 Tip: Use an oven thermometer for accuracy')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#3b82f6')
-      .type('Step 2: ')
-      .colorize('#374151')
-      .type('Mix dry ingredients in a bowl')
-      .newLine()
-      .colorize('#6b7280')
-      .type('⚠️  Don\'t overmix - keeps cookies tender')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#3b82f6')
-      .type('Step 3: ')
-      .colorize('#374151')
-      .type('Cream butter and sugars (3-4 minutes)')
-      .newLine()
-      .colorize('#6b7280')
-      .type('🥄 Should be light and fluffy')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#3b82f6')
-      .type('Step 4: ')
-      .colorize('#374151')
-      .type('Add eggs and vanilla, mix well')
-      .newLine()
-      .newLine()
-      .pauseFor(600)
-      .colorize('#3b82f6')
-      .type('Step 5: ')
-      .colorize('#374151')
-      .type('Gradually add flour mixture')
-      .newLine()
-      .newLine()
-      .pauseFor(600)
-      .colorize('#3b82f6')
-      .type('Step 6: ')
-      .colorize('#374151')
-      .type('Fold in chocolate chips')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#dc2626')
-      .type('🔥 Step 7: ')
-      .colorize('#374151')
-      .type('Bake for 9-11 minutes')
-      .newLine()
-      .colorize('#6b7280')
-      .type('⏰ Golden edges = perfect doneness!')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(1000)
-      .colorize('#059669')
-      .type('✨ Final Result: ')
-      .colorize('#fbbf24')
-      .type('24 delicious cookies! 🍪')
-      .colorize('#374151')
-      .start();
-  }, []);
+const { typewriter, elements, cursor, keyframes } = useTypewriter({
+typeSpeed: 40,
+cursorStyle: 'bar',
+cursorColor: '#f59e0b',
+});
 
-  // Simulate cooking timer
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentStep(prev => (prev % 7) + 1);
-      const minutes = Math.floor(Math.random() * 25);
-      const seconds = Math.floor(Math.random() * 60);
-      setCookingTime(`${minutes}:${seconds.toString().padStart(2, '0')}`);
-    }, 4000);
+const ingredients = [
+{ name: 'Fresh Basil', amount: '2 cups', cost: '$3.50' },
+{ name: 'Pine Nuts', amount: '1/2 cup', cost: '$8.99' },
+{ name: 'Parmesan', amount: '1 cup grated', cost: '$12.00' },
+{ name: 'Garlic', amount: '4 cloves', cost: '$1.25' },
+];
+
+useEffect(() => {
+typewriter
+.colorize('#10b981')
+.type('👨‍🍳 RECIPE BUILDER PRO 👩‍🍳')
+.colorize('#374151')
+.newLine()
+.type('══════════════════════════════════════════')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#3b82f6')
+.type('📋 Creating: ')
+.colorize('#10b981')
+.type('Classic Basil Pesto')
+.colorize('#374151')
+.newLine()
+.colorize('#6b7280')
+.type('Prep Time: 15 min | Cook Time: 0 min | Serves: 4')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#f59e0b')
+.type('🛒 INGREDIENTS CHECKLIST:')
+.colorize('#374151')
+.newLine()
+.type('────────────────────────────────────────')
+.newLine()
+.pauseFor(600)
+.colorize('#10b981')
+.type('✓ ')
+.colorize('#374151')
+.type('Fresh Basil leaves - 2 cups')
+.colorize('#6b7280')
+.type(' ($3.50)')
+.colorize('#374151')
+.newLine()
+.pauseFor(400)
+.colorize('#10b981')
+.type('✓ ')
+.colorize('#374151')
+.type('Pine nuts - 1/2 cup')
+.colorize('#6b7280')
+.type(' ($8.99)')
+.colorize('#374151')
+.newLine()
+.pauseFor(400)
+.colorize('#10b981')
+.type('✓ ')
+.colorize('#374151')
+.type('Parmesan cheese, grated - 1 cup')
+.colorize('#6b7280')
+.type(' ($12.00)')
+.colorize('#374151')
+.newLine()
+.pauseFor(400)
+.colorize('#10b981')
+.type('✓ ')
+.colorize('#374151')
+.type('Garlic cloves - 4 large')
+.colorize('#6b7280')
+.type(' ($1.25)')
+.colorize('#374151')
+.newLine()
+.pauseFor(400)
+.colorize('#10b981')
+.type('✓ ')
+.colorize('#374151')
+.type('Extra virgin olive oil - 1/2 cup')
+.colorize('#6b7280')
+.type(' ($4.99)')
+.colorize('#374151')
+.newLine()
+.pauseFor(400)
+.colorize('#10b981')
+.type('✓ ')
+.colorize('#374151')
+.type('Salt and pepper to taste')
+.colorize('#6b7280')
+.type(' ($0.50)')
+.colorize('#374151')
+.newLine()
+.newLine()
+.colorize('#dc2626')
+.type('💰 Total Cost: $31.23')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1200)
+.colorize('#8b5cf6')
+.type('👨‍🍳 COOKING INSTRUCTIONS:')
+.colorize('#374151')
+.newLine()
+.type('══════════════════════════════════════════')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#f59e0b')
+.type('[Step 1] ')
+.colorize('#374151')
+.type('Prepare the basil')
+.newLine()
+.colorize('#6b7280')
+.type('• Wash and dry fresh basil leaves thoroughly')
+.newLine()
+.type('• Remove any thick stems')
+.newLine()
+.type('• Tear larger leaves into smaller pieces')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#f59e0b')
+.type('[Step 2] ')
+.colorize('#374151')
+.type('Toast the pine nuts')
+.newLine()
+.colorize('#6b7280')
+.type('• Heat a dry pan over medium heat')
+.newLine()
+.type('• Add pine nuts and toast for 2-3 minutes')
+.newLine()
+.type('• Stir frequently until golden brown')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#f59e0b')
+.type('[Step 3] ')
+.colorize('#374151')
+.type('Process in food processor')
+.newLine()
+.colorize('#6b7280')
+.type('• Add garlic and pulse until minced')
+.newLine()
+.type('• Add pine nuts and basil, pulse until chopped')
+.newLine()
+.type('• Slowly drizzle in olive oil while processing')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#f59e0b')
+.type('[Step 4] ')
+.colorize('#374151')
+.type('Final touches')
+.newLine()
+.colorize('#6b7280')
+.type('• Stir in grated Parmesan cheese')
+.newLine()
+.type('• Season with salt and pepper')
+.newLine()
+.type('• Taste and adjust seasoning')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1500)
+.colorize('#10b981')
+.type('🎉 RECIPE COMPLETE! 🎉')
+.colorize('#374151')
+.newLine()
+.newLine()
+.colorize('#3b82f6')
+.type('💡 Chef\\'s Tips:')
+.colorize('#374151')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Store in refrigerator for up to 1 week')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Freeze in ice cube trays for portion control')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Add a splash of lemon juice to prevent browning')
+.start();
+}, []);
+
+// Simulate cooking progress
+useEffect(() => {
+const interval = setInterval(() => {
+setCurrentStep(prev => (prev % 4) + 1);
+setCurrentIngredient(prev => (prev + 1) % ingredients.length);
+}, 3000);
 
     return () => clearInterval(interval);
-  }, []);
 
-  return (
-    <>
-      <style>
-        {keyframes}
-        {`
-          @keyframes steam {
-            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
-          }
-          
-          @keyframes bake {
-            0%, 100% { background-color: #fed7aa; }
-            50% { background-color: #fbbf24; }
-          }
-          
-          @keyframes ingredient-pulse {
+}, []);
+
+return (
+<>
+
+<style>
+{keyframes}
+{\`
+@keyframes steam {
+0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+50% { transform: translateY(-10px) rotate(180deg); opacity: 1; }
+}
+
+          @keyframes bubble {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
           }
-        `}
+
+          .cooking-step {
+            animation: bubble 2s ease-in-out infinite;
+          }
+
+          .ingredient-highlight {
+            animation: steam 3s ease-in-out infinite;
+          }
+        \`}
       </style>
+
       <div
         style={{
-          fontFamily: '"Comic Neue", "Comic Sans MS", cursive',
-          fontSize: '0.95rem',
-          lineHeight: '1.6',
+          backgroundColor: '#fef3c7',
+          borderRadius: '16px',
           padding: '2.5rem',
-          backgroundColor: '#fef7ed',
-          border: '3px solid #f97316',
-          borderRadius: '20px',
-          minHeight: '400px',
-          boxShadow: '0 15px 35px rgba(249, 115, 22, 0.2)',
+          fontFamily: 'Georgia, serif',
+          fontSize: '0.95rem',
+          color: '#78350f',
+          lineHeight: '1.6',
+          minHeight: '500px',
+          border: '2px solid #f59e0b',
           position: 'relative',
-          background: 'linear-gradient(135deg, #fef7ed 0%, #fff7ed 100%)',
+          background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
         }}
       >
+        {/* Kitchen decoration */}
         <div
           style={{
             position: 'absolute',
-            top: '16px',
-            right: '16px',
+            top: '1rem',
+            right: '1rem',
+            fontSize: '2rem',
+            animation: 'steam 4s ease-in-out infinite',
+          }}
+        >
+          🍽️
+        </div>
+
+        {/* Current step indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            left: '1rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            backgroundColor: 'white',
+            gap: '10px',
+            backgroundColor: '#f59e0b',
+            color: 'white',
             padding: '8px 16px',
             borderRadius: '20px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            fontSize: '0.8rem',
+            fontWeight: 'bold',
           }}
         >
-          <span
-            style={{
-              fontSize: '1.2rem',
-              animation: 'steam 2s ease-in-out infinite',
-            }}
-          >
-            🔥
-          </span>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.7rem', color: '#6b7280' }}>Timer</span>
-            <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#f97316' }}>
-              {cookingTime}
-            </span>
-          </div>
+          <span className="cooking-step">Step {currentStep}</span>
         </div>
 
+        {/* Ingredient spotlight */}
         <div
           style={{
             position: 'absolute',
-            top: '70px',
-            right: '20px',
-            backgroundColor: '#f97316',
-            color: 'white',
-            padding: '6px 12px',
-            borderRadius: '12px',
-            fontSize: '0.75rem',
-            fontWeight: '600',
-            animation: currentStep <= 7 ? 'bake 3s ease-in-out infinite' : 'none',
-          }}
-        >
-          Step {currentStep}/7
-        </div>
-
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '16px',
-            right: '16px',
+            bottom: '1rem',
+            right: '1rem',
             display: 'flex',
+            alignItems: 'center',
             gap: '8px',
+            backgroundColor: 'rgba(251, 191, 36, 0.2)',
+            padding: '8px 12px',
+            borderRadius: '12px',
+            fontSize: '0.8rem',
           }}
         >
-          <span style={{ fontSize: '1.5rem', animation: 'ingredient-pulse 2s infinite' }}>🥄</span>
-          <span style={{ fontSize: '1.5rem', animation: 'ingredient-pulse 2s infinite 0.5s' }}>🥚</span>
-          <span style={{ fontSize: '1.5rem', animation: 'ingredient-pulse 2s infinite 1s' }}>🍫</span>
+          <span className="ingredient-highlight">🥄</span>
+          <span>Now using: {ingredients[currentIngredient]?.name}</span>
         </div>
 
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '16px',
-            left: '16px',
-            fontSize: '0.75rem',
-            color: '#92400e',
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-            padding: '4px 8px',
-            borderRadius: '6px',
-          }}
-        >
-          🍪 Recipe Progress: Active
-        </div>
-
-        <div style={{ color: '#374151', whiteSpace: 'pre-wrap' }}>
+        {/* Main recipe content */}
+        <div style={{ whiteSpace: 'pre-line' }}>
           {elements}
           {cursor}
         </div>
       </div>
     </>
-  );
-}
-```
 
-## Key Features
+);
+};
 
-- **Complete Recipe Format**: Ingredients, instructions, and tips
-- **Step-by-step Instructions**: Clear, numbered cooking steps
-- **Cooking Tips**: Professional advice for best results
-- **Timing Information**: Total time, difficulty, and serving size
-- **Visual Indicators**: Icons for different types of information
-- **Real-time Timer**: Simulated cooking timer display
-- **Progress Tracking**: Current step indication
-- **Ingredient Checklist**: Visual checkmarks for ingredients
-
-## Recipe Builder Elements
-
-1. **Recipe Metadata**: Title, time, difficulty, servings
-2. **Ingredient List**: Complete ingredient checklist
-3. **Step Instructions**: Detailed cooking procedures
-4. **Cooking Tips**: Professional advice and warnings
-5. **Visual Cues**: Icons and colors for different information types
-6. **Progress Tracking**: Step counter and timer
-
-## Interactive Features
-
-- **Live Timer**: Real-time cooking timer simulation
-- **Step Progress**: Visual indication of current cooking step
-- **Animated Ingredients**: Pulsing ingredient icons
-- **Steam Effects**: Animated cooking indicators
-- **Status Updates**: Active recipe progress display
-
-## Visual Design
-
-- **Warm Colors**: Orange and brown cooking-themed palette
-- **Friendly Typography**: Comic-style font for approachable feel
-- **Cooking Icons**: Emojis enhance visual understanding
-- **Gradient Background**: Warm, kitchen-like atmosphere
+export default RecipeBuilderExample;`}
+instructions={[
+"Structure recipes with clear ingredient lists and step-by-step instructions",
+"Add cost calculation and nutritional information for meal planning",
+"Include cooking tips and chef recommendations for better results",
+"Implement progress tracking through cooking steps",
+"Design warm, kitchen-inspired visual theme with food emojis"
+]}
+/>
 
 ## Use Cases
 
-- **Cooking Websites**: Display recipes with engaging animations
-- **Food Blogs**: Make recipe content more interactive
-- **Cooking Apps**: Show step-by-step cooking guidance
-- **Educational Platforms**: Teach cooking techniques
-- **Restaurant Websites**: Showcase signature dish preparations
+- **Cooking Apps**: Recipe creation and sharing platforms
+- **Food Blogs**: Interactive recipe presentations
+- **Culinary Education**: Step-by-step cooking instruction tools
+- **Meal Planning**: Cost-effective recipe development
+- **Restaurant Menus**: Digital recipe display systems

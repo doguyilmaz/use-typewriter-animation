@@ -1,11 +1,22 @@
-# Multi-line Poetry Demo
+---
+sidebar_position: 8
+title: Multi-line Poetry
+description: Elegant typography with poetic timing, centered layouts, and literary aesthetics for artistic content
+tags: [poetry, multi-line, typography, literary, artistic]
+---
 
-This example demonstrates elegant multi-line text layouts with poetic timing and beautiful typography for artistic content presentation.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { MultiLinePoetryExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={MultiLinePoetryExample}
+difficulty="Beginner"
+description="Master elegant multi-line text layouts with poetic timing and beautiful typography for artistic content presentation. Perfect for literary websites, creative portfolios, and brand storytelling with emotional impact."
+tags={["Poetic timing", "Literary typography", "Multi-line layout", "Artistic content", "Creative presentation"]}
+code={`import React, { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function MultiLinePoetryDemo() {
+const MultiLinePoetryExample: React.FC = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 80,
     cursorStyle: 'bar',
@@ -74,7 +85,7 @@ function MultiLinePoetryDemo() {
       .pauseFor(1200)
       .type('        ')
       .colorize('#6b7280')
-      .type('~ A Developer\'s Heart')
+      .type('~ A Developer\\'s Heart')
       .colorize('#374151')
       .start();
   }, []);
@@ -151,38 +162,22 @@ function MultiLinePoetryDemo() {
       </div>
     </>
   );
-}
-```
+};
 
-## Key Features
-
-- **Poetic Rhythm**: Strategic pauses between lines create natural reading flow
-- **Semantic Coloring**: Technical terms highlighted with relevant colors
-- **Centered Layout**: Poetry-appropriate text alignment
-- **Elegant Typography**: Serif font for literary aesthetic
-- **Visual Poetry**: Line breaks and spacing create visual harmony
-- **Thematic Content**: Connects programming with artistic expression
-
-## Poetry Techniques
-
-- **Rhythmic Pauses**: Longer pauses between stanzas, shorter between lines
-- **Word Emphasis**: Color coding for technical terms and emotions
-- **Visual Structure**: Consistent line spacing and indentation
-- **Attribution**: Author credit with subtle styling
-- **Quote Marks**: Decorative elements frame the content
-
-## Styling Elements
-
-- **Gradient Background**: Subtle color transition
-- **Decorative Borders**: Accent line at top
-- **Quote Symbols**: Large, transparent quotation marks
-- **Centered Text**: Appropriate for poetry presentation
-- **Serif Typography**: Literary tradition meets modern web
+export default MultiLinePoetryExample;`}
+instructions={[
+"Use newLine() method to create proper line breaks for poetic structure",
+"Add strategic pauseFor() delays between stanzas and lines for natural reading rhythm",
+"Apply colorize() to highlight technical terms and emotional keywords",
+"Use serif fonts and centered text alignment for literary aesthetic appeal",
+"Include decorative elements like quote marks and accent lines for visual poetry"
+]}
+/>
 
 ## Use Cases
 
-- **Literary Websites**: Present poetry and prose with elegance
-- **About Pages**: Personal or company narratives with artistic flair
-- **Educational Content**: Make learning content more engaging
-- **Brand Storytelling**: Narrative marketing with emotional impact
-- **Creative Portfolios**: Showcase writing and creative work
+- **Literary Websites**: Present poetry and prose with elegant typography and timing
+- **About Pages**: Personal or company narratives with artistic flair and emotional impact
+- **Educational Content**: Make learning materials more engaging with poetic presentations
+- **Brand Storytelling**: Narrative marketing that connects emotionally with audiences
+- **Creative Portfolios**: Showcase writing and creative work with professional typography

@@ -1,11 +1,22 @@
-# Glitch Effect Demo
+---
+sidebar_position: 3
+title: Glitch Effect
+description: Cyberpunk-style glitch effect with corrupted text, random characters, and digital noise simulation
+tags: [glitch, cyberpunk, corruption, digital-noise, error]
+---
 
-This example creates a cyberpunk-style glitch effect with corrupted text, random characters, and digital noise to simulate system malfunctions.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { GlitchEffectExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={GlitchEffectExample}
+difficulty="Intermediate"
+description="Create cyberpunk-style glitch effects with corrupted text, random characters, and digital noise to simulate system malfunctions. Perfect for sci-fi websites, gaming interfaces, and creative portfolios."
+tags={["Glitch effects", "Cyberpunk aesthetics", "System corruption", "Digital noise", "Error simulation"]}
+code={`import React, { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function GlitchEffectDemo() {
+const GlitchEffectExample: React.FC = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 30,
     cursorStyle: 'block',
@@ -80,7 +91,7 @@ function GlitchEffectDemo() {
     <>
       <style>
         {keyframes}
-        {`
+        {\`
           @keyframes glitch-bg {
             0%, 100% { background-position: 0% 50%; }
             25% { background-position: 100% 50%; }
@@ -127,7 +138,7 @@ function GlitchEffectDemo() {
               );
             pointer-events: none;
           }
-        `}
+        \`}
       </style>
       <div
         className="glitch-container"
@@ -166,38 +177,22 @@ function GlitchEffectDemo() {
       </div>
     </>
   );
-}
-```
+};
 
-## Key Features
-
-- **Cyberpunk Aesthetics**: Dark background with neon green accents
-- **Corrupted Text**: Mixed languages, symbols, and broken characters
-- **Digital Glitch**: Text replacement showing corruption and recovery
-- **Binary Code**: Computer language elements
-- **Animated Scanlines**: CSS animation creates CRT monitor effect
-- **Progress Bars**: Visual loading sequences with block characters
-
-## Glitch Techniques
-
-1. **Character Corruption**: Use Unicode combining characters and symbols
-2. **Language Mixing**: Combine different character sets and languages
-3. **Binary Representation**: Show raw computer data
-4. **Error Simulation**: System-style error messages
-5. **Recovery Sequence**: Show system restoration process
-
-## Visual Effects
-
-- **Scanline Animation**: Moving light effect across the screen
-- **Background Gradients**: Animated color shifts
-- **CRT Monitor Look**: Subtle line patterns overlay
-- **Neon Glow**: Box shadow creates terminal screen glow
-- **Matrix-style Colors**: Green on black classic hacker aesthetic
+export default GlitchEffectExample;`}
+instructions={[
+"Use Unicode combining characters and symbols to create authentic glitch corruption effects",
+"Implement deleteLetters() to show text correction and recovery sequences",
+"Apply contrasting colors (neon green, red, yellow) for cyberpunk aesthetic",
+"Add CSS animations for scanlines and background effects to enhance digital corruption",
+"Use monospace fonts and terminal-style styling for authentic hacker/system interface"
+]}
+/>
 
 ## Use Cases
 
-- **Cyberpunk Websites**: Science fiction and gaming sites
-- **Tech Demos**: Show system capabilities or errors
-- **Creative Portfolios**: Stand out with unique visual effects
-- **Error Pages**: Make 404 pages engaging and on-brand
-- **Gaming Interfaces**: Create immersive game experiences
+- **Cyberpunk Websites**: Science fiction and gaming sites with futuristic aesthetics
+- **Error Pages**: Make 404 pages engaging with system malfunction simulation
+- **Gaming Interfaces**: Create immersive game experiences with digital corruption effects
+- **Creative Portfolios**: Stand out with unique visual effects and memorable presentations
+- **Tech Demos**: Show system capabilities or demonstrate error handling scenarios

@@ -21,7 +21,6 @@ export default defineConfig({
       exclude: [
         'node_modules/',
         'dist/',
-        'examples/',
         'docs/',
         'scripts/',
         'tests/setup.ts',
@@ -46,7 +45,7 @@ export default defineConfig({
     ],
 
     // Exclude patterns
-    exclude: ['node_modules/', 'dist/', 'examples/', 'docs/', '.git/'],
+    exclude: ['node_modules/', 'dist/', 'docs/', '.git/'],
 
     // Test timeout
     testTimeout: 10000,

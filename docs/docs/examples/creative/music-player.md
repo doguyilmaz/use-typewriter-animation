@@ -1,259 +1,375 @@
-# Music Player Demo
+---
+sidebar_position: 9
+title: Music Player
+description: Interactive music player interface with song queue and playback controls
+tags: [music, player, audio, interface, entertainment]
+---
 
-This example simulates a retro music player interface with song information, playback controls, and animated waveform visualization.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { MusicPlayerExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={MusicPlayerExample}
+difficulty="Intermediate"
+description="Build an immersive music player interface with song queue management, playback controls, and real-time track information display. Perfect for entertainment apps, audio streaming platforms, and multimedia showcases."
+tags={["Music interface", "Audio player", "Playlist management", "Entertainment apps", "Media controls"]}
+code={`import React, { useEffect, useState } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function MusicPlayerDemo() {
-  const [currentTime, setCurrentTime] = useState('0:00');
-  const [isPlaying, setIsPlaying] = useState(false);
-  
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 40,
-    cursorStyle: 'bar',
-    cursorColor: '#ff6b6b',
-  });
+const MusicPlayerExample: React.FC = () => {
+const [currentTrack, setCurrentTrack] = useState(0);
+const [isPlaying, setIsPlaying] = useState(true);
+const [volume, setVolume] = useState(75);
 
-  useEffect(() => {
-    typewriter
-      .colorize('#ff6b6b')
-      .type('♪ ♫ RETRO MUSIC PLAYER ♫ ♪')
-      .colorize('#333333')
-      .newLine()
-      .type('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#4ecdc4')
-      .type('Now Playing:')
-      .colorize('#333333')
-      .newLine()
-      .colorize('#ff6b6b')
-      .type('🎵 "Cosmic Journey"')
-      .colorize('#333333')
-      .newLine()
-      .colorize('#95e1d3')
-      .type('Artist: ')
-      .colorize('#666666')
-      .type('Digital Dreams')
-      .colorize('#333333')
-      .newLine()
-      .colorize('#95e1d3')
-      .type('Album: ')
-      .colorize('#666666')
-      .type('Neon Nights (2024)')
-      .colorize('#333333')
-      .newLine()
-      .newLine()
-      .pauseFor(1000)
-      .colorize('#4ecdc4')
-      .type('⏯️  Controls: ')
-      .colorize('#ff6b6b')
-      .type('⏮️ ⏸️ ⏭️')
-      .colorize('#333333')
-      .newLine()
-      .newLine()
-      .pauseFor(600)
-      .colorize('#ffd93d')
-      .type('📊 Waveform: ')
-      .colorize('#ff6b6b')
-      .type('▁▃▅▂▄▆▅▃▁▂▄▇▅▂▁▃▆▄▂▅▃▁')
-      .colorize('#333333')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#95e1d3')
-      .type('Duration: ')
-      .colorize('#666666')
-      .type('3:47')
-      .colorize('#333333')
-      .type(' / ')
-      .colorize('#666666')
-      .type('3:47')
-      .colorize('#333333')
-      .newLine()
-      .colorize('#95e1d3')
-      .type('Progress: ')
-      .colorize('#ff6b6b')
-      .type('█')
-      .pauseFor(200)
-      .type('█')
-      .pauseFor(200)
-      .type('█')
-      .pauseFor(200)
-      .type('█')
-      .pauseFor(200)
-      .type('█')
-      .pauseFor(200)
-      .type('█')
-      .colorize('#e0e0e0')
-      .type('░░░░░░░░░░')
-      .colorize('#333333')
-      .type(' 60%')
-      .newLine()
-      .newLine()
-      .pauseFor(1200)
-      .colorize('#4ecdc4')
-      .type('🎧 Volume: ')
-      .colorize('#ff6b6b')
-      .type('██████████')
-      .colorize('#e0e0e0')
-      .type('░░')
-      .colorize('#666666')
-      .type(' 80%')
-      .colorize('#333333')
-      .newLine()
-      .newLine()
-      .pauseFor(600)
-      .colorize('#ffd93d')
-      .type('⭐ Rating: ')
-      .colorize('#ff6b6b')
-      .type('★★★★☆')
-      .colorize('#333333')
-      .type(' (4.2/5)')
-      .start();
-  }, []);
+const { typewriter, elements, cursor, keyframes } = useTypewriter({
+typeSpeed: 45,
+cursorStyle: 'bar',
+cursorColor: '#8b5cf6',
+});
 
-  // Simulate time updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const minutes = Math.floor(Math.random() * 4);
-      const seconds = Math.floor(Math.random() * 60);
-      setCurrentTime(`${minutes}:${seconds.toString().padStart(2, '0')}`);
-      setIsPlaying(Math.random() > 0.5);
-    }, 2000);
+const tracks = [
+{ title: 'Synthwave Dreams', artist: 'Neon Pulse', duration: '3:42' },
+{ title: 'Digital Horizon', artist: 'Cyber Flow', duration: '4:15' },
+{ title: 'Electric Nights', artist: 'Voltage', duration: '3:28' },
+{ title: 'Future Vibes', artist: 'Echo Labs', duration: '3:55' },
+];
+
+useEffect(() => {
+typewriter
+.colorize('#8b5cf6')
+.type('🎵 MUSIC PLAYER INTERFACE 🎵')
+.colorize('#e5e7eb')
+.newLine()
+.type('══════════════════════════════════════════')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#10b981')
+.type('♪ Now Playing:')
+.colorize('#e5e7eb')
+.newLine()
+.colorize('#3b82f6')
+.type('🎧 ')
+.colorize('#f3f4f6')
+.type('Synthwave Dreams')
+.colorize('#9ca3af')
+.type(' - Neon Pulse')
+.colorize('#e5e7eb')
+.newLine()
+.colorize('#6b7280')
+.type('Duration: 3:42 | Quality: 320kbps | Genre: Electronic')
+.colorize('#e5e7eb')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#fbbf24')
+.type('🎛️ Playback Controls:')
+.colorize('#e5e7eb')
+.newLine()
+.type('────────────────────────────────────────')
+.newLine()
+.pauseFor(600)
+.colorize('#6b7280')
+.type('[')
+.colorize('#10b981')
+.type('⏮️ PREV')
+.colorize('#6b7280')
+.type('] [')
+.colorize('#ef4444')
+.type('⏸️ PAUSE')
+.colorize('#6b7280')
+.type('] [')
+.colorize('#10b981')
+.type('⏭️ NEXT')
+.colorize('#6b7280')
+.type('] [')
+.colorize('#8b5cf6')
+.type('🔀 SHUFFLE')
+.colorize('#6b7280')
+.type('] [')
+.colorize('#f59e0b')
+.type('🔁 REPEAT')
+.colorize('#6b7280')
+.type(']')
+.colorize('#e5e7eb')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#3b82f6')
+.type('🎚️ Volume: ')
+.colorize('#10b981')
+.type('75%')
+.colorize('#6b7280')
+.type(' [████████░░] ')
+.colorize('#e5e7eb')
+.newLine()
+.colorize('#8b5cf6')
+.type('📊 Progress: ')
+.colorize('#fbbf24')
+.type('1:23')
+.colorize('#6b7280')
+.type(' / ')
+.colorize('#9ca3af')
+.type('3:42')
+.colorize('#6b7280')
+.type(' [███░░░░░░░]')
+.colorize('#e5e7eb')
+.newLine()
+.newLine()
+.pauseFor(1200)
+.colorize('#f59e0b')
+.type('📜 QUEUE (4 tracks):')
+.colorize('#e5e7eb')
+.newLine()
+.type('══════════════════════════════════════════')
+.newLine()
+.pauseFor(600)
+.colorize('#10b981')
+.type('▶ ')
+.colorize('#f3f4f6')
+.type('1. Synthwave Dreams')
+.colorize('#9ca3af')
+.type(' - Neon Pulse')
+.colorize('#6b7280')
+.type(' (3:42)')
+.colorize('#e5e7eb')
+.newLine()
+.pauseFor(400)
+.colorize('#6b7280')
+.type(' ')
+.colorize('#f3f4f6')
+.type('2. Digital Horizon')
+.colorize('#9ca3af')
+.type(' - Cyber Flow')
+.colorize('#6b7280')
+.type(' (4:15)')
+.colorize('#e5e7eb')
+.newLine()
+.pauseFor(400)
+.colorize('#6b7280')
+.type(' ')
+.colorize('#f3f4f6')
+.type('3. Electric Nights')
+.colorize('#9ca3af')
+.type(' - Voltage')
+.colorize('#6b7280')
+.type(' (3:28)')
+.colorize('#e5e7eb')
+.newLine()
+.pauseFor(400)
+.colorize('#6b7280')
+.type(' ')
+.colorize('#f3f4f6')
+.type('4. Future Vibes')
+.colorize('#9ca3af')
+.type(' - Echo Labs')
+.colorize('#6b7280')
+.type(' (3:55)')
+.colorize('#e5e7eb')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#ec4899')
+.type('🎨 Equalizer:')
+.colorize('#e5e7eb')
+.newLine()
+.colorize('#6b7280')
+.type('Bass: [██████░░░░] 60%')
+.newLine()
+.type('Mid: [████████░░] 80%')
+.newLine()
+.type('Treble: [██████████] 100%')
+.colorize('#e5e7eb')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#10b981')
+.type('💿 Album: ')
+.colorize('#f3f4f6')
+.type('Retrowave Collection Vol. 1')
+.colorize('#e5e7eb')
+.newLine()
+.colorize('#3b82f6')
+.type('🏷️ Playlist: ')
+.colorize('#f3f4f6')
+.type('Coding Sessions')
+.colorize('#e5e7eb')
+.newLine()
+.colorize('#fbbf24')
+.type('⭐ Favorites: ')
+.colorize('#f3f4f6')
+.type('247 tracks')
+.colorize('#e5e7eb')
+.newLine()
+.newLine()
+.pauseFor(1500)
+.colorize('#8b5cf6')
+.type('🎉 Enjoying your music! 🎉')
+.start();
+}, []);
+
+// Simulate music player activity
+useEffect(() => {
+const interval = setInterval(() => {
+setCurrentTrack(prev => (prev + 1) % tracks.length);
+setIsPlaying(prev => Math.random() > 0.3);
+setVolume(prev => Math.max(20, Math.min(100, prev + (Math.random() - 0.5) \* 20)));
+}, 4000);
 
     return () => clearInterval(interval);
-  }, []);
 
-  return (
-    <>
-      <style>
-        {keyframes}
-        {`
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+}, []);
+
+return (
+<>
+
+<style>
+{keyframes}
+{\`
+@keyframes pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.05); }
+}
+
+          @keyframes equalizer {
+            0%, 100% { height: 20%; }
+            25% { height: 60%; }
+            50% { height: 100%; }
+            75% { height: 40%; }
           }
-          
-          @keyframes waveform {
-            0%, 100% { transform: scaleY(1); }
-            25% { transform: scaleY(1.5); }
-            50% { transform: scaleY(0.8); }
-            75% { transform: scaleY(1.2); }
+
+          .music-pulse {
+            animation: pulse 2s ease-in-out infinite;
           }
-        `}
+
+          .equalizer-bar {
+            animation: equalizer 1.5s ease-in-out infinite;
+          }
+        \`}
       </style>
+
       <div
         style={{
-          fontFamily: '"IBM Plex Mono", "Courier New", monospace',
-          fontSize: '0.9rem',
-          lineHeight: '1.6',
+          backgroundColor: '#1f2937',
+          borderRadius: '16px',
           padding: '2.5rem',
-          backgroundColor: '#f7f9fc',
-          border: '3px solid #ff6b6b',
-          borderRadius: '20px',
-          minHeight: '320px',
-          boxShadow: '0 15px 35px rgba(255, 107, 107, 0.2)',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '0.9rem',
+          color: '#e5e7eb',
+          lineHeight: '1.6',
+          minHeight: '500px',
+          border: '2px solid #8b5cf6',
           position: 'relative',
-          background: 'linear-gradient(135deg, #f7f9fc 0%, #e8f4f8 100%)',
+          background: 'linear-gradient(135deg, #1f2937 0%, #374151 100%)',
         }}
       >
+        {/* Album art placeholder */}
         <div
           style={{
             position: 'absolute',
-            top: '-10px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            backgroundColor: '#ff6b6b',
+            top: '1rem',
+            right: '1rem',
+            width: '80px',
+            height: '80px',
+            backgroundColor: '#8b5cf6',
+            borderRadius: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2rem',
             color: 'white',
+          }}
+          className="music-pulse"
+        >
+          🎵
+        </div>
+
+        {/* Player status */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            left: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: 'rgba(139, 92, 246, 0.2)',
             padding: '8px 16px',
             borderRadius: '20px',
-            fontSize: '0.75rem',
-            fontWeight: '600',
-            animation: isPlaying ? 'pulse 2s infinite' : 'none',
+            fontSize: '0.8rem',
           }}
         >
-          {isPlaying ? '🔊 PLAYING' : '⏸️ PAUSED'} • {currentTime}
+          <span style={{ color: isPlaying ? '#10b981' : '#ef4444' }}>
+            {isPlaying ? '▶️' : '⏸️'}
+          </span>
+          <span>{isPlaying ? 'Playing' : 'Paused'}</span>
         </div>
 
+        {/* Equalizer visualization */}
         <div
           style={{
             position: 'absolute',
-            top: '16px',
-            right: '16px',
+            bottom: '1rem',
+            right: '1rem',
             display: 'flex',
-            gap: '8px',
+            gap: '4px',
+            alignItems: 'end',
+            height: '40px',
           }}
         >
-          <div
-            style={{
-              width: '12px',
-              height: '12px',
-              backgroundColor: '#4ecdc4',
-              borderRadius: '50%',
-              animation: 'pulse 1s infinite',
-            }}
-          />
-          <div
-            style={{
-              width: '12px',
-              height: '12px',
-              backgroundColor: '#ffd93d',
-              borderRadius: '50%',
-            }}
-          />
-          <div
-            style={{
-              width: '12px',
-              height: '12px',
-              backgroundColor: '#ff6b6b',
-              borderRadius: '50%',
-            }}
-          />
+          {[1, 2, 3, 4, 5].map(i => (
+            <div
+              key={i}
+              className="equalizer-bar"
+              style={{
+                width: '6px',
+                backgroundColor: '#8b5cf6',
+                borderRadius: '2px',
+                animationDelay: \`\${i * 0.1}s\`,
+                minHeight: '8px',
+              }}
+            />
+          ))}
         </div>
 
-        <div style={{ color: '#333333', whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
+        {/* Volume indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '1rem',
+            left: '1rem',
+            fontSize: '0.8rem',
+            color: '#9ca3af',
+          }}
+        >
+          🔊 {Math.round(volume)}%
+        </div>
+
+        {/* Main content */}
+        <div style={{ whiteSpace: 'pre-line' }}>
           {elements}
           {cursor}
         </div>
       </div>
     </>
-  );
-}
-```
 
-## Key Features
+);
+};
 
-- **Music Interface**: Complete music player simulation
-- **Real-time Updates**: Dynamic time and status indicators
-- **Visual Progress Bars**: Show playback progress and volume levels
-- **Waveform Visualization**: ASCII art representation of audio
-- **Rating System**: Star-based music rating display
-- **Control Buttons**: Standard music player controls (play, pause, skip)
-- **Color-coded Information**: Different colors for different data types
-
-## Music Player Elements
-
-1. **Track Information**: Song title, artist, album
-2. **Playback Controls**: Visual representation of player buttons
-3. **Progress Tracking**: Time elapsed and remaining
-4. **Volume Control**: Visual volume level indicator
-5. **Waveform Display**: ASCII-based audio visualization
-6. **Rating System**: Star ratings for tracks
-
-## Interactive Features
-
-- **Live Status**: Real-time playing/paused status
-- **Dynamic Time**: Simulated current playback time
-- **Visual Feedback**: Pulsing animations for active states
-- **Status Indicators**: LED-style lights showing system status
+export default MusicPlayerExample;`}
+instructions={[
+"Design immersive audio player interface with comprehensive controls",
+"Implement queue management and track progression systems",
+"Add real-time equalizer visualization and volume controls",
+"Include metadata display for albums, playlists, and favorites",
+"Create responsive player status indicators and progress tracking"
+]}
+/>
 
 ## Use Cases
 
-- **Music Streaming Sites**: Showcase player interface design
-- **Audio Software Demos**: Demonstrate music application features
-- **Creative Portfolios**: Show UI/UX design capabilities
-- **Entertainment Websites**: Create engaging music-themed content
-- **Retro-themed Projects**: Nostalgic music player aesthetics
+- **Music Streaming Apps**: Core player interface for audio streaming platforms
+- **Entertainment Software**: Media player components for desktop applications
+- **Web Audio Projects**: Interactive music players for websites and portfolios
+- **Educational Platforms**: Audio content players for courses and tutorials
+- **Gaming Applications**: Background music controllers and audio management

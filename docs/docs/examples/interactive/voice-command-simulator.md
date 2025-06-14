@@ -1,356 +1,392 @@
-# Voice Command Simulator Demo
+---
+sidebar_position: 2
+title: Voice Command Simulator
+description: Interactive voice assistant simulation with speech recognition and command processing
+tags: [voice, assistant, commands, AI, interaction]
+---
 
-This example creates an interactive voice assistant interface with speech recognition simulation, command processing, and responsive feedback.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { VoiceCommandExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={VoiceCommandExample}
+difficulty="Advanced"
+description="Create an immersive voice assistant interface with speech recognition simulation, command processing, and intelligent responses. Perfect for AI demonstrations, voice UI prototypes, and interactive assistant showcases."
+tags={["Voice interaction", "AI assistant", "Speech recognition", "Command processing", "Smart interface"]}
+code={`import React, { useEffect, useState } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function VoiceCommandSimulatorDemo() {
-  const [isListening, setIsListening] = useState(false);
-  const [currentCommand, setCurrentCommand] = useState('');
-  const [confidenceLevel, setConfidenceLevel] = useState(0);
-  
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 60,
-    cursorStyle: 'bar',
-    cursorColor: '#3b82f6',
-    enableKeyboardControls: true,
-    autoKeyboardHandling: true,
-  });
+const VoiceCommandExample: React.FC = () => {
+const [isListening, setIsListening] = useState(false);
+const [currentCommand, setCurrentCommand] = useState('');
+const [confidence, setConfidence] = useState(95);
 
-  useEffect(() => {
-    typewriter
-      .colorize('#3b82f6')
-      .type('🎤 VOICE COMMAND SIMULATOR 🎤')
-      .colorize('#374151')
-      .newLine()
-      .type('●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#10b981')
-      .type('✓ Voice Assistant: ')
-      .colorize('#374151')
-      .type('ONLINE')
-      .newLine()
-      .colorize('#10b981')
-      .type('✓ Microphone: ')
-      .colorize('#374151')
-      .type('Connected')
-      .newLine()
-      .colorize('#10b981')
-      .type('✓ Speech Engine: ')
-      .colorize('#374151')
-      .type('Ready')
-      .newLine()
-      .newLine()
-      .pauseFor(1000)
-      .colorize('#f59e0b')
-      .type('🔍 Listening for: "Hey Assistant"')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(1500)
-      .colorize('#3b82f6')
-      .type('🎯 Wake word detected!')
-      .colorize('#374151')
-      .newLine()
-      .colorize('#6b7280')
-      .type('Confidence: 95.7%')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#8b5cf6')
-      .type('🎤 Listening... (speak now)')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(1200)
-      .colorize('#059669')
-      .type('📝 Transcription:')
-      .colorize('#374151')
-      .newLine()
-      .colorize('#1f2937')
-      .type('"What\'s the weather like today?"')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(1000)
-      .colorize('#f59e0b')
-      .type('🧠 Processing command...')
-      .colorize('#374151')
-      .newLine()
-      .colorize('#6b7280')
-      .type('• Intent: weather_query')
-      .newLine()
-      .colorize('#6b7280')
-      .type('• Entity: time = "today"')
-      .newLine()
-      .colorize('#6b7280')
-      .type('• Confidence: 92.3%')
-      .newLine()
-      .newLine()
-      .pauseFor(1500)
-      .colorize('#10b981')
-      .type('🤖 Assistant Response:')
-      .colorize('#374151')
-      .newLine()
-      .colorize('#3b82f6')
-      .type('"Today it\'s 22°C and partly cloudy.')
-      .newLine()
-      .type('Perfect weather for a walk!"')
-      .colorize('#374151')
-      .newLine()
-      .newLine()
-      .pauseFor(1000)
-      .colorize('#8b5cf6')
-      .type('⌨️  Keyboard Controls:')
-      .colorize('#374151')
-      .newLine()
-      .colorize('#6b7280')
-      .type('• Space: Start/Stop listening')
-      .newLine()
-      .colorize('#6b7280')
-      .type('• R: Reset conversation')
-      .newLine()
-      .colorize('#6b7280')
-      .type('• Esc: Skip to end')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#f59e0b')
-      .type('🔄 Ready for next command...')
-      .colorize('#374151')
-      .start();
-  }, []);
+const { typewriter, elements, cursor, keyframes } = useTypewriter({
+typeSpeed: 35,
+cursorStyle: 'block',
+cursorColor: '#3b82f6',
+});
 
-  // Simulate voice commands
-  const commands = [
-    'What\'s the time?',
-    'Play some music',
-    'Set a timer for 5 minutes',
-    'What\'s the weather like?',
-    'Tell me a joke',
-    'Turn off the lights'
-  ];
+const commands = [
+'Set timer for 10 minutes',
+'Play relaxing music',
+'What\\'s the weather like?',
+'Send a message to John',
+'Turn off the lights',
+];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsListening(prev => !prev);
-      setCurrentCommand(commands[Math.floor(Math.random() * commands.length)]);
-      setConfidenceLevel(Math.floor(Math.random() * 30) + 70); // 70-100%
-    }, 4000);
+useEffect(() => {
+typewriter
+.colorize('#3b82f6')
+.type('🎤 VOICE ASSISTANT INTERFACE 🎤')
+.colorize('#374151')
+.newLine()
+.type('═══════════════════════════════════════════')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#10b981')
+.type('🔊 Assistant Status: ')
+.colorize('#22c55e')
+.type('ACTIVE')
+.colorize('#374151')
+.newLine()
+.colorize('#6b7280')
+.type('Language: English (US) | Model: Advanced AI v3.2')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#fbbf24')
+.type('👂 Listening for commands...')
+.colorize('#374151')
+.newLine()
+.type('────────────────────────────────────────')
+.newLine()
+.pauseFor(1500)
+.colorize('#3b82f6')
+.type('🗣️ User: ')
+.colorize('#1f2937')
+.type('"Hey Assistant, set a timer for 10 minutes"')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#8b5cf6')
+.type('🔍 Processing Speech...')
+.colorize('#374151')
+.newLine()
+.colorize('#6b7280')
+.type('• Audio quality: Excellent (95% confidence)')
+.newLine()
+.type('• Background noise: Minimal')
+.newLine()
+.type('• Speech recognition: Complete')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1200)
+.colorize('#10b981')
+.type('✅ Command Recognized:')
+.colorize('#374151')
+.newLine()
+.colorize('#22c55e')
+.type('→ Action: ')
+.colorize('#1f2937')
+.type('CREATE_TIMER')
+.colorize('#374151')
+.newLine()
+.colorize('#22c55e')
+.type('→ Duration: ')
+.colorize('#1f2937')
+.type('10 minutes')
+.colorize('#374151')
+.newLine()
+.colorize('#22c55e')
+.type('→ Confirmation: ')
+.colorize('#1f2937')
+.type('Required')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#3b82f6')
+.type('🤖 Assistant: ')
+.colorize('#374151')
+.pauseFor(600)
+.type('"Sure! I\\'ve set a timer for 10 minutes.')
+.pauseFor(400)
+.type(' I\\'ll notify you when it\\'s time.')
+.pauseFor(300)
+.type(' Is there anything else I can help you with?"')
+.newLine()
+.newLine()
+.pauseFor(1500)
+.colorize('#f59e0b')
+.type('⏰ Timer Created:')
+.colorize('#374151')
+.newLine()
+.colorize('#fbbf24')
+.type('• Duration: 10:00 minutes')
+.newLine()
+.type('• Status: Running')
+.newLine()
+.type('• Remaining: 09:58')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1000)
+.colorize('#8b5cf6')
+.type('📊 Session Statistics:')
+.colorize('#374151')
+.newLine()
+.colorize('#6b7280')
+.type('Commands processed: 1')
+.newLine()
+.type('Success rate: 100%')
+.newLine()
+.type('Average response time: 1.2s')
+.newLine()
+.type('User satisfaction: Excellent')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(800)
+.colorize('#ec4899')
+.type('🎯 Available Commands:')
+.colorize('#374151')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Timer & Alarms')
+.colorize('#6b7280')
+.type(' (set, cancel, check)')
+.colorize('#374151')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Music Control')
+.colorize('#6b7280')
+.type(' (play, pause, skip)')
+.colorize('#374151')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Weather Information')
+.colorize('#6b7280')
+.type(' (current, forecast)')
+.colorize('#374151')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Smart Home')
+.colorize('#6b7280')
+.type(' (lights, temperature)')
+.colorize('#374151')
+.newLine()
+.colorize('#10b981')
+.type('• ')
+.colorize('#374151')
+.type('Communication')
+.colorize('#6b7280')
+.type(' (calls, messages)')
+.colorize('#374151')
+.newLine()
+.newLine()
+.pauseFor(1200)
+.colorize('#3b82f6')
+.type('🎙️ Ready for next command...')
+.start();
+}, []);
+
+// Simulate voice activity
+useEffect(() => {
+const interval = setInterval(() => {
+setIsListening(prev => !prev);
+setCurrentCommand(commands[Math.floor(Math.random() * commands.length)]);
+setConfidence(85 + Math.floor(Math.random() \* 15));
+}, 3500);
 
     return () => clearInterval(interval);
-  }, []);
 
-  return (
-    <>
-      <style>
-        {keyframes}
-        {`
-          @keyframes voice-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 1; }
+}, []);
+
+return (
+<>
+
+<style>
+{keyframes}
+{\`
+@keyframes listening {
+0%, 100% { transform: scale(1); opacity: 0.8; }
+50% { transform: scale(1.1); opacity: 1; }
+}
+
+          @keyframes processing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
           }
-          
-          @keyframes listening-wave {
-            0%, 100% { height: 20px; }
-            25% { height: 40px; }
-            50% { height: 60px; }
-            75% { height: 35px; }
+
+          @keyframes voice-wave {
+            0%, 100% { height: 4px; }
+            25% { height: 20px; }
+            50% { height: 12px; }
+            75% { height: 16px; }
           }
-          
-          @keyframes confidence-bar {
-            0% { width: 0%; }
-            100% { width: var(--confidence-width); }
-          }
-          
+
           .listening-indicator {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            height: 60px;
+            animation: listening 2s ease-in-out infinite;
           }
-          
-          .wave-bar {
-            width: 4px;
-            background: linear-gradient(to top, #3b82f6, #8b5cf6);
-            border-radius: 2px;
-            animation: listening-wave 1s ease-in-out infinite;
+
+          .processing-icon {
+            animation: processing 2s linear infinite;
           }
-          
-          .wave-bar:nth-child(2) { animation-delay: 0.1s; }
-          .wave-bar:nth-child(3) { animation-delay: 0.2s; }
-          .wave-bar:nth-child(4) { animation-delay: 0.3s; }
-          .wave-bar:nth-child(5) { animation-delay: 0.4s; }
-        `}
+
+          .voice-wave {
+            animation: voice-wave 1s ease-in-out infinite;
+          }
+        \`}
       </style>
+
       <div
         style={{
-          fontFamily: '"Inter", "system-ui", sans-serif',
-          fontSize: '0.9rem',
-          lineHeight: '1.6',
-          padding: '2.5rem',
           backgroundColor: '#f8fafc',
-          border: '3px solid #3b82f6',
-          borderRadius: '20px',
-          minHeight: '400px',
-          boxShadow: '0 20px 40px rgba(59, 130, 246, 0.15)',
+          borderRadius: '16px',
+          padding: '2.5rem',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '0.9rem',
+          color: '#374151',
+          lineHeight: '1.6',
+          minHeight: '500px',
+          border: '2px solid #3b82f6',
           position: 'relative',
-          background: 'linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
         }}
       >
+        {/* Microphone indicator */}
         <div
           style={{
             position: 'absolute',
-            top: '16px',
-            right: '16px',
+            top: '1rem',
+            right: '1rem',
+            width: '60px',
+            height: '60px',
+            backgroundColor: isListening ? '#22c55e' : '#6b7280',
+            borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            backgroundColor: 'white',
-            padding: '12px 16px',
-            borderRadius: '20px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <span
-            style={{
-              fontSize: '1.5rem',
-              animation: isListening ? 'voice-pulse 1s ease-in-out infinite' : 'none',
-            }}
-          >
-            {isListening ? '🎤' : '🔇'}
-          </span>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.7rem', color: '#6b7280' }}>
-              {isListening ? 'Listening' : 'Idle'}
-            </span>
-            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#3b82f6' }}>
-              {confidenceLevel}%
-            </span>
-          </div>
-        </div>
-
-        <div
-          style={{
-            position: 'absolute',
-            top: '80px',
-            right: '20px',
-            backgroundColor: isListening ? '#10b981' : '#6b7280',
+            justifyContent: 'center',
+            fontSize: '1.5rem',
             color: 'white',
-            padding: '6px 12px',
-            borderRadius: '12px',
-            fontSize: '0.75rem',
-            fontWeight: '600',
-            transition: 'all 0.3s ease',
           }}
+          className={isListening ? 'listening-indicator' : ''}
         >
-          {isListening ? '🟢 ACTIVE' : '⚫ STANDBY'}
+          🎤
         </div>
 
-        {isListening && (
-          <div
-            className="listening-indicator"
-            style={{
-              position: 'absolute',
-              top: '120px',
-              right: '20px',
-            }}
-          >
-            <div className="wave-bar" style={{ height: '20px' }} />
-            <div className="wave-bar" style={{ height: '30px' }} />
-            <div className="wave-bar" style={{ height: '40px' }} />
-            <div className="wave-bar" style={{ height: '30px' }} />
-            <div className="wave-bar" style={{ height: '20px' }} />
-          </div>
-        )}
-
+        {/* Status indicator */}
         <div
           style={{
             position: 'absolute',
-            bottom: '20px',
-            left: '20px',
-            right: '20px',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            padding: '12px',
-            borderRadius: '12px',
+            top: '1rem',
+            left: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            padding: '8px 16px',
+            borderRadius: '20px',
             fontSize: '0.8rem',
-            color: '#374151',
-            border: '1px solid #e5e7eb',
           }}
         >
-          <div style={{ fontWeight: '600', marginBottom: '4px' }}>
-            Latest Command: "{currentCommand}"
-          </div>
           <div
             style={{
-              width: '100%',
-              height: '4px',
-              backgroundColor: '#e5e7eb',
-              borderRadius: '2px',
-              overflow: 'hidden',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: isListening ? '#22c55e' : '#fbbf24',
             }}
-          >
+            className={isListening ? 'listening-indicator' : ''}
+          />
+          <span>{isListening ? 'Listening' : 'Processing'}</span>
+        </div>
+
+        {/* Voice wave visualization */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '1rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '3px',
+            alignItems: 'end',
+            height: '30px',
+          }}
+        >
+          {isListening && [1, 2, 3, 4, 5, 6, 7].map(i => (
             <div
+              key={i}
+              className="voice-wave"
               style={{
-                height: '100%',
+                width: '4px',
                 backgroundColor: '#3b82f6',
-                width: `${confidenceLevel}%`,
-                transition: 'width 0.5s ease',
+                borderRadius: '2px',
+                animationDelay: \`\${i * 0.1}s\`,
+                minHeight: '4px',
               }}
             />
-          </div>
+          ))}
         </div>
 
-        <div style={{ color: '#374151', whiteSpace: 'pre-wrap' }}>
+        {/* Confidence indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '1rem',
+            right: '1rem',
+            fontSize: '0.8rem',
+            color: '#6b7280',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          <span>Confidence:</span>
+          <span style={{ color: confidence > 90 ? '#22c55e' : confidence > 70 ? '#fbbf24' : '#ef4444' }}>
+            {confidence}%
+          </span>
+        </div>
+
+        {/* Main content */}
+        <div style={{ whiteSpace: 'pre-line' }}>
           {elements}
           {cursor}
         </div>
       </div>
     </>
-  );
-}
-```
 
-## Key Features
+);
+};
 
-- **Interactive Controls**: Full keyboard control integration with the typewriter
-- **Voice Simulation**: Real-time listening and command processing simulation
-- **Speech Recognition**: Wake word detection and command transcription
-- **Intent Processing**: Natural language understanding simulation
-- **Visual Feedback**: Animated microphone states and confidence levels
-- **Command History**: Latest voice command display with confidence bars
-- **Multi-modal Interface**: Voice + keyboard interaction patterns
-
-## Interactive Elements
-
-1. **Keyboard Controls**: Space, R, and Esc key functionality
-2. **Voice States**: Listening, processing, and responding phases
-3. **Confidence Metrics**: Real-time accuracy measurements
-4. **Command Processing**: Intent recognition and entity extraction
-5. **Visual Indicators**: Animated waveforms and status lights
-
-## Voice Interface Features
-
-- **Wake Word Detection**: "Hey Assistant" activation simulation
-- **Speech Transcription**: Real-time voice-to-text conversion
-- **Intent Recognition**: Command understanding and classification
-- **Response Generation**: Contextual assistant replies
-- **Error Handling**: Confidence thresholds and fallbacks
-
-## Interactive Design
-
-- **Accessibility**: Full keyboard navigation support
-- **Visual Feedback**: Clear state indicators and animations
-- **Real-time Updates**: Live confidence and command displays
-- **Multi-state Interface**: Different modes for different interaction phases
+export default VoiceCommandExample;`}
+instructions={[
+"Implement realistic speech recognition with confidence scoring",
+"Design voice activity detection with visual feedback indicators",
+"Add comprehensive command processing and response generation",
+"Include session statistics and performance monitoring",
+"Create immersive voice wave visualizations and microphone controls"
+]}
+/>
 
 ## Use Cases
 
-- **Voice Assistant Demos**: Showcase voice interface capabilities
-- **Accessibility Tools**: Voice-controlled application interfaces
-- **Smart Home Interfaces**: Voice command control systems
-- **AI Demonstrations**: Natural language processing showcases
-- **Interactive Tutorials**: Teach voice interface design patterns
+- **AI Assistant Demos**: Showcase voice interface capabilities and natural language processing
+- **Smart Home Interfaces**: Voice-controlled home automation and IoT device management
+- **Accessibility Tools**: Voice navigation and control systems for disabled users
+- **Automotive Systems**: In-car voice assistants and hands-free operation interfaces
+- **Customer Service**: Voice-powered support systems and automated assistance platforms

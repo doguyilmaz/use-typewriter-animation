@@ -1,11 +1,22 @@
-# Character Effects Demo
+---
+sidebar_position: 5
+title: Character Effects
+description: Individual character control with emojis, Unicode symbols, and character-by-character styling
+tags: [characters, emojis, unicode, styling, effects]
+---
 
-This example explores character-by-character effects and special character handling to create engaging text animations.
+import ExamplePage from '@site/src/components/ExamplePage';
+import { CharacterEffectsExample } from '@site/src/components/AdvancedExamples';
 
-## Live Demo
+<ExamplePage
+component={CharacterEffectsExample}
+difficulty="Beginner"
+description="Master individual character control with emojis, Unicode symbols, and character-by-character styling for visually rich text presentations. Perfect for creative displays, artistic text effects, and engaging visual content."
+tags={["Character control", "Emoji effects", "Unicode symbols", "Visual styling", "Creative text"]}
+code={`import React, { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```tsx live
-function CharacterEffectsDemo() {
+const CharacterEffectsExample: React.FC = () => {
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 60,
     cursorStyle: 'bar',
@@ -118,27 +129,22 @@ function CharacterEffectsDemo() {
       </div>
     </>
   );
-}
-```
+};
 
-## Key Features
-
-- **Individual Character Control**: Each character can have unique timing
-- **Special Character Support**: Emojis, symbols, and Unicode characters
-- **Rhythmic Patterns**: Variable pauses create musical timing
-- **ASCII Art**: Multi-line character art with typewriter effect
-- **Visual Grouping**: Colors separate different character types
-
-## Character Effect Techniques
-
-- **Spacing Effects**: Add pauses between individual characters
-- **Symbol Emphasis**: Use colors and timing to highlight special characters
-- **Rhythmic Typing**: Create patterns with increasing/decreasing delays
-- **Multi-line Art**: Build complex visuals character by character
+export default CharacterEffectsExample;`}
+instructions={[
+"Use individual type() calls for each character when you need precise timing control",
+"Combine colorize() with single characters to create rainbow or gradient effects",
+"Add pauseFor() between characters to create rhythmic typing patterns",
+"Include Unicode symbols and emojis to enhance visual appeal and meaning",
+"Create ASCII art patterns using careful spacing and character positioning"
+]}
+/>
 
 ## Use Cases
 
-- **Logo Animation**: Type company names with special character emphasis
-- **Game Interfaces**: Character-by-character reveals for dramatic effect
-- **Educational Tools**: Spell out words to help with learning
-- **Art Projects**: ASCII art generation with typewriter aesthetics
+- **Creative Portfolios**: Artistic text presentations with visual character effects
+- **Interactive Demos**: Character-by-character reveals for educational content
+- **Gaming Interfaces**: Stylized text effects for game menus and narratives
+- **Brand Presentations**: Eye-catching typography with emoji and symbol integration
+- **Technical Documentation**: Code examples with syntax highlighting effects

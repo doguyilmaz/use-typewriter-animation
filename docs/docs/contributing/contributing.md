@@ -1,4 +1,5 @@
 ---
+id: contributing
 sidebar_position: 1
 title: Contributing Guide
 description: How to contribute to use-typewriter-animation

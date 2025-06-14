@@ -42,5 +42,5 @@ function Demo() {
 - 🚀 [Quick Start](./getting-started/quick-start) - Build your first animation
 - 🎯 [Examples](./examples/basic/simple-typewriter) - See live examples in action
 - 📚 [API Reference](./api/use-typewriter) - Explore all features
-- 🤝 [Contributing](./contributing/contributing) - Help improve the library
+- 🤝 [Contributing](./contributing) - Help improve the library
 - 🗺️ [Roadmap](./ROADMAP) - See what's planned

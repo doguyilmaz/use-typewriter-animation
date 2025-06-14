@@ -409,8 +409,8 @@ When contributing new examples:
 
 - [Main Documentation](/)
 - [Accessibility Guide](./guides/accessibility.md)
-- [TypeScript Types](../Typewriter/TypewriterBase.ts)
-- [Performance Tips](../performance/)
+- [TypeScript Types](./api/types)
+- [Performance Tips](./guides/performance)
 
 ---
 

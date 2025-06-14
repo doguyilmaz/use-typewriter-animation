@@ -128,7 +128,7 @@ const config: Config = {
             },
             {
               label: 'Contributing',
-              to: '/docs/contributing/contributing',
+              to: '/docs/contributing',
             },
             {
               label: 'Roadmap',

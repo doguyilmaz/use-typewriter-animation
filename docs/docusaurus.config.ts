@@ -116,7 +116,7 @@ const config: Config = {
           ],
         },
         {
-          title: 'Additional Resources',
+          title: 'Resources',
           items: [
             {
               label: 'TypeScript Types',
@@ -137,20 +137,28 @@ const config: Config = {
           ],
         },
         {
-          title: 'More',
+          title: 'Community',
           items: [
             {
               label: 'GitHub',
               href: 'https://github.com/doguyilmaz/use-typewriter-animation',
             },
             {
-              label: 'npm',
+              label: 'npm Package',
               href: 'https://www.npmjs.com/package/use-typewriter-animation',
+            },
+            {
+              label: 'Issues',
+              href: 'https://github.com/doguyilmaz/use-typewriter-animation/issues',
+            },
+            {
+              label: 'Discussions',
+              href: 'https://github.com/doguyilmaz/use-typewriter-animation/discussions',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Dogu Yilmaz. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://github.com/doguyilmaz" target="_blank" rel="noopener noreferrer">@doguyilmaz</a> • Built with Docusaurus`,
     },
     prism: {
       theme: prismThemes.github,

@@ -17,6 +17,13 @@
   --ifm-font-color-base: #222222;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: #f3f4f6;
+  
+  /* Syntax highlighting colors for light mode */
+  --syntax-keyword: #7c3aed;
+  --syntax-function: #0d9488;
+  --syntax-variable: #dc2626;
+  --syntax-string: #059669;
+  --syntax-default: #374151;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -31,6 +38,13 @@
   --ifm-background-color: #18181b;
   --ifm-font-color-base: #f3f4f6;
   --docusaurus-highlighted-code-line-bg: #23272f;
+  
+  /* Syntax highlighting colors for dark mode */
+  --syntax-keyword: #c678dd;
+  --syntax-function: #61dafb;
+  --syntax-variable: #e06c75;
+  --syntax-string: #98c379;
+  --syntax-default: #abb2bf;
 }
 
 /* Custom styles for live code examples */
@@ -186,5 +200,134 @@
 @media (prefers-contrast: high) {
   .typewriter-demo-area {
     border: 2px solid currentColor;
+  }
+}
+
+/* Override Docusaurus footer responsive behavior */
+/* Keep 4 columns until 768px, then 2x2, then 1 column at 480px */
+
+/* Force all 4 columns to stay visible from 996px to 769px */
+@media screen and (max-width: 996px) and (min-width: 769px) {
+  .footer .footer__links {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+  }
+
+  .footer .footer__col {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex: 1 !important;
+    max-width: none !important;
+  }
+
+  .footer .footer__title {
+    display: block !important;
+  }
+
+  .footer .footer__items {
+    display: block !important;
+  }
+
+  .footer .footer__item {
+    display: block !important;
+  }
+}
+
+/* Keep 4 columns for larger screens too */
+@media screen and (min-width: 997px) {
+  .footer .footer__links {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .footer .footer__col {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* 2x2 grid for tablet */
+@media screen and (max-width: 768px) and (min-width: 481px) {
+  .footer .footer__links {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+    gap: 2rem 3rem !important;
+    justify-items: center !important;
+    align-items: start !important;
+  }
+
+  .footer .footer__col {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .footer .footer__title {
+    text-align: center !important;
+    margin-bottom: 1rem !important;
+    font-size: 1rem !important;
+  }
+
+  .footer .footer__items {
+    text-align: center !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .footer .footer__item {
+    text-align: center !important;
+    margin: 0.5rem 0 !important;
+  }
+
+  .footer .footer__item .footer__link-item {
+    text-align: center !important;
+    font-size: 0.875rem !important;
+    display: inline-block !important;
+    width: 100% !important;
+  }
+}
+
+/* Single column for mobile */
+@media screen and (max-width: 480px) {
+  .footer .footer__links {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    align-items: center !important;
+  }
+
+  .footer .footer__col {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .footer .footer__title {
+    text-align: center !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .footer .footer__items {
+    text-align: center !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .footer .footer__item {
+    text-align: center !important;
+    margin: 0.5rem 0 !important;
+  }
+
+  .footer .footer__item .footer__link-item {
+    text-align: center !important;
+    font-size: 0.875rem !important;
+    display: inline-block !important;
+    width: 100% !important;
   }
 }

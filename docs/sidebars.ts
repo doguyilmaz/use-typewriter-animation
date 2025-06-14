@@ -32,6 +32,7 @@ const sidebars: SidebarsConfig = {
         'contributing/releases'
       ],
     },
+    'changelog',
     'ROADMAP',
     'examples',
     {

@@ -59,6 +59,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/changelog',
+          label: 'Changelog',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/doguyilmaz/use-typewriter-animation',
           label: 'GitHub',
           position: 'right',
@@ -125,6 +130,10 @@ const config: Config = {
             {
               label: 'Troubleshooting',
               to: '/docs/guides/troubleshooting',
+            },
+            {
+              label: 'Changelog',
+              to: '/docs/changelog',
             },
             {
               label: 'Contributing',

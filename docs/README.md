@@ -1,85 +1,89 @@
-# 📚 Documentation
+# Documentation Site
 
-Welcome to the comprehensive documentation for `use-typewriter-animation` - a modern, performant React hook for creating typewriter animation effects.
+This directory contains the Docusaurus-based documentation site for `use-typewriter-animation`.
 
 ## 🚀 Quick Start
 
-- **New to the library?** → [Quick Start Guide](./guides/quick-start.md)
-- **Need examples?** → [Example Gallery](./examples.md)
-- **Want to contribute?** → [Contributing Guide](./contributing/contributing.md)
+### Development
 
-## 📖 Getting Started
+```bash
+# From root directory
+bun run docs:dev
 
-- [Installation & Setup](./guides/installation.md)
-- [Quick Start Guide](./guides/quick-start.md)
-- [Example Gallery](./examples.md)
-
-## 🔧 API Reference
-
-- [Core Hook: useTypewriter](./api/use-typewriter.md)
-- [Type Definitions](./api/types.md)
-
-## 🎯 Essential Guides
-
-- [Accessibility (WCAG 2.1)](./guides/accessibility.md)
-- [Performance Optimization](./guides/performance.md)
-- [Troubleshooting](./guides/troubleshooting.md)
-
-## 🛠️ Contributing
-
-- [Contributing Guide](./contributing/contributing.md)
-- [Development Setup](./contributing/development.md)
-- [Testing Guidelines](./contributing/testing.md)
-- [Project Roadmap](./ROADMAP.md)
-
-## 📊 Library Status
-
-| Feature           | Status           | Documentation                                    |
-| ----------------- | ---------------- | ------------------------------------------------ |
-| **Core Hook**     | ✅ Stable        | [API Reference](./api/use-typewriter.md)         |
-| **Accessibility** | ✅ WCAG 2.1 AA   | [Accessibility Guide](./guides/accessibility.md) |
-| **Performance**   | ✅ Optimized     | [Performance Guide](./guides/performance.md)     |
-| **TypeScript**    | ✅ Full Support  | [Type Definitions](./api/types.md)               |
-| **Examples**      | ✅ Comprehensive | [Example Gallery](./examples.md)                 |
-
-## 🗂️ Documentation Structure
-
-```
-docs/
-├── README.md                    # This documentation hub
-├── examples.md                  # Example gallery and showcase
-├── ROADMAP.md                   # Project roadmap
-├── guides/                      # Feature guides
-│   ├── installation.md          # Setup instructions
-│   ├── quick-start.md           # Getting started
-│   ├── accessibility.md         # WCAG 2.1 compliance
-│   ├── performance.md           # Optimization tips
-│   └── troubleshooting.md       # Common solutions
-├── api/                         # API documentation
-│   ├── use-typewriter.md        # Main hook reference
-│   └── types.md                 # TypeScript types
-└── contributing/                # Contributor resources
-    ├── contributing.md          # How to contribute
-    ├── development.md           # Development setup
-    ├── testing.md               # Testing guidelines
-    └── releases.md              # Release process
+# Or from docs-site directory
+cd docs-site
+bun install
+bun run start
 ```
 
-## 📝 Documentation Standards
+### Build
 
-- **Clear Examples**: Working code for every feature
-- **Accessibility First**: WCAG 2.1 compliance throughout
-- **Performance Focused**: Optimization best practices
-- **TypeScript Ready**: Full type information
-- **Modern React**: React 19 concurrent features
+```bash
+# From root directory
+bun run docs:build
 
-## 🤝 Help & Support
+# Or from docs-site directory  
+cd docs-site
+bun run build
+```
 
-- 💬 [GitHub Discussions](https://github.com/doguyilmaz/use-typewriter-animation/discussions) - Questions and ideas
-- 🐛 [GitHub Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues) - Bug reports and features
-- 📖 [Contributing Guide](./contributing/contributing.md) - Help improve the docs
+## 📁 Structure
 
----
+**📚 Consolidated Documentation**: All docs are now unified in this directory.
 
-**Library Version**: 3.5.1+  
-**React Compatibility**: 16.8+ | 17+ | 18+ | 19+
+```
+docs-site/
+├── docs/                      # All documentation content
+│   ├── intro.md              # Main welcome page
+│   ├── getting-started/      # Setup and quick start guides
+│   ├── examples/             # Live interactive examples
+│   │   ├── basic/           # Basic examples
+│   │   ├── creative/        # Creative use cases
+│   │   └── advanced/        # Advanced features
+│   ├── api/                 # API reference docs
+│   ├── guides/              # Feature and usage guides
+│   ├── contributing/        # Contributing guides (NEW)
+│   └── ROADMAP.md          # Project roadmap (NEW)
+├── src/
+│   ├── components/          # Reusable components
+│   ├── pages/              # Custom pages (home, examples)
+│   └── css/               # Custom styles
+├── static/                # Static assets
+├── docusaurus.config.ts
+└── sidebars.ts
+```
+
+## ✨ Features
+
+- **Live Examples**: Interactive code examples with live preview
+- **Responsive Design**: Mobile-friendly documentation
+- **Search**: Built-in search functionality
+- **Dark Mode**: Toggle between light and dark themes
+- **Auto-Deploy**: Automatic deployment to GitHub Pages
+
+## 🔧 Adding Content
+
+### New Documentation Page
+
+1. Create a new `.md` file in `docs/`
+2. Add it to `sidebars.ts`
+3. Content will auto-reload in development
+
+### New Example
+
+1. Add component to `src/pages/examples.tsx`
+2. Include live preview and source code
+3. Example will be interactive on the site
+
+## 🌐 Deployment
+
+The site auto-deploys to GitHub Pages when you push to main branch:
+
+**URL**: https://doguyilmaz.github.io/use-typewriter-animation/
+
+## 📚 Docusaurus Documentation
+
+For more information about Docusaurus features:
+- [Docusaurus Documentation](https://docusaurus.io/)
+- [MDX Documentation](https://mdxjs.com/)
+- [Live Code Blocks](https://docusaurus.io/docs/markdown-features/code-blocks#interactive-code-editor)

@@ -31,3 +31,10 @@ dist-ssr
 coverage/
 test-results/
 .vitest/
+
+# Docs
+docs/build
+docs/node_modules
+*/docs-site/build
+*/docs-site/node_modules
+.docusaurus

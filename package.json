@@ -34,7 +34,10 @@
     "version": "bun run scripts/version-bump.ts",
     "publish": "bun run pack && npm publish",
     "release": "bun run version && bun run build && bun run publish",
-    "analyze": "bun run build && bun run scripts/bundle-analysis.ts"
+    "analyze": "bun run build && bun run scripts/bundle-analysis.ts",
+    "docs:dev": "cd docs && bun run start",
+    "docs:build": "bun run build && cd docs && bun install && bun run build",
+    "docs:serve": "cd docs && bun run serve"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",

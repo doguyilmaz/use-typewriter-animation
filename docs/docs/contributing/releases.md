@@ -1,3 +1,9 @@
+---
+sidebar_position: 4
+title: Release Process
+description: Release process for maintainers
+---
+
 # 🚀 Release Process
 
 This guide covers the release process for `use-typewriter-animation` maintainers.
@@ -178,8 +184,8 @@ bun add use-typewriter-animation@3.6.0
 
 ## 🔗 Links
 
-- [Full Changelog](CHANGELOG.md#360---2025-01-14)
-- [Documentation](docs/README.md)
+- [Full Changelog](https://github.com/doguyilmaz/use-typewriter-animation/blob/main/CHANGELOG.md#360---2025-01-14)
+- [Documentation](/)
 
 ````
 

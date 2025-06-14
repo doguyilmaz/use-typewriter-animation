@@ -14,7 +14,7 @@ function MyComponent() {
   });
 
   useEffect(() => {
-    typewriter.type('Hello, World!').pauseFor(1000).deleteLetters(6).type('React!').start();
+    typewriter.type('Hello, World!').pauseFor(1000).deleteLetters(9).type('React!').start();
   }, []);
 
   return (
@@ -443,7 +443,7 @@ const { typewriter } = useTypewriter({
 
 ## See Also
 
-- [React 19 Features](./react-19.md) - Enhanced concurrent features
-- [Server Components](./server-components.md) - SSR and RSC support
+- [Configuration Guide](./configuration.md) - Detailed configuration options
+- [TypeScript Types](./types.md) - Complete type definitions
 - [Accessibility Guide](../guides/accessibility.md) - WCAG compliance
 - [Performance Guide](../guides/performance.md) - Optimization tips

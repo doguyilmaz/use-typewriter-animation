@@ -1,3 +1,9 @@
+---
+sidebar_position: 3
+title: Testing Guide
+description: Testing practices and requirements
+---
+
 # 🧪 Testing Guide
 
 This guide covers testing practices and requirements for contributing to `use-typewriter-animation`.

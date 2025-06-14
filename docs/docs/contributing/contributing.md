@@ -1,3 +1,9 @@
+---
+sidebar_position: 1
+title: Contributing Guide
+description: How to contribute to use-typewriter-animation
+---
+
 # 🤝 Contributing to use-typewriter-animation
 
 Thank you for your interest in contributing! This guide will help you get started with contributing to our modern, performant React typewriter animation library.

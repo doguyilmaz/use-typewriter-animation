@@ -1,3 +1,9 @@
+---
+sidebar_position: 2
+title: Development Setup
+description: Set up your development environment
+---
+
 # 🛠️ Development Setup
 
 This guide will help you set up your development environment for contributing to `use-typewriter-animation`.

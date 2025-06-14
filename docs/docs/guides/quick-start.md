@@ -454,7 +454,7 @@ Now that you have the basics:
 2. **Learn Accessibility** → [Accessibility Guide](./accessibility.md)
 3. **Optimize Performance** → [Performance Guide](./performance.md)
 4. **Advanced Features** → [API Reference](../api/use-typewriter.md)
-5. **React 19 Features** → [React 19 Guide](../api/react-19.md)
+5. **Advanced Configuration** → [Configuration Guide](../api/configuration.md)
 
 ## 💡 Tips for Success
 

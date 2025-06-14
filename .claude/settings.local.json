@@ -5,7 +5,13 @@
       "mcp__ide__getDiagnostics",
       "Bash(node:*)",
       "Bash(bun install:*)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(mkdir:*)",
+      "Bash(lsof:*)",
+      "Bash(cp:*)",
+      "Bash(diff:*)",
+      "Bash(find:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": []
   }

@@ -1,0 +1,190 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #172554;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #e0e7ef;
+  --ifm-background-color: #ffffff;
+  --ifm-font-color-base: #222222;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: #f3f4f6;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+  --ifm-background-color: #18181b;
+  --ifm-font-color-base: #f3f4f6;
+  --docusaurus-highlighted-code-line-bg: #23272f;
+}
+
+/* Custom styles for live code examples */
+.react-live-preview {
+  padding: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-code-border-radius);
+  margin-bottom: 1rem;
+  background: var(--ifm-background-color);
+}
+
+.react-live-editor {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+}
+
+/* Example page styles */
+.example-container {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  margin: 2rem 0;
+  overflow: hidden;
+}
+
+.example-header {
+  padding: 1rem;
+  background-color: var(--ifm-color-emphasis-100);
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-preview {
+  padding: 2rem;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ifm-background-color);
+}
+
+.code-toggle-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.code-toggle-btn:hover {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+/* Prevent layout shifts and improve performance */
+.typewriter-example-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  contain: layout style;
+  will-change: auto;
+}
+
+.typewriter-demo-area {
+  width: 100%;
+  max-width: 100%;
+  min-height: 200px;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Prevent wrapper glitches */
+.typewriter-content {
+  max-width: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Fix width shifts during typing */
+.typewriter-demo-area > * {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Prevent layout shifts in loading examples */
+.loading-example-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.loading-example-container * {
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Performance optimizations */
+.typewriter-animation {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+/* Smooth transitions */
+.theme-code-block {
+  transition: none !important;
+}
+
+/* Loading states improvements */
+.loading-terminal {
+  contain: strict;
+  transform: translateZ(0);
+}
+
+/* Storytelling demo improvements */
+.storytelling-scene {
+  contain: layout style paint;
+  will-change: background;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .example-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .example-preview {
+    padding: 1rem;
+  }
+
+  .typewriter-demo-area {
+    padding: 1rem;
+    min-height: 150px;
+  }
+
+  /* Reduce animations on mobile for performance */
+  .typewriter-animation {
+    animation-duration: 0.1s !important;
+  }
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+  .typewriter-demo-area {
+    border: 2px solid currentColor;
+  }
+}

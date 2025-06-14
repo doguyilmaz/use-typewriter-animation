@@ -1,3 +1,10 @@
+---
+title: Examples Showcase
+description: Comprehensive examples and real-world implementation patterns
+sidebar_position: 90
+hide_table_of_contents: false
+---
+
 # Typewriter Animation Examples Showcase
 
 This directory contains comprehensive examples demonstrating the various features and use cases of the `use-typewriter-animation` library. Each example is designed to showcase different aspects of the library while providing practical, real-world implementation patterns.
@@ -6,13 +13,13 @@ This directory contains comprehensive examples demonstrating the various feature
 
 ```
 src/examples/
-├── basic/              # Simple, foundational examples
-├── interactive/        # Examples with user interaction
-├── creative/          # Artistic and creative implementations
-├── advanced/          # Complex, feature-rich examples
-├── accessibility/     # WCAG 2.1 AA compliance demonstrations
-├── performance/       # Performance optimization examples
-└── index.ts          # Central exports and metadata
+├── basic/           # Simple, foundational examples
+├── interactive/     # Examples with user interaction
+├── creative/        # Artistic and creative implementations
+├── advanced/        # Complex, feature-rich examples
+├── accessibility/   # WCAG 2.1 AA compliance demonstrations
+├── performance/     # Performance optimization examples
+└── index.ts         # Central exports and metadata
 ```
 
 ## 🎯 Example Categories
@@ -400,7 +407,7 @@ When contributing new examples:
 
 ## 📚 Additional Resources
 
-- [Main Documentation](../../README.md)
+- [Main Documentation](/)
 - [Accessibility Guide](./guides/accessibility.md)
 - [TypeScript Types](../Typewriter/TypewriterBase.ts)
 - [Performance Tips](../performance/)

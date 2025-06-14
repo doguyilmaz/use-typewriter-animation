@@ -2,7 +2,7 @@
 // Install: npm install use-typewriter-animation
 // Then copy this entire component to your codebase
 
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
 
 /**
@@ -59,7 +59,7 @@ export const ConflictTesting: React.FC = () => {
         .on('end', () => logResult('✅ Animation completed', 'success'))
         .deleteAll()
         .type('Hello World!')
-        .deleteLetters(6) // Delete "World!"
+        .deleteLetters(9) // Delete "World!"
         .type('React!')
         .start();
 

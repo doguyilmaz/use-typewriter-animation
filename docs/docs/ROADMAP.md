@@ -1,3 +1,9 @@
+---
+title: Project Roadmap
+description: Development roadmap and future plans for use-typewriter-animation
+sidebar_position: 100
+---
+
 # Typewriter Animation Library - Modernization Roadmap
 
 ## 🎉 Major Milestone: v3.5.1 Test Infrastructure & Documentation Complete!

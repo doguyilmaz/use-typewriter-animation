@@ -6,7 +6,7 @@ tags: [replacement, deleteLetters, editing, dynamic, substitution]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { TextReplacementExample } from '@site/src/components/AdvancedExamples';
+import { TextReplacementExample } from '@site/src/examples/basic';
 
 <ExamplePage
 component={TextReplacementExample}

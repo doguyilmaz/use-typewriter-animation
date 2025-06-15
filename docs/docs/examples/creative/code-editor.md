@@ -6,7 +6,7 @@ tags: [code-editor, syntax-highlighting, ide, intellisense, development]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { CodeEditorExample } from '@site/src/components/AdvancedExamples';
+import { CodeEditorExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={CodeEditorExample}

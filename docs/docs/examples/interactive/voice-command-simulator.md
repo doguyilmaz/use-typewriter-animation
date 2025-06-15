@@ -6,7 +6,7 @@ tags: [voice, assistant, commands, AI, interaction]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { VoiceCommandExample } from '@site/src/components/AdvancedExamples';
+import { VoiceCommandExample } from '@site/src/examples/interactive';
 
 <ExamplePage
 component={VoiceCommandExample}

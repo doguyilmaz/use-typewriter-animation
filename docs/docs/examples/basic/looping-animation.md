@@ -6,10 +6,10 @@ tags: [loop, cycling, rotation, infinite, dynamic]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { LoopingAnimationExample } from '@site/src/components/AdvancedExamples';
+import { LoopingAnimation } from '@site/src/examples/basic';
 
 <ExamplePage
-component={LoopingAnimationExample}
+component={LoopingAnimation}
 difficulty="Beginner"
 description="Master continuous message rotation with infinite loops and automatic content cycling. Perfect for hero sections, rotating content displays, and dynamic presentations that keep users engaged with changing text."
 tags={["Infinite loops", "Message cycling", "Dynamic content", "Auto-rotation", "Continuous animation"]}

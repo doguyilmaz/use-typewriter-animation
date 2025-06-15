@@ -11,7 +11,8 @@
       "Bash(cp:*)",
       "Bash(diff:*)",
       "Bash(find:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

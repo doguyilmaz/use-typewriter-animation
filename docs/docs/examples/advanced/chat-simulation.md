@@ -6,11 +6,11 @@ tags: [chat, messaging, conversation, team, communication]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { ChatSimulationExample } from '@site/src/components/AdvancedExamples';
+import { ChatSimulation } from '@site/src/examples/advanced';
 
 <ExamplePage
-component={ChatSimulationExample}
-difficulty="Intermediate"
+component={ChatSimulation}
+difficulty="Advanced"
 description="Create realistic messaging interfaces with multiple users, typing indicators, and modern chat features. Perfect for team communication tools, customer support systems, and social platforms with authentic conversation flow."
 tags={["Team communication", "Messaging interface", "Typing indicators", "User interaction", "Real-time chat"]}
 code={`import React, { useEffect, useState } from 'react';

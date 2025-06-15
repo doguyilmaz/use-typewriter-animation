@@ -6,10 +6,10 @@ tags: [ecommerce, checkout, payment, shopping, cart]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { EcommerceCheckoutExample } from '@site/src/components/AdvancedExamples';
+import { EcommerceCheckout } from '@site/src/examples/advanced';
 
 <ExamplePage
-component={EcommerceCheckoutExample}
+component={EcommerceCheckout}
 difficulty="Intermediate"
 description="Build a complete e-commerce checkout experience with shopping cart management, payment processing, and order confirmation. Perfect for online stores, marketplace platforms, and retail applications."
 tags={["E-commerce", "Shopping cart", "Payment processing", "Order management", "Retail interface"]}

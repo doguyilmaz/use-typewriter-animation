@@ -123,11 +123,12 @@
 /* Prevent wrapper glitches */
 .typewriter-content {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: visible; /* Changed from hidden to visible to not clip borders */
   text-overflow: ellipsis;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+  width: 100%; /* Ensure full width for proper border display */
 }
 
 /* Fix width shifts during typing */

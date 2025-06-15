@@ -6,10 +6,10 @@ tags: [colorize, colors, rainbow, basic, effects]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { ColorfulTextExample } from '@site/src/components/AdvancedExamples';
+import { ColorfulText } from '@site/src/examples/basic';
 
 <ExamplePage
-component={ColorfulTextExample}
+component={ColorfulText}
 difficulty="Beginner"
 description="Showcase rainbow effects and vibrant color transitions using the colorize() method for eye-catching text presentations. Perfect for creating engaging visual content and learning color management in typewriter animations."
 tags={["Color effects", "Rainbow text", "Visual design", "Eye-catching", "Colorize method"]}

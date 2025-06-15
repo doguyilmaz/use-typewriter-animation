@@ -6,7 +6,7 @@ tags: [speed, timing, dramatic, effects, pacing]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { SpeedVariationsExample } from '@site/src/components/AdvancedExamples';
+import { SpeedVariationsExample } from '@site/src/examples/basic';
 
 <ExamplePage
 component={SpeedVariationsExample}

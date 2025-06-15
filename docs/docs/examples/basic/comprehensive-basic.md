@@ -6,7 +6,7 @@ tags: [accessibility, comprehensive, wcag, screen-reader, complete]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { ComprehensiveBasicExample } from '@site/src/components/AdvancedExamples';
+import { ComprehensiveBasicExample } from '@site/src/examples/basic';
 
 <ExamplePage
 component={ComprehensiveBasicExample}

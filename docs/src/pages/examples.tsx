@@ -1,16 +1,16 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import { LiveExample } from '../components/LiveExample';
 import {
-  LiveExample,
-  SimpleExample,
-  ColorfulExample,
-  LoopingExample,
-} from '../components/LiveExample';
+  SimpleTypewriter,
+  ColorfulText,
+  LoopingAnimation,
+} from '../examples/basic';
 
 const examples = [
   {
     title: 'Simple Typewriter',
-    component: SimpleExample,
+    component: SimpleTypewriter,
     description: 'Basic typewriter animation with typing and deleting',
     code: `import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
@@ -52,7 +52,7 @@ export default SimpleExample;`,
   },
   {
     title: 'Colorful Text',
-    component: ColorfulExample,
+    component: ColorfulText,
     description: 'Add visual appeal with colorized text segments',
     code: `import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
@@ -99,7 +99,7 @@ export default ColorfulExample;`,
   },
   {
     title: 'Looping Animation',
-    component: LoopingExample,
+    component: LoopingAnimation,
     description: 'Create continuous animations that loop indefinitely',
     code: `import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';

@@ -6,7 +6,7 @@ tags: [cooking, recipe, builder, interactive, food]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { RecipeBuilderExample } from '@site/src/components/AdvancedExamples';
+import { RecipeBuilderExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={RecipeBuilderExample}

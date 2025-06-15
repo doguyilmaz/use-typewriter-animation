@@ -6,7 +6,7 @@ tags: [storytelling, narrative, transitions, scenes]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { StorytellingDemoExample } from '@site/src/components/AdvancedExamples';
+import { StorytellingDemoExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={StorytellingDemoExample}
@@ -133,23 +133,22 @@ typewriter
 }, []);
 
 return (
-    <>
-      <style>
-        {keyframes}
-        {\`
-          @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-          }
-        \`}
-      </style>
-      <div
-        style={{
+<>
+<style>
+{keyframes}
+{\`
+@keyframes float {
+0%, 100% { transform: translateY(0px) rotate(0deg); }
+50% { transform: translateY(-20px) rotate(5deg); }
+}
+\`}
+</style>
+<div
+style={{
           minHeight: '500px',
           background: scenes[currentScene]?.background || scenes[0].background,
           transition: 'all 2s ease-in-out',
           borderRadius: '12px',
-          padding: '3rem 2rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -157,10 +156,9 @@ return (
           boxSizing: 'border-box',
           position: 'relative',
           overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
+        }} >
+<div
+style={{
             fontSize: '1.2rem',
             fontFamily: 'system-ui, sans-serif',
             color: scenes[currentScene]?.textColor || '#ffffff',
@@ -171,22 +169,29 @@ return (
             width: '100%',
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
-          }}
-        >
-          {elements}
-          {cursor}
-        </div>
-      </div>
-    </>
-  );
+          }} >
+{elements}
+{cursor}
+</div>
+</div>
+</>
+);
 };
 
 export default StorytellingDemoExample;`}
 instructions={[
-"Coordinate scene transitions with React state",
-"Use CSS transitions for smooth background changes",
-"Implement progress indicators for narrative flow",
-"Apply floating animations for visual interest",
-"Structure storytelling with proper timing and pacing"
+"Coordinate scene transitions with React state changes for dynamic backgrounds",
+"Use CSS transitions for smooth background changes that enhance the narrative mood",
+"Implement deleteAll() to create scene breaks and narrative chapter transitions",
+"Apply colorize() to create emotional emphasis and thematic visual storytelling",
+"Structure storytelling with proper timing using pauseFor() and async scene management"
 ]}
 />
+
+## Use Cases
+
+- **Product Marketing**: Create engaging product launch stories and feature demonstrations with narrative flow
+- **Educational Content**: Develop interactive learning experiences that guide users through complex concepts
+- **Portfolio Showcases**: Present creative work and professional achievements with compelling narrative structure
+- **Brand Storytelling**: Demonstrate company values and mission through immersive digital storytelling experiences
+- **Interactive Fiction**: Build choose-your-own-adventure games and interactive narrative applications

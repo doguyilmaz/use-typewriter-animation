@@ -6,7 +6,7 @@ tags: [loading, progress, terminal, async, system]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { LoadingStatesExample } from '@site/src/components/AdvancedExamples';
+import { LoadingStatesExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={LoadingStatesExample}

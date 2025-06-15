@@ -6,7 +6,7 @@ tags: [glitch, cyberpunk, corruption, digital-noise, error]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { GlitchEffectExample } from '@site/src/components/AdvancedExamples';
+import { GlitchEffectExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={GlitchEffectExample}

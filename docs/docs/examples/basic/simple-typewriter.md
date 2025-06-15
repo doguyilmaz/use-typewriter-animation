@@ -6,10 +6,10 @@ tags: [typewriter, basic, beginner, react, simple]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { SimpleTypewriterExample } from '@site/src/components/AdvancedExamples';
+import { SimpleTypewriter } from '@site/src/examples/basic';
 
 <ExamplePage
-component={SimpleTypewriterExample}
+component={SimpleTypewriter}
 difficulty="Beginner"
 description="Master the fundamentals of typewriter animations with this clean, minimalist example. Perfect for getting started with the library and understanding core concepts like typing speed, cursor styles, and basic text rendering."
 tags={["Typewriter effect", "Basic animation", "Getting started", "Clean design", "Minimal setup"]}

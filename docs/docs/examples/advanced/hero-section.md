@@ -6,10 +6,10 @@ tags: [hero, landing, marketing]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { HeroExample } from '@site/src/components/AdvancedExamples';
+import { HeroSection } from '@site/src/examples/advanced';
 
 <ExamplePage
-component={HeroExample}
+component={HeroSection}
 difficulty="Intermediate"
 tags={["Hero sections", "Gradients", "Landing pages", "Typography", "Marketing"]}
 description="Build captivating hero sections with animated text reveals and gradient backgrounds. Perfect for landing pages, marketing sites, and product showcases."
@@ -89,4 +89,19 @@ const HeroExample: React.FC = () => {
 };
 
 export default HeroExample;`}
+instructions={[
+"Use contrasting colors against gradient backgrounds for better readability",
+"Implement strategic pauses with pauseFor() to create dramatic timing effects",
+"Apply colorize() to highlight key terms and create visual hierarchy",
+"Position hero text in center-top for maximum visual impact",
+"Include call-to-action elements that complement the animated text flow"
+]}
 />
+
+## Use Cases
+
+- **Landing Pages**: Create compelling first impressions with animated value propositions and brand messaging
+- **Product Launches**: Build excitement with dramatic reveals of product names and key features
+- **Marketing Campaigns**: Capture attention with dynamic headlines and promotional content
+- **Portfolio Websites**: Showcase personal or company branding with professional animated introductions
+- **SaaS Applications**: Welcome users with engaging onboarding experiences and feature highlights

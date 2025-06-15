@@ -117,7 +117,7 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
             borderRadius: '6px',
             overflow: 'hidden',
             backgroundColor: 'var(--ifm-color-emphasis-100)',
-            border: '1px solid var(--ifm-color-emphasis-200)',
+            // border: '1px solid var(--ifm-color-emphasis-200)',
           }}
         >
           <button onClick={() => setView('live')} style={createToggleButtonStyle(view === 'live')}>
@@ -140,7 +140,7 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
           <div
             style={{
               ...commonStyles.flexCenter,
-              padding: '3rem',
+              // padding: '3rem',
               minHeight: '300px',
             }}
             className='typewriter-demo-area'
@@ -161,7 +161,7 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
             marginTop: '2rem',
             padding: '1.5rem',
             backgroundColor: isDark ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.05)',
-            border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`,
+            // border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`,
             borderRadius: '12px',
           }}
         >
@@ -196,7 +196,6 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
           </ul>
         </div>
       )}
-
     </div>
   );
 };

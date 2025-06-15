@@ -6,7 +6,7 @@ tags: [music, player, audio, interface, entertainment]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { MusicPlayerExample } from '@site/src/components/AdvancedExamples';
+import { MusicPlayerExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={MusicPlayerExample}

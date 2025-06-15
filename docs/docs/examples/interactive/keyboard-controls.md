@@ -6,7 +6,7 @@ tags: [interactive, keyboard, controls, accessibility]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { KeyboardControlsExample } from '@site/src/components/AdvancedExamples';
+import { KeyboardControlsExample } from '@site/src/examples/interactive';
 
 <ExamplePage
 component={KeyboardControlsExample}
@@ -87,10 +87,18 @@ const KeyboardControlsExample: React.FC = () => {
 
 export default KeyboardControlsExample;`}
 instructions={[
-"Focus the container element to enable keyboard controls",
-"Use SPACE to pause/resume the animation",
-"Press ESCAPE to skip to the end",
-"Press R to reset the animation from the beginning",
-"Proper ARIA attributes ensure screen reader compatibility"
+"Focus the container element to enable keyboard controls for interactive typewriter",
+"Use SPACE to pause/resume the animation for user-controlled pacing",
+"Press ESCAPE to skip to the end for accessibility and user convenience",
+"Press R to reset the animation from the beginning for repeat demonstrations",
+"Proper ARIA attributes ensure screen reader compatibility and accessibility standards"
 ]}
 />
+
+## Use Cases
+
+- **Interactive Tutorials**: Create user-controlled learning experiences where students can pause and replay content
+- **Accessibility Tools**: Provide keyboard navigation for users with motor disabilities who need custom interaction speeds
+- **Presentation Software**: Build interactive slides where presenters can control animation timing during live demos
+- **Gaming Interfaces**: Develop text-based games with user-controlled dialogue and narrative progression
+- **Kiosk Applications**: Design public information displays with accessible controls for diverse user needs

@@ -6,7 +6,7 @@ tags: [security, password, generator, analysis, cryptography]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { PasswordGeneratorExample } from '@site/src/components/AdvancedExamples';
+import { PasswordGeneratorExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={PasswordGeneratorExample}

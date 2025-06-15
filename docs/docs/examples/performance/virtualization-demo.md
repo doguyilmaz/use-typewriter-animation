@@ -6,7 +6,7 @@ tags: [performance, virtualization, optimization, metrics]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { VirtualizationDemoExample } from '@site/src/components/AdvancedExamples';
+import { VirtualizationDemoExample } from '@site/src/examples/performance';
 
 <ExamplePage
 component={VirtualizationDemoExample}
@@ -146,10 +146,18 @@ The typewriter maintains 60fps even with massive text sequences thanks to these 
 
 export default VirtualizationDemoExample;`}
 instructions={[
-"Monitor the performance metrics in real-time during typing",
-"Notice how only visible segments are rendered for efficiency",
-"Observe the efficiency percentage as content grows",
-"The component maintains smooth performance even with long text",
-"Virtualization automatically activates when content exceeds threshold"
+"Monitor the performance metrics in real-time during typing to understand optimization impact",
+"Notice how only visible segments are rendered for memory efficiency and DOM optimization",
+"Observe the efficiency percentage as content grows to see virtualization benefits",
+"The component maintains smooth 60fps performance even with extremely long text sequences",
+"Virtualization automatically activates when content exceeds threshold for seamless scaling"
 ]}
 />
+
+## Use Cases
+
+- **Documentation Platforms**: Handle large technical documents and API references with smooth scrolling and rendering
+- **Code Repositories**: Display extensive codebases and file contents without performance degradation
+- **Data Visualization**: Present large datasets and reports with typewriter effects while maintaining responsiveness
+- **Educational Tools**: Create long-form tutorials and courses that remain performant across all devices
+- **Content Management**: Build CMS interfaces that can handle lengthy articles and content with animated presentation

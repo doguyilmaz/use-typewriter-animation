@@ -6,7 +6,7 @@ tags: [characters, emojis, unicode, styling, effects]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { CharacterEffectsExample } from '@site/src/components/AdvancedExamples';
+import { CharacterEffectsExample } from '@site/src/examples/basic';
 
 <ExamplePage
 component={CharacterEffectsExample}

@@ -6,10 +6,10 @@ tags: [poetry, multi-line, typography, literary, artistic]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { MultiLinePoetryExample } from '@site/src/components/AdvancedExamples';
+import { MultiLinePoetry } from '@site/src/examples/basic';
 
 <ExamplePage
-component={MultiLinePoetryExample}
+component={MultiLinePoetry}
 difficulty="Beginner"
 description="Master elegant multi-line text layouts with poetic timing and beautiful typography for artistic content presentation. Perfect for literary websites, creative portfolios, and brand storytelling with emotional impact."
 tags={["Poetic timing", "Literary typography", "Multi-line layout", "Artistic content", "Creative presentation"]}

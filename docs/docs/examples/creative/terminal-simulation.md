@@ -6,7 +6,7 @@ tags: [terminal, command-line, system, developer, simulation]
 ---
 
 import ExamplePage from '@site/src/components/ExamplePage';
-import { TerminalExample } from '@site/src/components/AdvancedExamples';
+import { TerminalExample } from '@site/src/examples/creative';
 
 <ExamplePage
 component={TerminalExample}

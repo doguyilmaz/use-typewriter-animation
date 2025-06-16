@@ -4,6 +4,7 @@ import { useTypewriter } from 'use-typewriter-animation';
 const RecipeBuilderExample: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentIngredient, setCurrentIngredient] = useState(0);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 40,
@@ -201,6 +202,18 @@ const RecipeBuilderExample: React.FC = () => {
       .start();
   }, []);
 
+  // Smart auto-scroll - only when user is at bottom
+  useEffect(() => {
+    if (contentRef.current && elements && elements.length > 0) {
+      const container = contentRef.current;
+      const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
+      
+      if (isNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+  }, [elements]);
+
   // Simulate cooking progress
   useEffect(() => {
     const interval = setInterval(() => {
@@ -308,7 +321,17 @@ const RecipeBuilderExample: React.FC = () => {
         </div>
 
         {/* Main recipe content */}
-        <div style={{ whiteSpace: 'pre-line', position: 'relative', zIndex: 1 }}>
+        <div 
+          ref={contentRef}
+          style={{ 
+            whiteSpace: 'pre-line', 
+            position: 'relative', 
+            zIndex: 1,
+            height: '400px',
+            overflowY: 'auto',
+            paddingRight: '8px',
+          }}
+        >
           {elements}
           {cursor}
         </div>

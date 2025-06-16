@@ -7,6 +7,7 @@ const CodeEditorExample: React.FC = () => {
   const [editorTheme, setEditorTheme] = useState('VS Code Dark');
   const [currentLine, setCurrentLine] = useState(1);
   const [activeFile, setActiveFile] = useState('App.tsx');
+  const editorContentRef = React.useRef<HTMLDivElement>(null);
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 45,
@@ -340,6 +341,19 @@ const CodeEditorExample: React.FC = () => {
       .start();
   }, []);
 
+  // Auto-scroll to bottom only during active typing (not when starting fresh)
+  useEffect(() => {
+    if (editorContentRef.current && elements && elements.length > 0) {
+      // Only auto-scroll if user hasn't manually scrolled up
+      const container = editorContentRef.current;
+      const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
+      
+      if (isNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+  }, [elements]);
+
   // Simulate editor interactions
   useEffect(() => {
     const themes = ['VS Code Dark', 'Monokai Pro', 'Dracula', 'One Dark Pro'];
@@ -481,56 +495,63 @@ const CodeEditorExample: React.FC = () => {
           style={{
             flex: 1,
             position: 'relative',
-            overflow: 'auto',
             paddingBottom: '32px', // Space for status bar
+            overflow: 'hidden',
           }}
         >
-          {/* Line numbers */}
           <div
+            ref={editorContentRef}
             style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: '50px',
-              backgroundColor: 'rgba(42, 42, 42, 0.6)',
-              borderRight: '1px solid #3e3e42',
-              padding: '16px 8px',
-              fontSize: '0.75rem',
-              color: '#858585',
-              lineHeight: '1.5',
-              overflow: 'hidden',
+              height: '100%',
+              overflow: 'auto',
+              display: 'flex',
             }}
           >
-            {Array.from({ length: 45 }, (_, i) => (
-              <div
-                key={i}
-                className={currentLine === i + 1 ? 'current-line' : ''}
-                style={{
-                  height: '1.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  fontWeight: currentLine === i + 1 ? '600' : '400',
-                  color: currentLine === i + 1 ? '#ffffff' : '#858585',
-                }}
-              >
-                {i + 1}
-              </div>
-            ))}
-          </div>
+            {/* Line numbers */}
+            <div
+              style={{
+                width: '50px',
+                backgroundColor: 'rgba(42, 42, 42, 0.6)',
+                borderRight: '1px solid #3e3e42',  
+                fontSize: '0.75rem',
+                color: '#858585',
+                lineHeight: '1.5',
+                flexShrink: 0,
+                padding: '16px 8px',
+                paddingBottom: '200px', // Extra padding to ensure background extends
+              }}
+            >
+              {Array.from({ length: 100 }, (_, i) => (
+                <div
+                  key={i}
+                  className={currentLine === i + 1 ? 'current-line' : ''}
+                  style={{
+                    height: '1.5rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    fontWeight: currentLine === i + 1 ? '600' : '400',
+                    color: currentLine === i + 1 ? '#ffffff' : '#858585',
+                  }}
+                >
+                  {i + 1}
+                </div>
+              ))}
+            </div>
 
-          {/* Code content */}
-          <div
-            style={{
-              marginLeft: '60px',
-              padding: '16px',
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-            }}
-          >
-            {elements}
-            {cursor}
+            {/* Code content */}
+            <div
+              style={{
+                flex: 1,
+                padding: '16px',
+                paddingBottom: '200px', // Match the line numbers padding
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+              }}
+            >
+              {elements}
+              {cursor}
+            </div>
           </div>
         </div>
 

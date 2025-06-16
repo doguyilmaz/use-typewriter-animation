@@ -6,6 +6,7 @@ const PasswordGeneratorExample: React.FC = () => {
   const { colorMode } = useColorMode();
   const [isGenerating, setIsGenerating] = useState(false);
   const [strength, setStrength] = useState('Medium');
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 30,
@@ -186,6 +187,18 @@ const PasswordGeneratorExample: React.FC = () => {
       .start(); // Start the typewriter animation
   }, [colorMode]);
 
+  // Smart auto-scroll - only when user is at bottom
+  useEffect(() => {
+    if (contentRef.current && elements && elements.length > 0) {
+      const container = contentRef.current;
+      const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
+      
+      if (isNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+  }, [elements]);
+
   // Simulate password generation process
   useEffect(() => {
     const strengths = ['Weak', 'Medium', 'Strong', 'Very Strong'];
@@ -297,7 +310,17 @@ const PasswordGeneratorExample: React.FC = () => {
         </div>
 
         {/* Main content */}
-        <div style={{ position: 'relative', zIndex: 1, whiteSpace: 'pre-line' }}>
+        <div 
+          ref={contentRef}
+          style={{ 
+            position: 'relative', 
+            zIndex: 1, 
+            whiteSpace: 'pre-line',
+            height: '400px',
+            overflowY: 'auto',
+            paddingRight: '8px',
+          }}
+        >
           {elements}
           {cursor}
         </div>

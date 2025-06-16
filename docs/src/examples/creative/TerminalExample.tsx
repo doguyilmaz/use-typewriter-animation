@@ -6,6 +6,7 @@ const TerminalExample: React.FC = () => {
   const { colorMode } = useColorMode();
   const [currentCommand, setCurrentCommand] = useState(0);
   const [isOnline, setIsOnline] = useState(true);
+  const terminalRef = React.useRef<HTMLDivElement>(null);
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 30,
@@ -161,6 +162,14 @@ const TerminalExample: React.FC = () => {
       .start();
   }, []);
 
+  // Terminal auto-scroll (more aggressive like real terminals)
+  useEffect(() => {
+    if (terminalRef.current && elements && elements.length > 0) {
+      // Terminals always scroll to bottom for new output
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [elements]);
+
   // Simulate terminal activity
   useEffect(() => {
     const interval = setInterval(() => {
@@ -205,6 +214,23 @@ const TerminalExample: React.FC = () => {
           .status-indicator {
             animation: blink 2s infinite;
           }
+
+          .terminal-content::-webkit-scrollbar {
+            width: 8px;
+          }
+
+          .terminal-content::-webkit-scrollbar-track {
+            background: #0d1117;
+          }
+
+          .terminal-content::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+          }
+
+          .terminal-content::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+          }
         `}
       </style>
 
@@ -218,7 +244,7 @@ const TerminalExample: React.FC = () => {
           fontSize: '0.85rem',
           color: '#f0f6fc',
           lineHeight: '1.4',
-          minHeight: '500px',
+          height: '480px',
           border:
             colorMode === 'dark' ? '1px solid #30363d' : '1px solid var(--ifm-color-emphasis-300)',
           overflow: 'hidden',
@@ -284,7 +310,18 @@ const TerminalExample: React.FC = () => {
         </div>
 
         {/* Terminal content */}
-        <div style={{ padding: '16px', whiteSpace: 'pre-line' }}>
+        <div 
+          ref={terminalRef}
+          style={{ 
+            padding: '16px 16px 8px 16px', 
+            whiteSpace: 'pre-line',
+            height: '400px',
+            overflowY: 'auto',
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#30363d #0d1117',
+          }}
+          className="terminal-content"
+        >
           {elements}
           {cursor}
         </div>

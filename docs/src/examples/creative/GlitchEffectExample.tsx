@@ -147,7 +147,7 @@ const GlitchEffectExample: React.FC = () => {
           backgroundColor: bgColor,
           border: `2px solid ${glitchColor}`,
           borderRadius: '8px',
-          minHeight: '280px',
+          minHeight: '320px',
           color: textColor,
           background: bgGradient,
           backgroundSize: '400% 400%',

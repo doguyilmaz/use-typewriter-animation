@@ -7,6 +7,7 @@ const MusicPlayerExample: React.FC = () => {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(75);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 45,
@@ -200,6 +201,18 @@ const MusicPlayerExample: React.FC = () => {
       .start();
   }, [colorMode]);
 
+  // Smart auto-scroll - only when user is at bottom
+  useEffect(() => {
+    if (contentRef.current && elements && elements.length > 0) {
+      const container = contentRef.current;
+      const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
+      
+      if (isNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+  }, [elements]);
+
   // Simulate music player activity
   useEffect(() => {
     const interval = setInterval(() => {
@@ -234,6 +247,24 @@ const MusicPlayerExample: React.FC = () => {
 
           .equalizer-bar {
             animation: equalizer 1.5s ease-in-out infinite;
+          }
+
+          .music-content::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          .music-content::-webkit-scrollbar-track {
+            background: ${colorMode === 'dark' ? 'rgba(31, 41, 55, 0.5)' : 'rgba(248, 250, 252, 0.5)'};
+            border-radius: 3px;
+          }
+
+          .music-content::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 3px;
+          }
+
+          .music-content::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed;
           }
         `}
       </style>
@@ -349,7 +380,18 @@ const MusicPlayerExample: React.FC = () => {
         </div>
 
         {/* Main content */}
-        <div style={{ whiteSpace: 'pre-line', position: 'relative', zIndex: 1 }}>
+        <div 
+          ref={contentRef}
+          className="music-content"
+          style={{ 
+            whiteSpace: 'pre-line', 
+            position: 'relative', 
+            zIndex: 1,
+            height: '400px',
+            overflowY: 'auto',
+            paddingRight: '8px',
+          }}
+        >
           {elements}
           {cursor}
         </div>

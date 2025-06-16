@@ -7,6 +7,7 @@ const LoadingStatesExample: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(0);
   const [loadingSpeed, setLoadingSpeed] = useState('Normal');
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 25,
@@ -203,6 +204,18 @@ const LoadingStatesExample: React.FC = () => {
       .start();
   }, [colorMode]);
 
+  // Smart auto-scroll - only when user is at bottom
+  useEffect(() => {
+    if (contentRef.current && elements && elements.length > 0) {
+      const container = contentRef.current;
+      const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 50;
+      
+      if (isNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+  }, [elements]);
+
   // Simulate loading progress
   useEffect(() => {
     const speeds = ['Fast', 'Normal', 'Slow'];
@@ -341,6 +354,7 @@ const LoadingStatesExample: React.FC = () => {
 
         {/* Loading Content */}
         <div
+          ref={contentRef}
           style={{
             flex: 1,
             padding: '20px',

@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'use-typewriter-animation',
   tagline: 'Modern React Typewriter Hook with TypeScript Support',
-  favicon: 'img/apple-touch-icon',
+  favicon: 'img/apple-touch-icon.png',
 
   url: 'https://doguyilmaz.github.io',
   baseUrl: '/use-typewriter-animation/',

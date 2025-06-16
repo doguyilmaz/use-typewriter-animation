@@ -5,88 +5,28 @@ description: Create an impressive hero section with gradient backgrounds
 tags: [hero, landing, marketing]
 ---
 
-import ExamplePage from '@site/src/components/ExamplePage';
-import { HeroExample } from '@site/src/components/AdvancedExamples';
+import AutoExamplePage from '@site/src/components/AutoExamplePage';
+import { HeroSection } from '@site/src/examples/advanced';
 
-<ExamplePage
-component={HeroExample}
+<AutoExamplePage
+component={HeroSection}
+exampleName="HeroSection"
 difficulty="Intermediate"
-tags={["Hero sections", "Gradients", "Landing pages", "Typography", "Marketing"]}
 description="Build captivating hero sections with animated text reveals and gradient backgrounds. Perfect for landing pages, marketing sites, and product showcases."
-code={`import React, { useEffect } from 'react';
-import { useTypewriter } from 'use-typewriter-animation';
-
-const HeroExample: React.FC = () => {
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 80,
-    cursorColor: '#ffffff',
-  });
-
-  useEffect(() => {
-    typewriter
-      .type('Build ')
-      .colorize('#60a5fa')
-      .type('Amazing')
-      .colorize('#ffffff')
-      .type(' React Apps')
-      .newLine()
-      .pauseFor(1000)
-      .type('with ')
-      .colorize('#34d399')
-      .type('TypeScript')
-      .colorize('#ffffff')
-      .type(' & ')
-      .colorize('#f87171')
-      .type('Modern Tools')
-      .pauseFor(2000)
-      .newLine()
-      .type('✨ Fast • Reliable • Scalable')
-      .start();
-  }, []);
-
-  return (
-    <>
-      <style>{keyframes}</style>
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          padding: '4rem 2rem',
-          paddingTop: '5rem',
-          borderRadius: '16px',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-          width: '100%',
-          minHeight: '400px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            fontFamily: 'system-ui, sans-serif',
-            whiteSpace: 'pre-line',
-            lineHeight: '1.2',
-            minHeight: '300px',
-            height: '300px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            width: '100%',
-            wordWrap: 'break-word',
-            overflowWrap: 'break-word',
-          }}
-        >
-          {elements}
-          {cursor}
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default HeroExample;`}
+tags={["Hero sections", "Gradients", "Landing pages", "Typography", "Marketing"]}
+instructions={[
+"Create compelling headlines with staggered text reveals and dramatic timing",
+"Implement gradient backgrounds and sophisticated color schemes for visual impact",
+"Add call-to-action integration with strategic text placement and emphasis",
+"Include responsive design principles for optimal display across all devices",
+"Use typography hierarchy and visual weight to guide user attention effectively"
+]}
 />
+
+## Use Cases
+
+- **Landing Pages**: Product launches and service offerings with compelling headlines
+- **Marketing Sites**: Brand introductions and value proposition presentations
+- **Portfolio Websites**: Personal branding and professional introduction sections
+- **Corporate Pages**: Company mission statements and executive messaging
+- **Product Showcases**: Feature highlights and product announcement presentations

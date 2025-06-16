@@ -117,7 +117,7 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
             borderRadius: '6px',
             overflow: 'hidden',
             backgroundColor: 'var(--ifm-color-emphasis-100)',
-            border: '1px solid var(--ifm-color-emphasis-200)',
+            // border: '1px solid var(--ifm-color-emphasis-200)',
           }}
         >
           <button onClick={() => setView('live')} style={createToggleButtonStyle(view === 'live')}>
@@ -139,13 +139,44 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
         {view === 'live' ? (
           <div
             style={{
-              ...commonStyles.flexCenter,
-              padding: '3rem',
-              minHeight: '300px',
+              padding: '3rem 0.5rem',
+              minHeight: '60px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'var(--ifm-background-color)',
+              position: 'relative',
+              width: '100%',
             }}
             className='typewriter-demo-area'
           >
-            <div className='typewriter-content'>{LiveComponent}</div>
+            {/* Background Pattern */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `radial-gradient(circle at 1px 1px, var(--ifm-color-emphasis-400) 1px, transparent 0)`,
+                backgroundSize: '20px 20px',
+                opacity: 0.6,
+                pointerEvents: 'none',
+              }}
+            />
+            
+            {/* Content */}
+            <div 
+              className='typewriter-content'
+              style={{
+                width: '100%',
+                maxWidth: '825px',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              {LiveComponent}
+            </div>
           </div>
         ) : (
           <CodeBlock language='tsx' title={`${title?.replace(/\s+/g, '') || 'Example'}.tsx`}>
@@ -161,7 +192,7 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
             marginTop: '2rem',
             padding: '1.5rem',
             backgroundColor: isDark ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.05)',
-            border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`,
+            // border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`,
             borderRadius: '12px',
           }}
         >
@@ -196,47 +227,6 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
           </ul>
         </div>
       )}
-
-      {/* Navigation */}
-      <div
-        style={{
-          ...commonStyles.flexCenter,
-          marginTop: '3rem',
-          gap: '1rem',
-          flexWrap: 'wrap',
-        }}
-      >
-        <a
-          href='/use-typewriter-animation/docs/getting-started/installation'
-          style={{
-            ...commonStyles.button,
-            backgroundColor: isDark ? '#16a34a' : '#22c55e',
-            color: 'white',
-            textDecoration: 'none',
-            fontWeight: '600',
-            fontSize: '0.95rem',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-          }}
-        >
-          📦 Get Started
-        </a>
-        <a
-          href='/use-typewriter-animation/docs/api/use-typewriter'
-          style={{
-            ...commonStyles.button,
-            backgroundColor: isDark ? '#2563eb' : '#3b82f6',
-            color: 'white',
-            textDecoration: 'none',
-            fontWeight: '600',
-            fontSize: '0.95rem',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-          }}
-        >
-          📚 API Docs
-        </a>
-      </div>
     </div>
   );
 };

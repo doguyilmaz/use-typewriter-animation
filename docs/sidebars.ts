@@ -32,6 +32,7 @@ const sidebars: SidebarsConfig = {
         'contributing/releases'
       ],
     },
+    'changelog',
     'ROADMAP',
     'examples',
     {
@@ -46,6 +47,10 @@ const sidebars: SidebarsConfig = {
             'examples/basic/colorful-text',
             'examples/basic/looping-animation',
             'examples/basic/comprehensive-basic',
+            'examples/basic/speed-variations',
+            'examples/basic/character-effects',
+            'examples/basic/text-replacement',
+            'examples/basic/multi-line-poetry',
           ],
         },
         {
@@ -54,9 +59,12 @@ const sidebars: SidebarsConfig = {
           items: [
             'examples/creative/terminal-simulation',
             'examples/creative/code-editor',
-            'examples/creative/chat-simulation',
             'examples/creative/loading-states',
             'examples/creative/storytelling-demo',
+            'examples/creative/glitch-effect',
+            'examples/creative/music-player',
+            'examples/creative/recipe-builder',
+            'examples/creative/password-generator',
           ],
         },
         {
@@ -64,6 +72,7 @@ const sidebars: SidebarsConfig = {
           label: 'Interactive',
           items: [
             'examples/interactive/keyboard-controls',
+            'examples/interactive/voice-command-simulator',
           ],
         },
         {
@@ -79,6 +88,13 @@ const sidebars: SidebarsConfig = {
           items: [
             'examples/advanced/hero-section',
             'examples/advanced/accessibility-showcase',
+            'examples/advanced/ai-chat-interface',
+            'examples/advanced/data-visualization',
+            'examples/advanced/ecommerce-checkout',
+            'examples/advanced/scientific-calculator',
+            'examples/advanced/code-review-simulator',
+            'examples/advanced/weather-dashboard',
+            'examples/advanced/chat-simulation',
           ],
         },
       ],

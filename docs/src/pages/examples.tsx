@@ -1,16 +1,16 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import { LiveExample } from '../components/LiveExample';
 import {
-  LiveExample,
-  SimpleExample,
-  ColorfulExample,
-  LoopingExample,
-} from '../components/LiveExample';
+  SimpleTypewriter,
+  ColorfulText,
+  LoopingAnimation,
+} from '../examples/basic';
 
 const examples = [
   {
     title: 'Simple Typewriter',
-    component: SimpleExample,
+    component: SimpleTypewriter,
     description: 'Basic typewriter animation with typing and deleting',
     code: `import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
@@ -52,7 +52,7 @@ export default SimpleExample;`,
   },
   {
     title: 'Colorful Text',
-    component: ColorfulExample,
+    component: ColorfulText,
     description: 'Add visual appeal with colorized text segments',
     code: `import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
@@ -99,7 +99,7 @@ export default ColorfulExample;`,
   },
   {
     title: 'Looping Animation',
-    component: LoopingExample,
+    component: LoopingAnimation,
     description: 'Create continuous animations that loop indefinitely',
     code: `import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
@@ -149,71 +149,85 @@ export default LoopingExample;`,
 export default function Examples(): JSX.Element {
   const styles = {
     container: {
-      padding: '2rem 1rem',
-      maxWidth: '1200px',
+      padding: '3rem 1rem',
+      maxWidth: '1600px',
       margin: '0 auto',
     },
     header: {
       textAlign: 'center' as const,
-      marginBottom: '3rem',
+      marginBottom: '4rem',
     },
     title: {
-      fontSize: '3rem',
-      fontWeight: 'bold',
-      marginBottom: '1rem',
+      fontSize: '3.5rem',
+      fontWeight: '800',
+      marginBottom: '1.5rem',
       color: 'var(--ifm-color-content)',
+      letterSpacing: '-0.05em',
+      background: 'linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-darker))',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text',
     },
     subtitle: {
-      fontSize: '1.2rem',
+      fontSize: '1.3rem',
       color: 'var(--ifm-color-content-secondary)',
-      lineHeight: '1.6',
-      maxWidth: '600px',
+      lineHeight: '1.7',
+      maxWidth: '900px',
       margin: '0 auto',
+      fontWeight: '400',
     },
     sectionTitle: {
-      fontSize: '2rem',
-      fontWeight: 'bold',
-      marginBottom: '2rem',
+      fontSize: '2.25rem',
+      fontWeight: '700',
+      marginBottom: '3rem',
       color: 'var(--ifm-color-content)',
       textAlign: 'center' as const,
+      letterSpacing: '-0.025em',
     },
     ctaSection: {
-      marginTop: '4rem',
-      padding: '3rem 2rem',
+      marginTop: '6rem',
+      padding: '4rem 2rem',
       backgroundColor: 'var(--ifm-color-emphasis-100)',
       border: '1px solid var(--ifm-color-emphasis-300)',
-      borderRadius: '16px',
+      borderRadius: '20px',
       textAlign: 'center' as const,
+      background: 'linear-gradient(135deg, var(--ifm-color-emphasis-100), var(--ifm-color-emphasis-200))',
+      maxWidth: '1200px',
+      margin: '6rem auto 0 auto',
     },
     ctaTitle: {
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-      marginBottom: '1rem',
+      fontSize: '2rem',
+      fontWeight: '700',
+      marginBottom: '1.5rem',
       color: 'var(--ifm-color-content)',
+      letterSpacing: '-0.025em',
     },
     ctaDescription: {
-      fontSize: '1rem',
+      fontSize: '1.2rem',
       color: 'var(--ifm-color-content-secondary)',
-      marginBottom: '2rem',
-      lineHeight: '1.6',
+      marginBottom: '3rem',
+      lineHeight: '1.7',
+      maxWidth: '600px',
+      margin: '0 auto 3rem auto',
     },
     buttonContainer: {
       display: 'flex',
-      gap: '1rem',
+      gap: '1.5rem',
       flexWrap: 'wrap' as const,
       justifyContent: 'center',
     },
     button: {
-      padding: '0.75rem 1.5rem',
+      padding: '1rem 2rem',
       color: 'white',
       textDecoration: 'none',
-      borderRadius: '8px',
+      borderRadius: '12px',
       fontWeight: '600',
-      fontSize: '0.95rem',
-      transition: 'all 0.2s ease',
+      fontSize: '1rem',
+      transition: 'all 0.3s ease',
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '0.5rem',
+      gap: '0.75rem',
+      boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
     },
   };
 
@@ -258,6 +272,14 @@ export default function Examples(): JSX.Element {
                 ...styles.button,
                 backgroundColor: '#22c55e',
               }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(34, 197, 94, 0.3)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+              }}
             >
               📦 Installation Guide
             </a>
@@ -267,6 +289,14 @@ export default function Examples(): JSX.Element {
                 ...styles.button,
                 backgroundColor: '#3b82f6',
               }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+              }}
             >
               📚 More Examples
             </a>
@@ -275,6 +305,14 @@ export default function Examples(): JSX.Element {
               style={{
                 ...styles.button,
                 backgroundColor: '#8b5cf6',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.3)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
               }}
             >
               🔧 API Reference

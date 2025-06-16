@@ -1,0 +1,2 @@
+export { VoiceCommandExample, default as VoiceCommandExampleDefault } from './VoiceCommandExample';
+export { KeyboardControlsExample, default as KeyboardControlsExampleDefault } from './KeyboardControlsExample';

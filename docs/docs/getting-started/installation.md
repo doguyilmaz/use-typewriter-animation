@@ -7,6 +7,9 @@ Get started with `use-typewriter-animation` in your React project.
 Choose your preferred package manager:
 
 ```bash
+# bun (recommended)
+bun add use-typewriter-animation
+
 # npm
 npm install use-typewriter-animation
 
@@ -15,9 +18,6 @@ yarn add use-typewriter-animation
 
 # pnpm
 pnpm add use-typewriter-animation
-
-# bun
-bun add use-typewriter-animation
 ```
 
 ## Requirements

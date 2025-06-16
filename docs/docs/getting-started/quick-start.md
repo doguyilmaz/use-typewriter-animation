@@ -7,6 +7,10 @@ Get up and running with your first typewriter animation in 5 minutes!
 ### 1. Install the Package
 
 ```bash
+# bun (recommended)
+bun add use-typewriter-animation
+
+# or with npm
 npm install use-typewriter-animation
 ```
 

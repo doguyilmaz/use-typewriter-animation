@@ -1,57 +1,32 @@
 ---
+sidebar_position: 2
 title: Colorful Text
-description: Add visual appeal with colorized text segments for dynamic styling
+description: Rainbow effects and vibrant color transitions using the colorize method
+tags: [colorize, colors, rainbow, basic, effects]
 ---
 
-import ExamplePage from '@site/src/components/ExamplePage';
-import { ColorfulExample } from '@site/src/components/LiveExample';
+import AutoExamplePage from '@site/src/components/AutoExamplePage';
+import { ColorfulText } from '@site/src/examples/basic';
 
-<ExamplePage
-title="Colorful Text Animation"
-description="Add visual appeal to your typewriter animations with colorized text segments. Great for highlighting important words, creating rainbow effects, or drawing attention to specific parts of your message."
-component={ColorfulExample}
+<AutoExamplePage
+component={ColorfulText}
+exampleName="ColorfulText"
 difficulty="Beginner"
-features={["Text colorization", "Multiple colors", "Dynamic styling", "Color transitions"]}
-code={`import React, { useEffect } from 'react';
-import { useTypewriter } from 'use-typewriter-animation';
-
-function ColorfulText() {
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 50,
-  });
-
-  useEffect(() => {
-    typewriter
-      .type('This is ')
-      .colorize('#3b82f6')
-      .type('blue text')
-      .colorize('')
-      .type(' and ')
-      .colorize('#10b981')
-      .type('green text')
-      .colorize('')
-      .type(' and ')
-      .colorize('#ef4444')
-      .type('red text!')
-      .start();
-  }, []);
-
-  return (
-    <>
-      <style>{keyframes}</style>
-      <div 
-        style={{ 
-          fontSize: '1.2rem', 
-          fontFamily: 'monospace',
-          color: 'var(--ifm-color-content)'
-        }}
-      >
-        {elements}
-        {cursor}
-      </div>
-    </>
-  );
-}
-
-export default ColorfulText;`}
+description="Showcase rainbow effects and vibrant color transitions using the colorize() method for eye-catching text presentations. Perfect for creating engaging visual content and learning color management in typewriter animations."
+tags={["Color effects", "Rainbow text", "Visual design", "Eye-catching", "Colorize method"]}
+instructions={[
+"Use colorize() method to change text color for individual segments",
+"Reset to neutral colors between colorful text for better readability",
+"Apply consistent color palette that works in both light and dark themes",
+"Include pauseFor() to let users appreciate each color transition",
+"Combine colors strategically to create rainbow or gradient effects"
+]}
 />
+
+## Use Cases
+
+- **Marketing Content**: Eye-catching promotional text and call-to-action messages
+- **Educational Tools**: Highlighting important concepts with color coding
+- **Creative Portfolios**: Artistic text presentations and visual storytelling
+- **Brand Showcases**: Demonstrating brand colors and visual identity
+- **Interactive Learning**: Color-coded tutorials and step-by-step guides

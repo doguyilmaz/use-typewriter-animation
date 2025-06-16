@@ -7,6 +7,9 @@ Complete guide for installing and setting up `use-typewriter-animation` in your 
 ### Choose Your Package Manager
 
 ```bash
+# bun (recommended)
+bun add use-typewriter-animation
+
 # npm
 npm install use-typewriter-animation
 
@@ -15,9 +18,6 @@ yarn add use-typewriter-animation
 
 # pnpm
 pnpm add use-typewriter-animation
-
-# bun
-bun add use-typewriter-animation
 ```
 
 ### Version Requirements

@@ -107,7 +107,7 @@
   "bugs": {
     "url": "https://github.com/doguyilmaz/use-typewriter-animation/issues"
   },
-  "homepage": "https://github.com/doguyilmaz/use-typewriter-animation#readme",
+  "homepage": "https://doguyilmaz.github.io/use-typewriter-animation",
   "trustedDependencies": [
     "@biomejs/biome"
   ]

@@ -139,13 +139,44 @@ export const ExamplePage: React.FC<ExamplePageProps> = ({
         {view === 'live' ? (
           <div
             style={{
-              ...commonStyles.flexCenter,
-              // padding: '3rem',
-              minHeight: '300px',
+              padding: '3rem 0.5rem',
+              minHeight: '60px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'var(--ifm-background-color)',
+              position: 'relative',
+              width: '100%',
             }}
             className='typewriter-demo-area'
           >
-            <div className='typewriter-content'>{LiveComponent}</div>
+            {/* Background Pattern */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `radial-gradient(circle at 1px 1px, var(--ifm-color-emphasis-400) 1px, transparent 0)`,
+                backgroundSize: '20px 20px',
+                opacity: 0.6,
+                pointerEvents: 'none',
+              }}
+            />
+            
+            {/* Content */}
+            <div 
+              className='typewriter-content'
+              style={{
+                width: '100%',
+                maxWidth: '825px',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              {LiveComponent}
+            </div>
           </div>
         ) : (
           <CodeBlock language='tsx' title={`${title?.replace(/\s+/g, '') || 'Example'}.tsx`}>

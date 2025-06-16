@@ -27,10 +27,11 @@ export const commonStyles = {
   },
 
   card: {
-    // borderRadius: '12px',
-    // border: '1px solid var(--ifm-color-emphasis-200)',
-    // backgroundColor: 'var(--ifm-background-surface-color)',
-    // overflow: 'hidden',
+    borderRadius: '12px',
+    border: '1px solid var(--ifm-color-emphasis-200)',
+    backgroundColor: 'var(--ifm-background-surface-color)',
+    overflow: 'hidden',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
   },
 
   button: {

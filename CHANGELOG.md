@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.2] - 2025-06-16
+
+### 🎨 Example & Documentation Improvements
+
+**Enhanced Example Components:**
+
+- ✅ **Refactored example organization** - Improved structure and categorization of example components
+- ✅ **Enhanced styling system** - Updated shared styles and component styling for better visual consistency
+- ✅ **Improved code organization** - Better separation of advanced and creative examples
+- ✅ **Documentation styling** - Enhanced visual presentation of examples and documentation pages
+
+### 🔧 Documentation Infrastructure
+
+**Example Component Updates:**
+
+- **Advanced Examples** - AI Chat Interface, Chat Simulation, and Code Editor examples refined
+- **Creative Examples** - Enhanced styling for Code Editor, Glitch Effect, Loading States, Music Player, Password Generator, Recipe Builder, and Terminal examples
+- **Shared Components** - Improved ExamplePage and LiveExample components with better styling
+- **Page Structure** - Enhanced examples page layout and navigation
+
+### 🎯 Developer Experience
+
+**Visual Improvements:**
+
+- **Consistent styling** - Unified design language across all example components
+- **Better component organization** - Clearer separation between different example categories
+- **Enhanced readability** - Improved code presentation and documentation formatting
+- **Professional appearance** - Polished visual design for better user experience
+
+### 📦 Bundle Impact
+
+- **Core library**: 5.3KB gzipped (ESM) / 5.6KB gzipped (CJS) - unchanged
+- **Documentation**: Enhanced styling with zero runtime impact
+- **Examples**: Improved organization and visual presentation
+
+### 🔄 Migration Notes
+
+**From v3.5.1 to v3.5.2:**
+
+No breaking changes. This release focuses on documentation and example improvements:
+
+- **Existing code**: Works without any changes
+- **Enhanced examples**: Better organized and styled example components
+- **Improved documentation**: Enhanced visual presentation and navigation
+- **Professional styling**: Consistent design language across all examples
+
+---
+
 ## [3.5.1] - 2025-01-14
 
 ### 🔧 Test Infrastructure Fixes

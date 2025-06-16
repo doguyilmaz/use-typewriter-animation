@@ -31,8 +31,8 @@ The typewriter maintains 60fps even with massive text sequences thanks to these 
   return (
     <>
       <style>{keyframes}</style>
-      <div 
-        style={{ 
+      <div
+        style={{
           fontFamily: 'system-ui, -apple-system, sans-serif',
           width: '100%',
           boxSizing: 'border-box',
@@ -43,58 +43,104 @@ The typewriter maintains 60fps even with massive text sequences thanks to these 
           <h3 style={{ color: 'var(--ifm-color-content)', marginBottom: '1rem' }}>
             📊 Performance Metrics
           </h3>
-          <div 
-            style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-              gap: '1rem' 
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '1rem',
+              marginBottom: '1rem',
             }}
           >
-            <div 
-              style={{ 
-                textAlign: 'center', 
-                padding: '1rem', 
-                border: '1px solid var(--ifm-color-emphasis-300)', 
-                borderRadius: '8px',
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '1.25rem',
+                border: '2px solid var(--ifm-color-emphasis-300)',
+                borderRadius: '12px',
                 backgroundColor: 'var(--ifm-background-surface-color)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
               }}
             >
-              <div style={{ fontSize: '2rem', fontWeight: '800', color: '#3b82f6' }}>
+              <div
+                style={{
+                  fontSize: '2rem',
+                  fontWeight: '800',
+                  color: '#3b82f6',
+                  marginBottom: '0.5rem',
+                }}
+              >
                 {metrics?.totalSegments || 0}
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>
+              <div
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--ifm-color-content-secondary)',
+                  fontWeight: '500',
+                }}
+              >
                 Total Segments
               </div>
             </div>
-            <div 
-              style={{ 
-                textAlign: 'center', 
-                padding: '1rem', 
-                border: '1px solid var(--ifm-color-emphasis-300)', 
-                borderRadius: '8px',
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '1.25rem',
+                border: '2px solid var(--ifm-color-emphasis-300)',
+                borderRadius: '12px',
                 backgroundColor: 'var(--ifm-background-surface-color)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
               }}
             >
-              <div style={{ fontSize: '2rem', fontWeight: '800', color: '#10b981' }}>
+              <div
+                style={{
+                  fontSize: '2rem',
+                  fontWeight: '800',
+                  color: '#10b981',
+                  marginBottom: '0.5rem',
+                }}
+              >
                 {metrics?.visibleSegments || 0}
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>
+              <div
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--ifm-color-content-secondary)',
+                  fontWeight: '500',
+                }}
+              >
                 Rendered Segments
               </div>
             </div>
-            <div 
-              style={{ 
-                textAlign: 'center', 
-                padding: '1rem', 
-                border: '1px solid var(--ifm-color-emphasis-300)', 
-                borderRadius: '8px',
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '1.25rem',
+                border: '2px solid var(--ifm-color-emphasis-300)',
+                borderRadius: '12px',
                 backgroundColor: 'var(--ifm-background-surface-color)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
               }}
             >
-              <div style={{ fontSize: '2rem', fontWeight: '800', color: '#8b5cf6' }}>
-                {Math.round(((metrics?.visibleSegments || 0) / Math.max(metrics?.totalSegments || 1, 1)) * 100)}%
+              <div
+                style={{
+                  fontSize: '2rem',
+                  fontWeight: '800',
+                  color: '#8b5cf6',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                {Math.round(
+                  ((metrics?.visibleSegments || 0) / Math.max(metrics?.totalSegments || 1, 1)) * 100
+                )}
+                %
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>
+              <div
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--ifm-color-content-secondary)',
+                  fontWeight: '500',
+                }}
+              >
                 Efficiency
               </div>
             </div>
@@ -102,12 +148,12 @@ The typewriter maintains 60fps even with massive text sequences thanks to these 
         </div>
 
         {/* Text content area */}
-        <div 
+        <div
           style={{
             padding: '2rem',
             border: '2px solid var(--ifm-color-emphasis-300)',
             borderRadius: '12px',
-            fontSize: '16px',
+            fontSize: '1rem',
             lineHeight: '1.6',
             minHeight: '400px',
             maxHeight: '600px',
@@ -119,6 +165,7 @@ The typewriter maintains 60fps even with massive text sequences thanks to these 
             boxSizing: 'border-box',
             wordWrap: 'break-word',
             overflowWrap: 'break-word',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
           }}
         >
           {elements}

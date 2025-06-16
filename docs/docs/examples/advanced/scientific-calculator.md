@@ -1,157 +1,32 @@
 ---
-sidebar_position: 8
+sidebar_position: 3
 title: Scientific Calculator
-description: Advanced scientific calculator with mathematical functions and memory operations
-tags: [calculator, mathematics, scientific, functions, computation]
+description: Advanced calculator interface with mathematical expressions and real-time computation
+tags: [calculator, math, computation, scientific, expressions]
 ---
 
-import ExamplePage from '@site/src/components/ExamplePage';
+import AutoExamplePage from '@site/src/components/AutoExamplePage';
 import { ScientificCalculator } from '@site/src/examples/advanced';
 
-<ExamplePage
+<AutoExamplePage
 component={ScientificCalculator}
+exampleName="ScientificCalculator"
 difficulty="Advanced"
-description="Build a comprehensive scientific calculator interface with advanced mathematical functions, memory operations, and multiple calculation modes. Features trigonometric functions, logarithms, statistical operations, and programmable modes."
-tags={["Scientific calculator", "Mathematical functions", "Memory operations", "Trigonometry", "Advanced computation"]}
-code={`import React, { useEffect, useState } from 'react';
-import { useTypewriter } from 'use-typewriter-animation';
-
-export const ScientificCalculator: React.FC = () => {
-  const { typewriter, elements, cursor, keyframes } = useTypewriter({
-    typeSpeed: 35,
-    cursorStyle: 'bar',
-    cursorColor: '#7c3aed',
-  });
-
-  const [currentValue, setCurrentValue] = useState(42.75);
-  const [calculationMode, setCalculationMode] = useState('scientific');
-  const [memoryValue, setMemoryValue] = useState(3.14159);
-
-  const modes = ['basic', 'scientific', 'programming', 'statistics'];
-
-  useEffect(() => {
-    typewriter
-      .colorize('#7c3aed')
-      .type('🧮 SCIENTIFIC CALCULATOR')
-      .colorize('#1f2937')
-      .newLine()
-      .newLine()
-      .pauseFor(500)
-      .colorize('#10b981')
-      .type('Display: ')
-      .colorize('#374151')
-      .type(currentValue.toString())
-      .newLine()
-      .colorize('#10b981')
-      .type('Mode: ')
-      .colorize('#374151')
-      .type(calculationMode.toUpperCase())
-      .newLine()
-      .colorize('#10b981')
-      .type('Memory: ')
-      .colorize('#374151')
-      .type(memoryValue.toFixed(5))
-      .colorize('#1f2937')
-      .newLine()
-      .newLine()
-      .pauseFor(800)
-      .colorize('#3b82f6')
-      .type('🔢 BASIC OPERATIONS')
-      .colorize('#1f2937')
-      .newLine()
-      .colorize('#6b7280')
-      .type('[+] [-] [×] [÷] [=]')
-      .newLine()
-      .type('[√] [x²] [x³] [1/x]')
-      .colorize('#1f2937')
-      .newLine()
-      .newLine()
-      .pauseFor(600)
-      .colorize('#f59e0b')
-      .type('📐 SCIENTIFIC FUNCTIONS')
-      .colorize('#1f2937')
-      .newLine()
-      .colorize('#6b7280')
-      .type('[sin] [cos] [tan] [log]')
-      .newLine()
-      .type('[ln] [e^x] [10^x] [π]')
-      .newLine()
-      .type('[deg] [rad] [C] [P]')
-      .colorize('#1f2937')
-      .newLine()
-      .newLine()
-      .pauseFor(700)
-      .colorize('#dc2626')
-      .type('💾 MEMORY FUNCTIONS')
-      .colorize('#1f2937')
-      .newLine()
-      .colorize('#6b7280')
-      .type('[MS] [MR] [MC] [M+] [M-]')
-      .colorize('#1f2937')
-      .newLine()
-      .newLine()
-      .pauseFor(500)
-      .colorize('#8b5cf6')
-      .type('Recent Calculation:')
-      .colorize('#1f2937')
-      .newLine()
-      .colorize('#e5e7eb')
-      .type('sin(45°) × π ≈ 2.2214')
-      .start();
-  }, [currentValue, calculationMode, memoryValue]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentValue(prev => Math.round((Math.random() * 1000 + prev * 0.1) * 100) / 100);
-      const modes = ['basic', 'scientific', 'programming', 'statistics'];
-      setCalculationMode(modes[Math.floor(Math.random() * modes.length)]);
-      setMemoryValue(prev => Math.round((prev + (Math.random() - 0.5) * 100) * 100) / 100);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <>
-      <style>{keyframes}</style>
-      <div
-        style={{
-          backgroundColor: 'var(--ifm-background-surface-color)',
-          borderRadius: '16px',
-          padding: '2.5rem',
-          fontFamily: 'monospace',
-          fontSize: '0.9rem',
-          color: 'var(--ifm-color-content)',
-          lineHeight: '1.6',
-          minHeight: '400px',
-          border: '2px solid var(--ifm-color-primary)',
-          position: 'relative',
-          boxShadow: '0 4px 12px var(--ifm-color-emphasis-200)',
-        }}
-      >
-        <div style={{ whiteSpace: 'pre-line' }}>
-          {elements}
-          {cursor}
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default ScientificCalculator;`}
+description="Build a sophisticated scientific calculator with mathematical expression evaluation, function support, and real-time computation display. Perfect for educational tools, scientific applications, and mathematical demonstrations."
+tags={["Scientific calculator", "Mathematical expressions", "Real-time computation", "Function evaluation", "Educational tools"]}
 instructions={[
-"Implement comprehensive mathematical operations including scientific functions and memory operations",
-"Use proper mathematical notation and scientific terminology for authentic calculator experience",
-"Apply visual feedback for different operation types (basic, scientific, memory functions)",
-"Include error handling and calculation history for professional calculator functionality",
-"Structure interface with clear operation categories and result display for optimal usability"
+"Create mathematical expression input with proper syntax highlighting and validation",
+"Implement real-time calculation display with step-by-step solution breakdown",
+"Add scientific function support including trigonometry, logarithms, and advanced operations",
+"Include calculation history and memory functions for complex computations",
+"Design responsive calculator interface with proper button layout and accessibility"
 ]}
 />
 
 ## Use Cases
 
-- **Educational Platforms**: Build interactive mathematics tools for students learning algebra, calculus, and statistics
-- **Engineering Applications**: Create technical calculation tools for mechanical, electrical, and civil engineering
-- **Scientific Research**: Develop computational interfaces for laboratory calculations and data analysis
-- **Financial Services**: Build advanced financial calculators for investment analysis and risk assessment
-- **Mobile Applications**: Create feature-rich calculator apps with scientific and programming capabilities
+- **Educational Tools**: Mathematics learning platforms and STEM education applications
+- **Scientific Research**: Research tools requiring complex mathematical computations
+- **Engineering Applications**: Technical calculations and engineering problem solving
+- **Financial Tools**: Advanced financial calculations and modeling applications
+- **Development Tools**: Programming utilities requiring mathematical computation interfaces

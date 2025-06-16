@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
+import { useColorMode } from '@docusaurus/theme-common';
 
 const CodeEditorExample: React.FC = () => {
+  const { colorMode } = useColorMode();
   const [editorTheme, setEditorTheme] = useState('VS Code Dark');
   const [currentLine, setCurrentLine] = useState(1);
   const [activeFile, setActiveFile] = useState('App.tsx');
-  
+
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 45,
     cursorStyle: 'bar',
@@ -39,7 +41,7 @@ const CodeEditorExample: React.FC = () => {
       .colorize('#d4d4d4')
       .type(' ')
       .colorize('#ce9178')
-      .type('\'react\'')
+      .type("'react'")
       .colorize('#d4d4d4')
       .type(';')
       .newLine()
@@ -56,7 +58,7 @@ const CodeEditorExample: React.FC = () => {
       .colorize('#d4d4d4')
       .type(' ')
       .colorize('#ce9178')
-      .type('\'axios\'')
+      .type("'axios'")
       .colorize('#d4d4d4')
       .type(';')
       .newLine()
@@ -250,7 +252,7 @@ const CodeEditorExample: React.FC = () => {
       .colorize('#d4d4d4')
       .type('[]>(')
       .colorize('#ce9178')
-      .type('\'/api/users\');')
+      .type("'/api/users');")
       .colorize('#d4d4d4')
       .newLine()
       .type('      ')
@@ -287,7 +289,7 @@ const CodeEditorExample: React.FC = () => {
       .colorize('#d4d4d4')
       .type('(')
       .colorize('#ce9178')
-      .type('\'Failed to fetch users:\'')
+      .type("'Failed to fetch users:'")
       .colorize('#d4d4d4')
       .type(', ')
       .colorize('#9cdcfe')
@@ -342,7 +344,7 @@ const CodeEditorExample: React.FC = () => {
   useEffect(() => {
     const themes = ['VS Code Dark', 'Monokai Pro', 'Dracula', 'One Dark Pro'];
     const files = ['App.tsx', 'utils.ts', 'api.ts', 'types.d.ts', 'hooks.ts'];
-    
+
     const interval = setInterval(() => {
       setEditorTheme(themes[Math.floor(Math.random() * themes.length)]);
       setCurrentLine(Math.floor(Math.random() * 45) + 1);
@@ -358,8 +360,20 @@ const CodeEditorExample: React.FC = () => {
         {keyframes}
         {`
           @keyframes editor-glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(0, 122, 204, 0.2); }
-            50% { box-shadow: 0 0 50px rgba(0, 122, 204, 0.4); }
+            0%, 100% { 
+              box-shadow: ${
+                colorMode === 'dark'
+                  ? '0 0 30px rgba(0, 122, 204, 0.3), 0 0 60px rgba(0, 122, 204, 0.1)'
+                  : '0 0 30px rgba(0, 122, 204, 0.2), 0 8px 32px rgba(0, 0, 0, 0.1)'
+              }; 
+            }
+            50% { 
+              box-shadow: ${
+                colorMode === 'dark'
+                  ? '0 0 50px rgba(0, 122, 204, 0.4), 0 0 100px rgba(0, 122, 204, 0.2)'
+                  : '0 0 50px rgba(0, 122, 204, 0.3), 0 8px 32px rgba(0, 0, 0, 0.15)'
+              }; 
+            }
           }
           
           @keyframes intellisense-popup {
@@ -394,12 +408,17 @@ const CodeEditorExample: React.FC = () => {
           fontSize: '0.85rem',
           lineHeight: '1.5',
           borderRadius: '8px',
-          minHeight: '400px',
-          maxHeight: '500px',
-          overflowY: 'auto',
-          border: '1px solid #3e3e42',
+          height: '500px',
+          display: 'flex',
+          flexDirection: 'column',
+          border: colorMode === 'dark' 
+            ? '1px solid #3e3e42' 
+            : '2px solid var(--ifm-color-emphasis-300)',
           position: 'relative',
           background: 'linear-gradient(135deg, #1e1e1e 0%, #252526 100%)',
+          boxShadow: colorMode === 'dark'
+            ? undefined
+            : '0 8px 32px rgba(0, 0, 0, 0.1)',
         }}
       >
         {/* Editor Tab Bar */}
@@ -409,9 +428,7 @@ const CodeEditorExample: React.FC = () => {
             backgroundColor: '#2d2d30',
             borderBottom: '1px solid #3e3e42',
             padding: '0',
-            position: 'sticky',
-            top: 0,
-            zIndex: 2,
+            flexShrink: 0,
           }}
         >
           <div
@@ -462,37 +479,39 @@ const CodeEditorExample: React.FC = () => {
         {/* Editor Content */}
         <div
           style={{
-            padding: '16px 0',
+            flex: 1,
             position: 'relative',
+            overflow: 'auto',
+            paddingBottom: '32px', // Space for status bar
           }}
         >
-          {/* Line Numbers */}
+          {/* Line numbers */}
           <div
             style={{
               position: 'absolute',
-              left: '0',
-              top: '16px',
-              bottom: '16px',
+              left: 0,
+              top: 0,
+              bottom: 0,
               width: '50px',
-              backgroundColor: '#1e1e1e',
+              backgroundColor: 'rgba(42, 42, 42, 0.6)',
               borderRight: '1px solid #3e3e42',
+              padding: '16px 8px',
+              fontSize: '0.75rem',
               color: '#858585',
-              fontSize: '0.8rem',
-              paddingTop: '2px',
-              textAlign: 'right',
-              paddingRight: '12px',
               lineHeight: '1.5',
+              overflow: 'hidden',
             }}
           >
-            {Array.from({ length: 50 }, (_, i) => (
+            {Array.from({ length: 45 }, (_, i) => (
               <div
-                key={i + 1}
+                key={i}
                 className={currentLine === i + 1 ? 'current-line' : ''}
                 style={{
-                  height: '1.5em',
+                  height: '1.5rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
+                  fontWeight: currentLine === i + 1 ? '600' : '400',
                   color: currentLine === i + 1 ? '#ffffff' : '#858585',
                 }}
               >
@@ -501,11 +520,11 @@ const CodeEditorExample: React.FC = () => {
             ))}
           </div>
 
-          {/* Code Content */}
+          {/* Code content */}
           <div
             style={{
               marginLeft: '60px',
-              paddingRight: '16px',
+              padding: '16px',
               whiteSpace: 'pre-wrap',
               wordBreak: 'break-word',
             }}
@@ -515,11 +534,13 @@ const CodeEditorExample: React.FC = () => {
           </div>
         </div>
 
-        {/* Status Bar */}
+        {/* Status Bar - Fixed at bottom */}
         <div
           style={{
-            position: 'sticky',
+            position: 'absolute',
             bottom: 0,
+            left: 0,
+            right: 0,
             backgroundColor: '#007acc',
             color: '#ffffff',
             padding: '6px 16px',
@@ -527,6 +548,8 @@ const CodeEditorExample: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            borderTop: '1px solid #3e3e42',
+            flexShrink: 0,
           }}
         >
           <div style={{ display: 'flex', gap: '16px' }}>
@@ -541,7 +564,7 @@ const CodeEditorExample: React.FC = () => {
           </div>
         </div>
 
-        {/* IntelliSense Tooltip */}
+        {/* IntelliSense tooltip */}
         <div
           className="intellisense-tooltip"
           style={{

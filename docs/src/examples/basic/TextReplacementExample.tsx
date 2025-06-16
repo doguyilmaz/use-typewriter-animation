@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
+import { useColorMode } from '@docusaurus/theme-common';
 
 const TextReplacementExample: React.FC = () => {
+  const { colorMode } = useColorMode();
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 50,
     cursorStyle: 'block',
-    cursorColor: '#f59e0b',
+    cursorColor: colorMode === 'dark' ? '#fbbf24' : '#f59e0b',
   });
 
   useEffect(() => {
@@ -91,11 +93,11 @@ const TextReplacementExample: React.FC = () => {
           fontSize: '1.1rem',
           lineHeight: '1.7',
           padding: '2.5rem',
-          backgroundColor: '#fffbeb',
-          border: '2px solid #fbbf24',
+          backgroundColor: colorMode === 'dark' ? 'var(--ifm-color-emphasis-100)' : '#fffbeb',
+          border: '1px solid var(--ifm-color-emphasis-200)',
           borderRadius: '12px',
           minHeight: '220px',
-          boxShadow: '0 10px 25px rgba(245, 158, 11, 0.1)',
+          boxShadow: '0 4px 12px var(--ifm-color-emphasis-200), 0 0 20px rgba(59, 130, 246, 0.1)',
           position: 'relative',
         }}
       >
@@ -105,9 +107,9 @@ const TextReplacementExample: React.FC = () => {
             top: '12px',
             right: '16px',
             fontSize: '0.75rem',
-            color: '#92400e',
+            color: 'var(--ifm-color-content-secondary)',
             fontWeight: '500',
-            backgroundColor: '#fef3c7',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
             padding: '4px 8px',
             borderRadius: '6px',
           }}
@@ -118,13 +120,13 @@ const TextReplacementExample: React.FC = () => {
           style={{
             marginBottom: '1.5rem',
             fontSize: '0.9rem',
-            color: '#92400e',
+            color: 'var(--ifm-color-content-secondary)',
             fontWeight: '600',
           }}
         >
           🔄 Dynamic Text Replacement
         </div>
-        <div style={{ color: '#374151' }}>
+        <div style={{ color: 'var(--ifm-color-content)' }}>
           {elements}
           {cursor}
         </div>

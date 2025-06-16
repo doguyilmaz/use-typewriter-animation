@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
+import { useColorMode } from '@docusaurus/theme-common';
 
 const CharacterEffectsExample: React.FC = () => {
+  const { colorMode } = useColorMode();
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 60,
     cursorStyle: 'bar',
-    cursorColor: '#8b5cf6',
+    cursorColor: colorMode === 'dark' ? '#a78bfa' : '#8b5cf6',
   });
 
   useEffect(() => {
@@ -76,11 +78,11 @@ const CharacterEffectsExample: React.FC = () => {
           fontSize: '1rem',
           lineHeight: '1.6',
           padding: '2rem',
-          backgroundColor: '#fefefe',
-          border: '3px solid #e879f9',
-          borderRadius: '16px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-200)',
+          borderRadius: '12px',
           minHeight: '250px',
-          boxShadow: '0 8px 25px rgba(139, 92, 246, 0.15)',
+          boxShadow: '0 4px 12px var(--ifm-color-emphasis-200), 0 0 20px rgba(59, 130, 246, 0.1)',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -92,14 +94,14 @@ const CharacterEffectsExample: React.FC = () => {
             left: '0',
             right: '0',
             height: '4px',
-            background: 'linear-gradient(90deg, #8b5cf6, #ec4899, #06b6d4)',
+            background: colorMode === 'dark' ? 'linear-gradient(90deg, #a78bfa, #f472b6, #22d3ee)' : 'linear-gradient(90deg, #8b5cf6, #ec4899, #06b6d4)',
           }}
         />
         <div
           style={{
             marginBottom: '1rem',
             fontSize: '0.85rem',
-            color: '#8b5cf6',
+            color: 'var(--ifm-color-primary)',
             fontWeight: '600',
             textTransform: 'uppercase',
             letterSpacing: '1px',
@@ -107,7 +109,7 @@ const CharacterEffectsExample: React.FC = () => {
         >
           ✨ Character Effects Playground
         </div>
-        <div style={{ color: '#374151', whiteSpace: 'pre-wrap' }}>
+        <div style={{ color: 'var(--ifm-color-content)', whiteSpace: 'pre-wrap' }}>
           {elements}
           {cursor}
         </div>

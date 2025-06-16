@@ -12,7 +12,12 @@
       "Bash(diff:*)",
       "Bash(find:*)",
       "Bash(npm run lint:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(sed:*)",
+      "Bash(grep:*)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }

@@ -1,215 +1,219 @@
 import React, { useEffect, useState } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
+import { useColorMode } from '@docusaurus/theme-common';
 
 const VoiceCommandExample: React.FC = () => {
-const [isListening, setIsListening] = useState(false);
-const [currentCommand, setCurrentCommand] = useState('');
-const [confidence, setConfidence] = useState(95);
+  const { colorMode } = useColorMode();
+  const [isListening, setIsListening] = useState(false);
+  const [currentCommand, setCurrentCommand] = useState('');
+  const [confidence, setConfidence] = useState(95);
 
-const { typewriter, elements, cursor, keyframes } = useTypewriter({
-typeSpeed: 35,
-cursorStyle: 'block',
-cursorColor: '#3b82f6',
-});
+  const { typewriter, elements, cursor, keyframes } = useTypewriter({
+    typeSpeed: 35,
+    cursorStyle: 'block',
+    cursorColor: colorMode === 'dark' ? '#60a5fa' : '#3b82f6',
+  });
 
-const commands = [
-'Set timer for 10 minutes',
-'Play relaxing music',
-'What\'s the weather like?',
-'Send a message to John',
-'Turn off the lights',
-];
+  const commands = [
+    'Set timer for 10 minutes',
+    'Play relaxing music',
+    "What's the weather like?",
+    'Send a message to John',
+    'Turn off the lights',
+  ];
 
-useEffect(() => {
-typewriter
-.colorize('#3b82f6')
-.type('🎤 VOICE ASSISTANT INTERFACE 🎤')
-.colorize('#374151')
-.newLine()
-.type('═══════════════════════════════════════════')
-.newLine()
-.newLine()
-.pauseFor(800)
-.colorize('#10b981')
-.type('🔊 Assistant Status: ')
-.colorize('#22c55e')
-.type('ACTIVE')
-.colorize('#374151')
-.newLine()
-.colorize('#6b7280')
-.type('Language: English (US) | Model: Advanced AI v3.2')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(1000)
-.colorize('#fbbf24')
-.type('👂 Listening for commands...')
-.colorize('#374151')
-.newLine()
-.type('────────────────────────────────────────')
-.newLine()
-.pauseFor(1500)
-.colorize('#3b82f6')
-.type('🗣️ User: ')
-.colorize('#1f2937')
-.type('"Hey Assistant, set a timer for 10 minutes"')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(800)
-.colorize('#8b5cf6')
-.type('🔍 Processing Speech...')
-.colorize('#374151')
-.newLine()
-.colorize('#6b7280')
-.type('• Audio quality: Excellent (95% confidence)')
-.newLine()
-.type('• Background noise: Minimal')
-.newLine()
-.type('• Speech recognition: Complete')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(1200)
-.colorize('#10b981')
-.type('✅ Command Recognized:')
-.colorize('#374151')
-.newLine()
-.colorize('#22c55e')
-.type('→ Action: ')
-.colorize('#1f2937')
-.type('CREATE_TIMER')
-.colorize('#374151')
-.newLine()
-.colorize('#22c55e')
-.type('→ Duration: ')
-.colorize('#1f2937')
-.type('10 minutes')
-.colorize('#374151')
-.newLine()
-.colorize('#22c55e')
-.type('→ Confirmation: ')
-.colorize('#1f2937')
-.type('Required')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(1000)
-.colorize('#3b82f6')
-.type('🤖 Assistant: ')
-.colorize('#374151')
-.pauseFor(600)
-.type('"Sure! I\'ve set a timer for 10 minutes.')
-.pauseFor(400)
-.type(' I\'ll notify you when it\'s time.')
-.pauseFor(300)
-.type(' Is there anything else I can help you with?"')
-.newLine()
-.newLine()
-.pauseFor(1500)
-.colorize('#f59e0b')
-.type('⏰ Timer Created:')
-.colorize('#374151')
-.newLine()
-.colorize('#fbbf24')
-.type('• Duration: 10:00 minutes')
-.newLine()
-.type('• Status: Running')
-.newLine()
-.type('• Remaining: 09:58')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(1000)
-.colorize('#8b5cf6')
-.type('📊 Session Statistics:')
-.colorize('#374151')
-.newLine()
-.colorize('#6b7280')
-.type('Commands processed: 1')
-.newLine()
-.type('Success rate: 100%')
-.newLine()
-.type('Average response time: 1.2s')
-.newLine()
-.type('User satisfaction: Excellent')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(800)
-.colorize('#ec4899')
-.type('🎯 Available Commands:')
-.colorize('#374151')
-.newLine()
-.colorize('#10b981')
-.type('• ')
-.colorize('#374151')
-.type('Timer & Alarms')
-.colorize('#6b7280')
-.type(' (set, cancel, check)')
-.colorize('#374151')
-.newLine()
-.colorize('#10b981')
-.type('• ')
-.colorize('#374151')
-.type('Music Control')
-.colorize('#6b7280')
-.type(' (play, pause, skip)')
-.colorize('#374151')
-.newLine()
-.colorize('#10b981')
-.type('• ')
-.colorize('#374151')
-.type('Weather Information')
-.colorize('#6b7280')
-.type(' (current, forecast)')
-.colorize('#374151')
-.newLine()
-.colorize('#10b981')
-.type('• ')
-.colorize('#374151')
-.type('Smart Home')
-.colorize('#6b7280')
-.type(' (lights, temperature)')
-.colorize('#374151')
-.newLine()
-.colorize('#10b981')
-.type('• ')
-.colorize('#374151')
-.type('Communication')
-.colorize('#6b7280')
-.type(' (calls, messages)')
-.colorize('#374151')
-.newLine()
-.newLine()
-.pauseFor(1200)
-.colorize('#3b82f6')
-.type('🎙️ Ready for next command...')
-.start();
-}, []);
+  useEffect(() => {
+    const textColor = colorMode === 'dark' ? '#e5e7eb' : '#374151';
+    const mutedColor = colorMode === 'dark' ? '#9ca3af' : '#6b7280';
+    const strongColor = colorMode === 'dark' ? '#f3f4f6' : '#1f2937';
 
-// Simulate voice activity
-useEffect(() => {
-const interval = setInterval(() => {
-setIsListening(prev => !prev);
-setCurrentCommand(commands[Math.floor(Math.random() * commands.length)]);
-setConfidence(85 + Math.floor(Math.random() * 15));
-}, 3500);
+    typewriter
+      .colorize('#3b82f6')
+      .type('🎤 VOICE ASSISTANT INTERFACE 🎤')
+      .colorize(textColor)
+      .newLine()
+      .type('═══════════════════════════════════════════')
+      .newLine()
+      .newLine()
+      .pauseFor(800)
+      .colorize('#10b981')
+      .type('🔊 Assistant Status: ')
+      .colorize('#22c55e')
+      .type('ACTIVE')
+      .colorize(textColor)
+      .newLine()
+      .colorize(mutedColor)
+      .type('Language: English (US) | Model: Advanced AI v3.2')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(1000)
+      .colorize('#fbbf24')
+      .type('👂 Listening for commands...')
+      .colorize(textColor)
+      .newLine()
+      .type('────────────────────────────────────────')
+      .newLine()
+      .pauseFor(1500)
+      .colorize('#3b82f6')
+      .type('🗣️ User: ')
+      .colorize(strongColor)
+      .type('"Hey Assistant, set a timer for 10 minutes"')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(800)
+      .colorize('#8b5cf6')
+      .type('🔍 Processing Speech...')
+      .colorize(textColor)
+      .newLine()
+      .colorize(mutedColor)
+      .type('• Audio quality: Excellent (95% confidence)')
+      .newLine()
+      .type('• Background noise: Minimal')
+      .newLine()
+      .type('• Speech recognition: Complete')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(1200)
+      .colorize('#10b981')
+      .type('✅ Command Recognized:')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#22c55e')
+      .type('→ Action: ')
+      .colorize(strongColor)
+      .type('CREATE_TIMER')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#22c55e')
+      .type('→ Duration: ')
+      .colorize(strongColor)
+      .type('10 minutes')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#22c55e')
+      .type('→ Confirmation: ')
+      .colorize(strongColor)
+      .type('Required')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(1000)
+      .colorize('#3b82f6')
+      .type('🤖 Assistant: ')
+      .colorize(textColor)
+      .pauseFor(600)
+      .type('"Sure! I\'ve set a timer for 10 minutes.')
+      .pauseFor(400)
+      .type(" I'll notify you when it's time.")
+      .pauseFor(300)
+      .type(' Is there anything else I can help you with?"')
+      .newLine()
+      .newLine()
+      .pauseFor(1500)
+      .colorize('#f59e0b')
+      .type('⏰ Timer Created:')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#fbbf24')
+      .type('• Duration: 10:00 minutes')
+      .newLine()
+      .type('• Status: Running')
+      .newLine()
+      .type('• Remaining: 09:58')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(1000)
+      .colorize('#8b5cf6')
+      .type('📊 Session Statistics:')
+      .colorize(textColor)
+      .newLine()
+      .colorize(mutedColor)
+      .type('Commands processed: 1')
+      .newLine()
+      .type('Success rate: 100%')
+      .newLine()
+      .type('Average response time: 1.2s')
+      .newLine()
+      .type('User satisfaction: Excellent')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(800)
+      .colorize('#ec4899')
+      .type('🎯 Available Commands:')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#10b981')
+      .type('• ')
+      .colorize(textColor)
+      .type('Timer & Alarms')
+      .colorize(mutedColor)
+      .type(' (set, cancel, check)')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#10b981')
+      .type('• ')
+      .colorize(textColor)
+      .type('Music Control')
+      .colorize(mutedColor)
+      .type(' (play, pause, skip)')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#10b981')
+      .type('• ')
+      .colorize(textColor)
+      .type('Weather Information')
+      .colorize(mutedColor)
+      .type(' (current, forecast)')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#10b981')
+      .type('• ')
+      .colorize(textColor)
+      .type('Smart Home')
+      .colorize(mutedColor)
+      .type(' (lights, temperature)')
+      .colorize(textColor)
+      .newLine()
+      .colorize('#10b981')
+      .type('• ')
+      .colorize(textColor)
+      .type('Communication')
+      .colorize(mutedColor)
+      .type(' (calls, messages)')
+      .colorize(textColor)
+      .newLine()
+      .newLine()
+      .pauseFor(1200)
+      .colorize('#3b82f6')
+      .type('🎙️ Ready for next command...')
+      .start();
+  }, [colorMode]);
+
+  // Simulate voice activity
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsListening((prev) => !prev);
+      setCurrentCommand(commands[Math.floor(Math.random() * commands.length)]);
+      setConfidence(85 + Math.floor(Math.random() * 15));
+    }, 3500);
 
     return () => clearInterval(interval);
+  }, []);
 
-}, []);
-
-return (
-<>
-
-<style>
-{keyframes}
-{`
-@keyframes listening {
-0%, 100% { transform: scale(1); opacity: 0.8; }
-50% { transform: scale(1.1); opacity: 1; }
-}
+  return (
+    <>
+      <style>
+        {keyframes}
+        {`
+          @keyframes listening {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+          }
 
           @keyframes processing {
             0% { transform: rotate(0deg); }
@@ -239,17 +243,25 @@ return (
 
       <div
         style={{
-          backgroundColor: '#f8fafc',
+          backgroundColor: 'var(--ifm-background-surface-color)',
           borderRadius: '16px',
           padding: '2.5rem',
+          paddingTop: '4rem',
           fontFamily: 'system-ui, sans-serif',
           fontSize: '0.9rem',
-          color: '#374151',
+          color: 'var(--ifm-color-content)',
           lineHeight: '1.6',
           minHeight: '500px',
-          border: '2px solid #3b82f6',
+          border: colorMode === 'dark' ? '2px solid var(--ifm-color-primary)' : '2px solid #3b82f6',
           position: 'relative',
-          background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+          background:
+            colorMode === 'dark'
+              ? 'linear-gradient(135deg, var(--ifm-background-surface-color) 0%, rgba(59, 130, 246, 0.05) 100%)'
+              : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+          boxShadow:
+            colorMode === 'dark'
+              ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.15)'
+              : '0 8px 32px rgba(0, 0, 0, 0.1), 0 0 20px rgba(59, 130, 246, 0.1)',
         }}
       >
         {/* Microphone indicator */}
@@ -267,6 +279,7 @@ return (
             justifyContent: 'center',
             fontSize: '1.5rem',
             color: 'white',
+            zIndex: 10,
           }}
           className={isListening ? 'listening-indicator' : ''}
         >
@@ -282,10 +295,12 @@ return (
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            backgroundColor:
+              colorMode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)',
             padding: '8px 16px',
             borderRadius: '20px',
             fontSize: '0.8rem',
+            zIndex: 10,
           }}
         >
           <div
@@ -311,21 +326,23 @@ return (
             gap: '3px',
             alignItems: 'end',
             height: '30px',
+            zIndex: 10,
           }}
         >
-          {isListening && [1, 2, 3, 4, 5, 6, 7].map(i => (
-            <div
-              key={i}
-              className="voice-wave"
-              style={{
-                width: '4px',
-                backgroundColor: '#3b82f6',
-                borderRadius: '2px',
-                animationDelay: `${i * 0.1}s`,
-                minHeight: '4px',
-              }}
-            />
-          ))}
+          {isListening &&
+            [1, 2, 3, 4, 5, 6, 7].map((i) => (
+              <div
+                key={i}
+                className='voice-wave'
+                style={{
+                  width: '4px',
+                  backgroundColor: colorMode === 'dark' ? '#60a5fa' : '#3b82f6',
+                  borderRadius: '2px',
+                  animationDelay: `${i * 0.1}s`,
+                  minHeight: '4px',
+                }}
+              />
+            ))}
         </div>
 
         {/* Confidence indicator */}
@@ -335,27 +352,29 @@ return (
             bottom: '1rem',
             right: '1rem',
             fontSize: '0.8rem',
-            color: '#6b7280',
+            color: colorMode === 'dark' ? '#9ca3af' : '#6b7280',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
+            zIndex: 10,
           }}
         >
           <span>Confidence:</span>
-          <span style={{ color: confidence > 90 ? '#22c55e' : confidence > 70 ? '#fbbf24' : '#ef4444' }}>
+          <span
+            style={{ color: confidence > 90 ? '#22c55e' : confidence > 70 ? '#fbbf24' : '#ef4444' }}
+          >
             {confidence}%
           </span>
         </div>
 
         {/* Main content */}
-        <div style={{ whiteSpace: 'pre-line' }}>
+        <div style={{ whiteSpace: 'pre-line', position: 'relative', zIndex: 1 }}>
           {elements}
           {cursor}
         </div>
       </div>
     </>
-
-);
+  );
 };
 
 export { VoiceCommandExample };

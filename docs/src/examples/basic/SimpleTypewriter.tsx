@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
+import { useColorMode } from '@docusaurus/theme-common';
 
 export const SimpleTypewriter: React.FC = () => {
+  const { colorMode } = useColorMode();
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 60,
     cursorStyle: 'bar',
-    cursorColor: '#3b82f6',
+    cursorColor: colorMode === 'dark' ? '#60a5fa' : '#3b82f6',
   });
 
   useEffect(() => {

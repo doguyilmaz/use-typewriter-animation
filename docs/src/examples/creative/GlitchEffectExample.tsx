@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useTypewriter } from 'use-typewriter-animation';
+import { useColorMode } from '@docusaurus/theme-common';
 
 const GlitchEffectExample: React.FC = () => {
+  const { colorMode } = useColorMode();
   const { typewriter, elements, cursor, keyframes } = useTypewriter({
     typeSpeed: 30,
     cursorStyle: 'block',
@@ -9,31 +11,34 @@ const GlitchEffectExample: React.FC = () => {
   });
 
   useEffect(() => {
+    // Always use dark mode colors for optimal glitch effect readability
+    const baseColor = '#ffffff';
+
     typewriter
       .colorize('#00ff41')
       .type('SYSTEM INITIALIZING...')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .newLine()
       .pauseFor(1000)
       .colorize('#ff0040')
       .type('ERROR: ')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .type('C0RRuPt3D_d4t4_d3t3ct3d')
       .newLine()
       .pauseFor(800)
       .colorize('#ffff00')
       .type('▓▓▓ GLITCH DETECTED ▓▓▓')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .newLine()
       .newLine()
       .pauseFor(500)
       .colorize('#ff0040')
       .type('͎͎͎M̸̸̸E̸̸̸M̸̸̸O̸̸̸R̸̸̸Y̸̸̸ ̸̸̸L̸̸̸E̸̸̸A̸̸̸K̸̸̸')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .newLine()
       .colorize('#00ffff')
       .type('01001000 01100101 01101100 01110000')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .newLine()
       .newLine()
       .pauseFor(1200)
@@ -47,7 +52,7 @@ const GlitchEffectExample: React.FC = () => {
       .deleteLetters(12)
       .colorize('#00ff41')
       .type('HELLO WORLD!')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .newLine()
       .newLine()
       .pauseFor(1000)
@@ -63,14 +68,21 @@ const GlitchEffectExample: React.FC = () => {
       .type('█')
       .pauseFor(200)
       .type('█')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .type(' 100%')
       .newLine()
       .colorize('#00ff41')
       .type('> Ready for input_')
-      .colorize('#ffffff')
+      .colorize(baseColor)
       .start();
   }, []);
+
+  const glitchColor = '#00ff41';
+  // Force dark mode styling for optimal glitch effect
+  const bgColor = '#0a0a0a';
+  const bgGradient = 'linear-gradient(45deg, #0a0a0a, #1a0a1a, #0a1a0a)';
+  const textColor = '#ffffff';
+  const scanlineOpacity = 0.03;
 
   return (
     <>
@@ -101,7 +113,7 @@ const GlitchEffectExample: React.FC = () => {
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            background: linear-gradient(90deg, transparent, ${glitchColor}, transparent);
             animation: scanlines 3s linear infinite;
             opacity: 0.7;
           }
@@ -118,36 +130,36 @@ const GlitchEffectExample: React.FC = () => {
                 0deg,
                 transparent,
                 transparent 2px,
-                rgba(0, 255, 65, 0.03) 2px,
-                rgba(0, 255, 65, 0.03) 4px
+                rgba(0, 255, 65, ${scanlineOpacity}) 2px,
+                rgba(0, 255, 65, ${scanlineOpacity}) 4px
               );
             pointer-events: none;
           }
         `}
       </style>
       <div
-        className="glitch-container"
+        className='glitch-container'
         style={{
           fontFamily: '"Courier New", "SF Mono", monospace',
           fontSize: '0.95rem',
           lineHeight: '1.4',
           padding: '2rem',
-          backgroundColor: '#0a0a0a',
-          border: '2px solid #00ff41',
+          backgroundColor: bgColor,
+          border: `2px solid ${glitchColor}`,
           borderRadius: '8px',
           minHeight: '280px',
-          color: '#ffffff',
-          background: 'linear-gradient(45deg, #0a0a0a, #1a0a1a, #0a1a0a)',
+          color: textColor,
+          background: bgGradient,
           backgroundSize: '400% 400%',
           animation: 'glitch-bg 4s ease infinite',
-          boxShadow: '0 0 30px rgba(0, 255, 65, 0.3), inset 0 0 30px rgba(0, 255, 65, 0.1)',
+          boxShadow: `0 0 30px rgba(0, 255, 65, 0.3), inset 0 0 30px rgba(0, 255, 65, 0.1)`,
         }}
       >
         <div
           style={{
             marginBottom: '1rem',
             fontSize: '0.8rem',
-            color: '#00ff41',
+            color: glitchColor,
             fontWeight: '600',
             textTransform: 'uppercase',
             letterSpacing: '2px',

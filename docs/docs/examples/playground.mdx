@@ -1,0 +1,14 @@
+---
+title: Options playground
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/Playground';
+import source from '!!raw-loader!@site/src/examples/Playground.tsx';
+
+# Options playground
+
+Options can change while the animation runs. Speeds faster than a frame (about 16 ms) type several
+characters per frame instead of re-rendering more often.
+
+<Example component={Demo} source={source} file='Playground.tsx' />

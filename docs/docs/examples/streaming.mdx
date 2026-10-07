@@ -1,0 +1,15 @@
+---
+title: Streaming text
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/Streaming';
+import source from '!!raw-loader!@site/src/examples/Streaming.tsx';
+
+# Streaming text
+
+Text that arrives in pieces, such as a chat response, can be typed as it comes in. Each chunk is
+queued with `type()`, and `start()` continues whenever the typewriter has caught up. A fast
+`typeSpeed` keeps it close behind the stream.
+
+<Example component={Demo} source={source} file='Streaming.tsx' />

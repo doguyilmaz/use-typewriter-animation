@@ -1,0 +1,14 @@
+---
+title: Pause, resume and skip
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/Controls';
+import source from '!!raw-loader!@site/src/examples/Controls.tsx';
+
+# Pause, resume and skip
+
+The control methods are safe to call from event handlers, and `state.status` tells you what the
+typewriter is doing.
+
+<Example component={Demo} source={source} file='Controls.tsx' />

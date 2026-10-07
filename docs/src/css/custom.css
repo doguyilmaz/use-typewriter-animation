@@ -1,334 +1,114 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
-
-/* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #2563eb;
   --ifm-color-primary-dark: #1d4ed8;
   --ifm-color-primary-darker: #1e40af;
-  --ifm-color-primary-darkest: #172554;
-  --ifm-color-primary-light: #60a5fa;
-  --ifm-color-primary-lighter: #93c5fd;
-  --ifm-color-primary-lightest: #e0e7ef;
-  --ifm-background-color: #ffffff;
-  --ifm-font-color-base: #222222;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: #f3f4f6;
-  
-  /* Syntax highlighting colors for light mode */
-  --syntax-keyword: #7c3aed;
-  --syntax-function: #0d9488;
-  --syntax-variable: #dc2626;
-  --syntax-string: #059669;
-  --syntax-default: #374151;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ifm-color-primary: #60a5fa;
   --ifm-color-primary-dark: #3b82f6;
   --ifm-color-primary-darker: #2563eb;
-  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-darkest: #1d4ed8;
   --ifm-color-primary-light: #93c5fd;
   --ifm-color-primary-lighter: #bfdbfe;
   --ifm-color-primary-lightest: #dbeafe;
-  --ifm-background-color: #18181b;
-  --ifm-font-color-base: #f3f4f6;
-  --docusaurus-highlighted-code-line-bg: #23272f;
-  
-  /* Syntax highlighting colors for dark mode */
-  --syntax-keyword: #c678dd;
-  --syntax-function: #61dafb;
-  --syntax-variable: #e06c75;
-  --syntax-string: #98c379;
-  --syntax-default: #abb2bf;
 }
 
-/* Custom styles for live code examples */
-.react-live-preview {
-  padding: 1rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: var(--ifm-code-border-radius);
-  margin-bottom: 1rem;
-  background: var(--ifm-background-color);
-}
-
-.react-live-editor {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
-}
-
-/* Example page styles */
-.example-container {
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 8px;
-  margin: 2rem 0;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.example-header {
-  padding: 1rem;
-  background-color: var(--ifm-color-emphasis-100);
-  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+/* Example frame */
+.example {
+  margin: 1.5rem 0 2rem;
+}
+
+.example__demo {
+  min-height: 9rem;
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-bottom: 0;
+  border-radius: var(--ifm-global-radius) var(--ifm-global-radius) 0 0;
+}
+
+.example__bar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0 0 var(--ifm-global-radius) var(--ifm-global-radius);
+  background: var(--ifm-color-emphasis-100);
 }
 
-.example-preview {
-  padding: 2rem;
-  min-height: 150px;
+/* Classes used by the examples */
+.demo-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.demo-text {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
+.demo-terminal {
+  min-height: 6rem;
+  margin: 0;
+  color: #e5e7eb;
+  background: #111827;
+}
+
+.demo-controls {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
-  justify-content: center;
-  background: var(--ifm-background-color);
+  margin-top: 1.25rem;
 }
 
-.code-toggle-btn {
-  padding: 0.5rem 1rem;
-  background-color: var(--ifm-color-primary);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+/* Home page */
+.home {
+  max-width: 52rem;
+  padding: 5rem var(--ifm-spacing-horizontal);
 }
 
-.code-toggle-btn:hover {
-  background-color: var(--ifm-color-primary-dark);
+.home__title {
+  min-height: 2.5em;
+  font-size: clamp(2rem, 5vw, 3.25rem);
 }
 
-/* Prevent layout shifts and improve performance */
-.typewriter-example-container {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  contain: layout style;
-  will-change: auto;
+.home__install {
+  max-width: 28rem;
 }
 
-.typewriter-demo-area {
-  width: 100%;
-  max-width: 100%;
-  min-height: 200px;
-  box-sizing: border-box;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  hyphens: auto;
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 3rem;
 }
 
-/* Prevent wrapper glitches */
-.typewriter-content {
-  max-width: 100%;
-  overflow-x: visible; /* Changed from hidden to visible to not clip borders */
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  width: 100%; /* Ensure full width for proper border display */
+.home__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+  list-style: none;
 }
 
-/* Fix width shifts during typing */
-.typewriter-demo-area > * {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Prevent layout shifts in loading examples */
-.loading-example-container {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-.loading-example-container * {
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* Performance optimizations */
-.typewriter-animation {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000;
-}
-
-/* Smooth transitions */
-.theme-code-block {
-  transition: none !important;
-}
-
-/* Loading states improvements */
-.loading-terminal {
-  contain: strict;
-  transform: translateZ(0);
-}
-
-/* Storytelling demo improvements */
-.storytelling-scene {
-  contain: layout style paint;
-  will-change: background;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .example-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  .example-preview {
-    padding: 1rem;
-  }
-
-  .typewriter-demo-area {
-    padding: 1rem;
-    min-height: 150px;
-  }
-
-  /* Reduce animations on mobile for performance */
-  .typewriter-animation {
-    animation-duration: 0.1s !important;
-  }
-}
-
-/* High contrast support */
-@media (prefers-contrast: high) {
-  .typewriter-demo-area {
-    border: 2px solid currentColor;
-  }
-}
-
-/* Override Docusaurus footer responsive behavior */
-/* Keep 4 columns until 768px, then 2x2, then 1 column at 480px */
-
-/* Force all 4 columns to stay visible from 996px to 769px */
-@media screen and (max-width: 996px) and (min-width: 769px) {
-  .footer .footer__links {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    justify-content: space-between !important;
-  }
-
-  .footer .footer__col {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    flex: 1 !important;
-    max-width: none !important;
-  }
-
-  .footer .footer__title {
-    display: block !important;
-  }
-
-  .footer .footer__items {
-    display: block !important;
-  }
-
-  .footer .footer__item {
-    display: block !important;
-  }
-}
-
-/* Keep 4 columns for larger screens too */
-@media screen and (min-width: 997px) {
-  .footer .footer__links {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .footer .footer__col {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-}
-
-/* 2x2 grid for tablet */
-@media screen and (max-width: 768px) and (min-width: 481px) {
-  .footer .footer__links {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-template-rows: 1fr 1fr !important;
-    gap: 2rem 3rem !important;
-    justify-items: center !important;
-    align-items: start !important;
-  }
-
-  .footer .footer__col {
-    text-align: center !important;
-    width: 100% !important;
-  }
-
-  .footer .footer__title {
-    text-align: center !important;
-    margin-bottom: 1rem !important;
-    font-size: 1rem !important;
-  }
-
-  .footer .footer__items {
-    text-align: center !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .footer .footer__item {
-    text-align: center !important;
-    margin: 0.5rem 0 !important;
-  }
-
-  .footer .footer__item .footer__link-item {
-    text-align: center !important;
-    font-size: 0.875rem !important;
-    display: inline-block !important;
-    width: 100% !important;
-  }
-}
-
-/* Single column for mobile */
-@media screen and (max-width: 480px) {
-  .footer .footer__links {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1.5rem !important;
-    align-items: center !important;
-  }
-
-  .footer .footer__col {
-    text-align: center !important;
-    width: 100% !important;
-  }
-
-  .footer .footer__title {
-    text-align: center !important;
-    margin-bottom: 1rem !important;
-  }
-
-  .footer .footer__items {
-    text-align: center !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .footer .footer__item {
-    text-align: center !important;
-    margin: 0.5rem 0 !important;
-  }
-
-  .footer .footer__item .footer__link-item {
-    text-align: center !important;
-    font-size: 0.875rem !important;
-    display: inline-block !important;
-    width: 100% !important;
-  }
+.home__features p {
+  margin: 0.25rem 0 0;
+  color: var(--ifm-color-emphasis-700);
 }

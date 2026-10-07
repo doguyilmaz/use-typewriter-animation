@@ -1,0 +1,49 @@
+---
+title: Getting started
+---
+
+import Example from '@site/src/components/Example';
+import RotatingWords from '@site/src/examples/RotatingWords';
+import RotatingWordsSource from '!!raw-loader!@site/src/examples/RotatingWords.tsx';
+import Chaining from '@site/src/examples/Chaining';
+import ChainingSource from '!!raw-loader!@site/src/examples/Chaining.tsx';
+
+# Getting started
+
+`use-typewriter-animation` types, deletes and styles text one character at a time. It has a
+component for the common cases, a hook for full control, and an engine that works without React.
+It needs React 18 or 19 and weighs about 2.7 kB gzipped.
+
+```bash
+npm install use-typewriter-animation
+```
+
+## The component
+
+Give `<Typewriter>` a `sequence`. Strings are typed, numbers are pauses in milliseconds, and functions
+are called when they are reached.
+
+<Example component={RotatingWords} source={RotatingWordsSource} file='RotatingWords.tsx' />
+
+Each string replaces the previous one with `typeTo`: the text is deleted back to the part both
+strings share (`I build `), and only the rest is typed. The sequence is read when the component
+mounts. To run a different one, change the component's `key`.
+
+## The hook
+
+`useTypewriter` returns a `typewriter` to queue steps on, the typed `elements` and the `cursor`.
+Queue the steps in an effect and call `start()`.
+
+<Example component={Chaining} source={ChainingSource} file='Chaining.tsx' />
+
+`typewriter` is the same object for the whole life of the component, and the hook resets it on
+unmount. The effect needs no cleanup, and React's StrictMode does not type the text twice.
+
+The component that calls the hook re-renders once per typed character. Keep that component small,
+or use `<Typewriter>`, which keeps the re-renders to itself.
+
+## Next
+
+- [API reference](./api.md) lists every option and method.
+- [Examples](./examples/rotating-words.mdx) show controls, streaming text and a terminal.
+- [Accessibility](./guides/accessibility.md) explains what screen readers hear.

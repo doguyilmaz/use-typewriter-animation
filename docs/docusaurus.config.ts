@@ -1,25 +1,22 @@
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
+import { fileURLToPath } from 'node:url';
 import type * as Preset from '@docusaurus/preset-classic';
+import type { Config } from '@docusaurus/types';
+import { themes } from 'prism-react-renderer';
+
+const repo = 'https://github.com/doguyilmaz/use-typewriter-animation';
 
 const config: Config = {
   title: 'use-typewriter-animation',
-  tagline: 'Modern React Typewriter Hook with TypeScript Support',
-  favicon: 'img/apple-touch-icon.png',
-
+  tagline: 'Typewriter animations for React',
+  favicon: 'img/favicon.ico',
   url: 'https://doguyilmaz.github.io',
   baseUrl: '/use-typewriter-animation/',
-
   organizationName: 'doguyilmaz',
   projectName: 'use-typewriter-animation',
-
+  trailingSlash: false,
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
+  markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
+  future: { v4: true },
 
   presets: [
     [
@@ -27,158 +24,50 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/doguyilmaz/use-typewriter-animation/tree/main/docs-site/',
-          breadcrumbs: true,
+          editUrl: `${repo}/tree/main/docs/`,
         },
-        blog: false, // Disable blog
-        theme: {
-          customCss: './src/css/custom.css',
-        },
+        blog: false,
+        theme: { customCss: './src/css/custom.css' },
       } satisfies Preset.Options,
     ],
   ],
 
+  plugins: [
+    // The examples import 'use-typewriter-animation'; point it at the source in this repository,
+    // and resolve its imports (React) from this site's node_modules so there is one React.
+    () => ({
+      name: 'local-library',
+      configureWebpack: () => ({
+        resolve: {
+          alias: {
+            'use-typewriter-animation$': fileURLToPath(new URL('../src/index.ts', import.meta.url)),
+          },
+          modules: [fileURLToPath(new URL('node_modules', import.meta.url)), 'node_modules'],
+        },
+      }),
+    }),
+  ],
+
   themeConfig: {
-    image: 'img/social-card.jpg',
     navbar: {
       title: 'use-typewriter-animation',
-      logo: {
-        alt: 'Typewriter Logo',
-        src: 'img/logo.png',
-      },
+      logo: { alt: '', src: 'img/logo.png' },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Docs',
-        },
-        {
-          to: '/examples',
-          label: 'Examples',
-          position: 'left',
-        },
-        {
-          to: '/docs/changelog',
-          label: 'Changelog',
-          position: 'left',
-        },
-        {
-          href: 'https://github.com/doguyilmaz/use-typewriter-animation',
-          label: 'GitHub',
-          position: 'right',
-        },
-        {
-          href: 'https://www.npmjs.com/package/use-typewriter-animation',
-          label: 'npm',
-          position: 'right',
-        },
+        { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },
+        { to: '/docs/examples/rotating-words', label: 'Examples', position: 'left' },
+        { href: `${repo}/blob/main/CHANGELOG.md`, label: 'Changelog', position: 'right' },
+        { href: repo, label: 'GitHub', position: 'right' },
       ],
     },
     footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Quick Start',
-              to: '/docs/getting-started/installation',
-            },
-            {
-              label: 'API Reference',
-              to: '/docs/api/use-typewriter',
-            },
-            {
-              label: 'Accessibility Guide',
-              to: '/docs/guides/accessibility',
-            },
-            {
-              label: 'Performance Tips',
-              to: '/docs/guides/performance',
-            },
-          ],
-        },
-        {
-          title: 'Examples',
-          items: [
-            {
-              label: 'Basic Examples',
-              to: '/docs/examples/basic/simple-typewriter',
-            },
-            {
-              label: 'Creative Examples',
-              to: '/docs/examples/creative/terminal-simulation',
-            },
-            {
-              label: 'Advanced Examples',
-              to: '/docs/examples/advanced/hero-section',
-            },
-            {
-              label: 'Examples Showcase',
-              to: '/docs/examples',
-            },
-          ],
-        },
-        {
-          title: 'Resources',
-          items: [
-            {
-              label: 'TypeScript Types',
-              to: '/docs/api/types',
-            },
-            {
-              label: 'Troubleshooting',
-              to: '/docs/guides/troubleshooting',
-            },
-            {
-              label: 'Changelog',
-              to: '/docs/changelog',
-            },
-            {
-              label: 'Contributing',
-              to: '/docs/contributing',
-            },
-            {
-              label: 'Roadmap',
-              to: '/docs/ROADMAP',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/doguyilmaz/use-typewriter-animation',
-            },
-            {
-              label: 'npm Package',
-              href: 'https://www.npmjs.com/package/use-typewriter-animation',
-            },
-            {
-              label: 'Issues',
-              href: 'https://github.com/doguyilmaz/use-typewriter-animation/issues',
-            },
-            {
-              label: 'Discussions',
-              href: 'https://github.com/doguyilmaz/use-typewriter-animation/discussions',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} <a href="https://github.com/doguyilmaz" target="_blank" rel="noopener noreferrer">@doguyilmaz</a> • Built with Docusaurus`,
+      style: 'light',
+      copyright: `MIT License · <a href="${repo}">GitHub</a> · <a href="https://www.npmjs.com/package/use-typewriter-animation">npm</a>`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
-    liveCodeBlock: {
-      playgroundPosition: 'bottom',
+      theme: themes.github,
+      darkTheme: themes.dracula,
     },
   } satisfies Preset.ThemeConfig,
-
-  themes: ['@docusaurus/theme-live-codeblock'],
 };
 
 export default config;

@@ -21,9 +21,9 @@ import EventsSource from '!!raw-loader!@site/src/examples/basics/Events.tsx';
 | ---------- | ---------------------------------------------------------------------------------- |
 | `pause()`  | Freezes the animation and keeps the remaining delay.                               |
 | `resume()` | Continues after `pause()`.                                                         |
-| `skip()`   | Runs the remaining steps instantly, pauses included, and ends without looping.     |
+| `skip()`   | Runs the remaining steps instantly, without pausing, and ends without looping.     |
 | `stop()`   | Halts and keeps the text. `start()` continues with the next step.                  |
-| `reset()`  | Clears the text, the queue and the listeners. It returns the typewriter, so you can chain new steps. |
+| `reset()`  | Clears the text, the queue, the color and the listeners. It returns the typewriter, so you can chain new steps. |
 
 `state.status` is one of `idle`, `typing`, `deleting`, `waiting`, `paused` and `done`.
 
@@ -35,4 +35,6 @@ import EventsSource from '!!raw-loader!@site/src/examples/basics/Events.tsx';
 
 `on('start' | 'end' | 'loop', fn)` adds a listener and `off(event, fn)` removes it, `call(fn)` runs
 a function at a point in the queue, and `start()` returns a promise that resolves when the queue
-ends, stops or resets.
+ends, stops or resets. A looping queue resolves only when it is stopped, reset or skipped; check
+`getState().status === 'done'` to tell a finished run from a stopped one. The hook's reset on unmount
+removes listeners, so add them in the effect that queues the steps, as here.

@@ -24,8 +24,10 @@ A headline whose last words rotate. Copy both files into a project that supports
 
 ## How it works
 
-- The rotating part is a `<Typewriter>` inside the heading, so the heading text never moves.
-- Every role is reached with `typeTo`, which deletes only what differs.
+- The rotating part is typed by `useTypewriter` with a looping `sequence`, inside the heading, so the
+  heading text never moves. Every role is reached with `typeTo`, which deletes only what differs.
+- A button pauses and resumes the loop, as WCAG 2.2.2 asks of animations that run longer than five
+  seconds. That is why this uses the hook: `<Typewriter>` has no controls.
 - The gradient uses `background-clip: text`. The cursor gets its own `cursorColor`, because the
   text color is transparent.
 - Screen readers get the full sentence from a visually hidden span, and the animation is

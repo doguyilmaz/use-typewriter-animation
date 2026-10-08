@@ -14,8 +14,8 @@ import ChainSource from '!!raw-loader!@site/src/examples/basics/Chain.tsx';
 # Getting started
 
 `use-typewriter-animation` types, deletes and styles text one character at a time. It ships a
-component for the common cases, a hook for full control and an engine that works without React,
-in about 2.8 kB gzipped.
+component for the common cases, a hook for full control and the engine behind them, in about 2.8 kB
+gzipped.
 
 ## Install
 
@@ -62,8 +62,8 @@ functions are called when they are reached.
 </Example>
 
 Each string replaces the text on screen with [`typeTo`](./api.md#queue-methods): only the part that
-differs is deleted and retyped, so `I like ` stays put. The sequence is read once, when the component
-mounts. To run a different one, change the component's `key`.
+differs is deleted and retyped, so `I like ` stays put. A loop that runs longer than five seconds needs a
+pause button; see [Accessibility](./guides/accessibility.md#let-people-pause-long-animations).
 
 ## The hook
 
@@ -74,8 +74,10 @@ mounts. To run a different one, change the component's `key`.
   <Chain />
 </Example>
 
-`typewriter` is the same object for the life of the component, and the hook resets it on unmount.
-The effect needs no cleanup, and StrictMode does not type the text twice.
+`typewriter` is the same object for the life of the component, and the hook resets it on unmount, so
+StrictMode does not type the text twice. An effect that runs once needs no cleanup; one that re-runs
+when a value changes should clean up, as in
+[Retype when a value changes](./basics/patterns.mdx#retype-when-a-value-changes).
 
 ## Which one should I use?
 

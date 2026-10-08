@@ -1,5 +1,5 @@
 import CodeBlock from '@theme/CodeBlock';
-import { type ReactNode, useId, useState } from 'react';
+import { type KeyboardEvent, type ReactNode, useId, useState } from 'react';
 import styles from './styles.module.css';
 
 export interface ExampleFile {
@@ -24,6 +24,22 @@ export default function Example({ children, files, variant = 'basic' }: ExampleP
   const [run, setRun] = useState(0);
   const [active, setActive] = useState(0);
   const file = files[active] ?? files[0];
+  const tabbed = files.length > 1;
+
+  const onTabKeyDown = (event: KeyboardEvent, index: number) => {
+    const targets: Record<string, number> = {
+      ArrowLeft: index - 1,
+      ArrowRight: index + 1,
+      Home: 0,
+      End: files.length - 1,
+    };
+    const target = targets[event.key];
+    if (target === undefined) return;
+    event.preventDefault();
+    const next = (target + files.length) % files.length;
+    setActive(next);
+    document.getElementById(`${id}-tab-${next}`)?.focus();
+  };
 
   return (
     <figure className={`${styles.example} ${styles[variant]}`}>
@@ -31,22 +47,28 @@ export default function Example({ children, files, variant = 'basic' }: ExampleP
         {children}
       </div>
       <div className={styles.toolbar}>
-        <div role='tablist' aria-label='Source files' className={styles.tabs}>
-          {files.map((entry, index) => (
-            <button
-              key={entry.name}
-              id={`${id}-tab-${index}`}
-              type='button'
-              role='tab'
-              aria-selected={index === active}
-              aria-controls={`${id}-panel`}
-              className={styles.tab}
-              onClick={() => setActive(index)}
-            >
-              {entry.name}
-            </button>
-          ))}
-        </div>
+        {tabbed ? (
+          <div role='tablist' aria-label='Source files' className={styles.tabs}>
+            {files.map((entry, index) => (
+              <button
+                key={entry.name}
+                id={`${id}-tab-${index}`}
+                type='button'
+                role='tab'
+                tabIndex={index === active ? 0 : -1}
+                aria-selected={index === active}
+                aria-controls={`${id}-panel`}
+                className={styles.tab}
+                onClick={() => setActive(index)}
+                onKeyDown={(event) => onTabKeyDown(event, index)}
+              >
+                {entry.name}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span className={styles.file}>{file?.name}</span>
+        )}
         <button
           type='button'
           className={styles.replay}
@@ -68,9 +90,8 @@ export default function Example({ children, files, variant = 'basic' }: ExampleP
       {file && (
         <div
           id={`${id}-panel`}
-          role='tabpanel'
-          aria-labelledby={`${id}-tab-${active}`}
           className={styles.code}
+          {...(tabbed && { role: 'tabpanel', 'aria-labelledby': `${id}-tab-${active}` })}
         >
           <CodeBlock language={languageOf(file.name)}>{file.source}</CodeBlock>
         </div>

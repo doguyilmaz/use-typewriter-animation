@@ -32,7 +32,10 @@ Strings go through `typeTo`, which deletes back to the common prefix and types t
 </Example>
 
 With `loop`, the sequence starts over after its last step. The first string is reached with `typeTo`
-from the last one, so there is no need to clear the text in between.
+from the last one, so there is no need to clear the text in between. A loop needs at least one
+pause: one that never waits, which is what happens under reduced motion when there are no pauses,
+stops after one pass. Looping for more than five seconds also needs a
+[pause button](../guides/accessibility.md#let-people-pause-long-animations).
 
 ## Callbacks
 
@@ -41,7 +44,8 @@ from the last one, so there is no need to clear the text in between.
 </Example>
 
 A function in the sequence runs when the typewriter reaches it. Here it counts the passes, and the
-empty string after it deletes everything before the loop restarts.
+empty string after it deletes everything before the loop restarts. Functions are captured on mount
+and see the props and state of that render, so use functional updates, as here, or refs.
 
 :::tip The sequence is read once
 Changing `sequence` after mount does nothing, so an inline array does not restart the animation on

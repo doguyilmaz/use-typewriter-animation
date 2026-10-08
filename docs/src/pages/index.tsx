@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
-import { Typewriter } from 'use-typewriter-animation';
+import { useTypewriter } from 'use-typewriter-animation';
 import AiChat from '../examples/showcase/AiChat';
 import CodeEditor from '../examples/showcase/CodeEditor';
 import Search from '../examples/showcase/Search';
@@ -58,6 +58,40 @@ useEffect(() => {
 
 return <p>{elements}{cursor}</p>;`;
 
+function Headline() {
+  const { typewriter, state, elements, cursor } = useTypewriter({
+    sequence: SEQUENCE,
+    loop: true,
+    typeSpeed: 65,
+    deleteSpeed: 35,
+  });
+  const paused = state.status === 'paused';
+
+  return (
+    <>
+      <h1 className={styles.title}>
+        <span className='sr-only'>Typewriter effects for {USES.join(', ')}.</span>
+        <span aria-hidden='true'>
+          Typewriter effects
+          <br />
+          for{' '}
+          <span className={styles.rotating}>
+            {elements}
+            {cursor}
+          </span>
+        </span>
+      </h1>
+      <button
+        type='button'
+        className={styles.toggle}
+        onClick={() => (paused ? typewriter.resume() : typewriter.pause())}
+      >
+        {paused ? 'Play animation' : 'Pause animation'}
+      </button>
+    </>
+  );
+}
+
 export default function Home() {
   return (
     <Layout
@@ -68,21 +102,7 @@ export default function Home() {
         <section className={styles.hero}>
           <div className={styles.heroText}>
             <p className={styles.eyebrow}>React 18 and 19 · 2.8 kB · no dependencies</p>
-            <h1 className={styles.title}>
-              <span className='sr-only'>Typewriter effects for {USES.join(', ')}.</span>
-              <span aria-hidden='true'>
-                Typewriter effects
-                <br />
-                for{' '}
-                <Typewriter
-                  className={styles.rotating}
-                  sequence={SEQUENCE}
-                  typeSpeed={65}
-                  deleteSpeed={35}
-                  loop
-                />
-              </span>
-            </h1>
+            <Headline />
             <p className={styles.lead}>
               A component for the common cases, a hook for full control and a tiny engine
               underneath. Built for React 18 and 19, StrictMode, SSR and React Compiler.

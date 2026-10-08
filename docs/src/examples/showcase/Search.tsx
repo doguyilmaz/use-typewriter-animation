@@ -8,7 +8,6 @@ const SEQUENCE = IDEAS.flatMap((idea) => [`Search for “${idea}”`, 1600]);
 export default function Search() {
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
-  // No cursor: the text goes into the placeholder attribute.
   const { typewriter, state } = useTypewriter({
     sequence: SEQUENCE,
     typeSpeed: 45,
@@ -29,17 +28,15 @@ export default function Search() {
         value={query}
         placeholder={focused ? 'Search components…' : state.text}
         onChange={(event) => setQuery(event.target.value)}
-        // Nothing animates while the field is focused, so pause instead of rendering for nothing.
         onFocus={() => {
           setFocused(true);
           typewriter.pause();
         }}
         onBlur={() => {
           setFocused(false);
-          typewriter.resume();
+          if (!query) typewriter.resume();
         }}
       />
-      <kbd className={styles.kbd}>⌘K</kbd>
     </search>
   );
 }

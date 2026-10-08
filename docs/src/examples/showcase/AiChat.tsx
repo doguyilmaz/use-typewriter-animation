@@ -33,7 +33,7 @@ async function streamAnswer(typewriter: TypewriterInstance, answer: string, sign
 export default function AiChat() {
   const [phase, setPhase] = useState<Phase>('streaming');
   const [attempt, setAttempt] = useState(0);
-  const controller = useRef<AbortController>(null);
+  const controller = useRef<AbortController | null>(null);
   const { typewriter, state, elements, cursor } = useTypewriter({
     typeSpeed: 10,
     cursorStyle: 'block',
@@ -44,7 +44,6 @@ export default function AiChat() {
     controller.current = current;
     const answer = ANSWERS[attempt % ANSWERS.length] as string;
     streamAnswer(typewriter, answer, current.signal).then((finished) => {
-      // Mark the answer done once the typewriter has typed everything that was queued.
       if (finished) typewriter.call(() => setPhase('done')).start();
     });
     return () => current.abort();
@@ -62,7 +61,8 @@ export default function AiChat() {
     setAttempt((count) => count + 1);
   };
 
-  const thinking = phase === 'streaming' && state.text === '';
+  const streaming = phase === 'streaming';
+  const thinking = streaming && state.text === '';
 
   return (
     <div className={styles.chat}>
@@ -74,31 +74,37 @@ export default function AiChat() {
       </div>
       <div className={styles.messages}>
         <p className={styles.user}>{QUESTION}</p>
-        <div className={styles.assistant} aria-busy={phase === 'streaming'}>
+        <div className={styles.assistant} aria-busy={streaming}>
           {thinking ? (
-            <span className={styles.thinking} role='status' aria-label='Thinking'>
+            <span className={styles.thinking} role='status'>
               <i />
               <i />
               <i />
+              <span className={styles.srOnly}>Thinking…</span>
             </span>
           ) : (
             <>
               {elements}
-              {phase === 'streaming' && cursor}
+              {streaming && cursor}
             </>
           )}
         </div>
+        <p className={styles.srOnly} aria-live='polite'>
+          {phase === 'done' && state.text}
+        </p>
       </div>
       <div className={styles.footer}>
-        {phase === 'streaming' ? (
-          <button type='button' className={styles.button} onClick={stop}>
-            <span className={styles.stopIcon} aria-hidden='true' /> Stop
-          </button>
-        ) : (
-          <button type='button' className={styles.button} onClick={regenerate}>
-            ↻ Regenerate
-          </button>
-        )}
+        <button type='button' className={styles.button} onClick={streaming ? stop : regenerate}>
+          {streaming ? (
+            <>
+              <span className={styles.stopIcon} aria-hidden='true' /> Stop
+            </>
+          ) : (
+            <>
+              <span aria-hidden='true'>↻</span> Regenerate
+            </>
+          )}
+        </button>
         {phase === 'stopped' && <span className={styles.note}>Stopped</span>}
       </div>
     </div>

@@ -17,9 +17,9 @@ const { typewriter, state, elements, cursor } = useTypewriter(options);
 | ---------------------- | ------------------------------------ | ---------- | --------------------------------------------------------------------------- |
 | `typeSpeed`            | `number`                             | `30`       | Milliseconds per typed character. `0` types instantly.                      |
 | `deleteSpeed`          | `number`                             | `30`       | Milliseconds per deleted character.                                         |
-| `loop`                 | `boolean`                            | `false`    | Replay the queue when it ends.                                              |
-| `humanize`             | `number`                             | `0`        | Random variation of every delay, from `0` (none) to `1` (±100%).            |
-| `respectReducedMotion` | `boolean`                            | `true`     | With `prefers-reduced-motion: reduce`, type and delete instantly. Pauses are kept. |
+| `loop`                 | `boolean`                            | `false`    | Replay the queue when it ends. A queue whose steps never wait ends after one pass. |
+| `humanize`             | `number`                             | `0`        | Random variation of typing and deleting delays, from `0` (none) to `1` (±100%). Pauses are exact. |
+| `respectReducedMotion` | `boolean`                            | `true`     | With `prefers-reduced-motion: reduce`, type and delete instantly. Pauses and loops are kept. |
 | `sequence`             | `(string \| number \| () => void)[]` |            | Steps to run on mount. See [`<Typewriter>`](#typewriter).                   |
 | `enableCursor`         | `boolean`                            | `true`     | Render a cursor.                                                            |
 | `cursorStyle`          | `'bar' \| 'block' \| 'underline'`    | `'bar'`    | Draws `\|`, `▋` or `_`.                                                     |
@@ -27,8 +27,8 @@ const { typewriter, state, elements, cursor } = useTypewriter(options);
 | `cursorColor`          | `string`                             | text color | Cursor color.                                                               |
 | `cursorBlinkSpeed`     | `number`                             | `1000`     | Duration of one blink in milliseconds.                                      |
 
-Options can change at any time. Speeds, `loop` and `humanize` apply to the running animation;
-`respectReducedMotion` is read when `start()` runs; `sequence` is read on mount.
+Options can change at any time. Speeds, `loop`, `humanize` and the cursor options apply to the
+running animation; `respectReducedMotion` is read when `start()` runs; `sequence` is read on mount.
 
 | Returns      | Type                   | Description                                                   |
 | ------------ | ---------------------- | ------------------------------------------------------------- |
@@ -36,6 +36,10 @@ Options can change at any time. Speeds, `loop` and `humanize` apply to the runni
 | `state`      | `TypewriterState`      | `{ text, segments, status }`.                                 |
 | `elements`   | `ReactNode[]`          | Plain strings, a `<span>` for each styled run, and `<br>`s.   |
 | `cursor`     | `ReactElement \| null` | The cursor and its stylesheet.                                |
+
+The hook resets the instance when the component unmounts, including the extra mount StrictMode does
+in development. `reset()` also removes `on()` listeners, so add them in the effect that queues the
+steps.
 
 ### State
 
@@ -70,6 +74,10 @@ Accepts every `useTypewriter` option and:
 
 Any other prop, such as `className`, `id` or `aria-hidden`, goes to the element.
 
+Functions in `sequence` are captured on mount and see the props and state of that render; use
+functional state updates or refs in them. A Server Component can pass strings and numbers only,
+because functions cannot be sent to the client: put callbacks in a Client Component.
+
 ## Queue methods
 
 Queue methods return the instance, so they chain. Nothing runs until `start()`. Steps added while
@@ -85,25 +93,29 @@ the queue runs are appended to it.
 | `pauseFor(ms)`                                    | Waits.                                                              |
 | `newLine()`                                       | Same as `type('\n')`.                                               |
 | `colorize(color?)`                                | Sets the color of the text typed after it. No argument resets it.   |
-| `highlight(start, length, { color, background })` | Styles `length` characters from index `start` of the current text.  |
+| `highlight(start, length, { color, background })` | Styles `length` characters from index `start`.                      |
 | `highlightWords(count, 'start' \| 'end', style)`  | Styles the first or last `count` words as one range.                |
 | `call(fn)`                                        | Calls `fn` when the queue reaches it.                               |
 | `on('start' \| 'end' \| 'loop', fn)`              | Adds an event listener.                                             |
 | `off(event, fn)`                                  | Removes a listener added with `on`.                                 |
 
-A "character" is what a reader sees as one: emoji, flags and letters with accents are typed and
-deleted whole.
+A "character" is what a reader sees as one: emoji, flags and letters with accents are typed,
+deleted, counted and highlighted whole.
 
 ## Control methods
 
 | Method     | Description                                                                                          |
 | ---------- | ---------------------------------------------------------------------------------------------------- |
-| `start()`  | Runs the queue from the current step. Returns a promise that resolves when the queue ends or is stopped or reset. Calling it while running does nothing. |
+| `start()`  | Runs the queue from the current step. Returns a promise that resolves when the queue ends or is stopped or reset; with `loop`, only the latter. Calling it while running does nothing. After the queue has ended, it runs the steps added since. |
 | `pause()`  | Freezes the animation and keeps the remaining delay.                                                 |
 | `resume()` | Continues after `pause()`.                                                                           |
 | `skip()`   | Runs the remaining steps instantly, without pauses, and ends without looping.                       |
 | `stop()`   | Halts and keeps the text. `start()` continues with the next step.                                    |
 | `reset()`  | Halts and clears the text, the queue, the color and the listeners. Returns the instance.             |
+
+`pause()`, `resume()` and `skip()` only act on a running queue, and `start()` does not resume a
+paused one. To tell a finished run from a stopped one, check `getState().status === 'done'` when the
+promise resolves.
 
 ## `createTypewriter(options?)`
 
@@ -114,7 +126,7 @@ and returns the same instance, plus:
 | --------------------- | ---------------------------------------------------------------------- |
 | `getState()`          | The current `TypewriterState`. The object changes only when the state does. |
 | `subscribe(listener)` | Calls `listener` after every change. Returns an unsubscribe function.  |
-| `configure(options)`  | Merges new options.                                                    |
+| `configure(options)`  | Merges new options. An option set to `undefined` returns to its default. |
 
 ```ts
 import { createTypewriter } from 'use-typewriter-animation';
@@ -127,6 +139,9 @@ typewriter.subscribe(() => {
 });
 typewriter.type('Works anywhere.').start();
 ```
+
+With `useTypewriter`, pass options to the hook instead of calling `configure`: the hook applies its
+options again whenever one of them changes.
 
 ## The cursor
 
@@ -146,10 +161,12 @@ React 19 hoists the cursor's stylesheet into `<head>` once. React 18 renders it 
 
 - Speeds of `0`, negative or `NaN` are instant. An infinite speed waits for the longest timeout
   browsers allow (about 24 days).
-- `pauseFor` is capped at the same maximum instead of overflowing.
+- `pauseFor` is capped at the same maximum instead of overflowing. Negative and `NaN` pauses do not
+  wait.
 - Counts larger than the text, such as `deleteWords(Infinity)`, delete everything.
-- If a `call()` callback or an event listener throws, the queue stops with status `idle` and the
-  error is rethrown. `start()` continues with the next step.
+- If a `call()` callback or an event listener throws, the queue stops and the error is rethrown,
+  from `start()` or from the timer that ran the step. The `start()` promise still resolves. The
+  status is `idle`, or `done` when an `end` listener threw. `start()` continues with the next step.
 
 ## Types
 

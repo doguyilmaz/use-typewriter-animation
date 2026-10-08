@@ -29,6 +29,9 @@ export default function Page() {
 }
 ```
 
+From a Server Component, `sequence` can hold strings and numbers only: functions cannot be sent to
+the client. Render a `<Typewriter>` with callbacks from a Client Component.
+
 The hook is a hook: call it from a Client Component.
 
 ```tsx title="app/greeting.tsx"
@@ -42,6 +45,9 @@ export function Greeting({ name }: { name: string }) {
 
   useEffect(() => {
     typewriter.type(`Welcome back, ${name}.`).start();
+    return () => {
+      typewriter.reset();
+    };
   }, [typewriter, name]);
 
   return (
@@ -52,8 +58,6 @@ export function Greeting({ name }: { name: string }) {
   );
 }
 ```
-
-Both are tested against Next.js 16 with `reactCompiler: true`, in development and production builds.
 
 ## Text for search engines
 

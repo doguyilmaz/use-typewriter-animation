@@ -9,8 +9,8 @@ description: How rendering works, how to keep it cheap, and React Compiler suppo
 
 - The hook subscribes to the engine with `useSyncExternalStore`. A component re-renders once per
   visible change and not in between, including while it waits in `pauseFor` or is paused.
-- Text is stored as runs of equally styled characters. Plain text is one DOM text node, and each
-  color or highlight adds one `<span>`. Long text does not mean many elements.
+- Text is stored as runs of equally styled characters. Plain text is one DOM text node, and styled
+  runs are `<span>`s. Long text does not mean many elements.
 - Each typewriter has at most one timer. A paused, stopped, finished or unmounted typewriter has
   none.
 - Below about 16 ms per character, several characters are written per step, so there is at most
@@ -48,5 +48,5 @@ memoizes on `typewriter`, which never changes, so the value would go stale.
 
 ## Bundle size
 
-The whole package is about 2.8 kB gzipped and has no dependencies. It is marked `sideEffects: false`,
-so a bundler drops `<Typewriter>` if you only use the hook.
+The whole package is about 2.8 kB gzipped and has no dependencies. Bundlers that tree-shake ES
+modules drop `<Typewriter>` if you only use the hook.

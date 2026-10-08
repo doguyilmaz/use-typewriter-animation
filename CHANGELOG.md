@@ -6,7 +6,7 @@ All notable changes to this project are documented here. The project follows
 ## 4.0.0 - Unreleased
 
 A rewrite of the library. The chainable API stays; everything around it is smaller and works as
-documented. See [Migrating from v3](./README.md#migrating-from-v3).
+documented. See [Migrating from v3](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/migration).
 
 ### Added
 
@@ -33,6 +33,13 @@ documented. See [Migrating from v3](./README.md#migrating-from-v3).
 - `stop()` halts without destroying the instance; `reset()` clears it. The hook resets the instance
   on unmount, so StrictMode never types twice.
 - `highlightWords()` highlights one continuous range.
+- `highlight(start, length)` counts characters like `deleteLetters()`, so it never splits an emoji.
+- `typeSpeed: 0` and `{ speed: 0 }` are instant; v3 ignored `0`.
+- `deleteAll()` keeps the `colorize()` color; v3 reset it.
+- The `start` event fires on every `start()` call; v3 fired it when the first `type()` step ran.
+- `cursorBlinkSpeed` defaults to 1000 ms (was 500).
+- A `loop` whose steps never wait, for example under reduced motion without pauses, ends after one
+  pass instead of replaying it continuously.
 - Built with tsdown: ESM (`index.js`) and CommonJS (`index.cjs`) with matching type declarations.
   2.8 kB gzipped, down from 5.3 kB.
 
@@ -40,7 +47,7 @@ documented. See [Migrating from v3](./README.md#migrating-from-v3).
 
 - `pause()` and `resume()` did not pause; `skip()` left the text half-typed and the promise pending.
 - Cursor and text components were recreated on every render, remounting their DOM nodes.
-- Every character was a separate `<span>` and every update copied the whole text.
+- Every character was a separate state segment and every update copied the whole text.
 - Screen readers were sent every character through an `aria-live` region.
 - Emoji were split into broken halves while typing.
 
@@ -56,6 +63,9 @@ documented. See [Migrating from v3](./README.md#migrating-from-v3).
   `enableKeyboardControls`, `keyboardShortcuts`, `autoKeyboardHandling`, `manageFocus`,
   `focusOnComplete`.
 - `isPaused()`; use `state.status === 'paused'`.
+- Types `TypewriterBaseOptions` (now `TypewriterOptions`), `TypewriterBaseType` (now
+  `TypewriterInstance`), `TextSegment` (now `TypewriterSegment`), `TypewriterStateUpdater`, and the
+  option, return and props types of the removed hooks and components.
 
 ## 3.5.2 - 2025-06-16
 

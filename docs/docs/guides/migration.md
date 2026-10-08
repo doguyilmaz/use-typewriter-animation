@@ -48,13 +48,29 @@ and the effect.
 
 ## Behavior
 
-- `deleteAll()` animates with `deleteSpeed`. Use `deleteAll({ speed: 0 })` to clear instantly.
+- `deleteAll()` animates with `deleteSpeed` and keeps the `colorize()` color. Use
+  `deleteAll({ speed: 0 })` to clear instantly.
+- `typeSpeed: 0` and `{ speed: 0 }` are instant. v3 ignored `0` and used 30 ms.
+- The `start` event fires on every `start()` call. v3 fired it when the first `type()` step ran.
+- `highlight(start, length)` counts characters, so it never splits an emoji.
 - `stop()` keeps the instance usable: `start()` continues with the next step. `reset()` clears the
   text, queue and listeners.
 - `pause()`, `resume()` and `skip()` now do what their names say.
 - `highlightWords()` highlights the words as one range, including the spaces between them.
-- The cursor takes the text color instead of black. `cursorBlinkSpeed` is the length of one full
-  blink (1000 ms by default).
+- The cursor takes the text color instead of black, and `cursorBlinkSpeed` defaults to 1000 ms
+  (it was 500).
+
+## Types
+
+| v3                      | v4                                                              |
+| ----------------------- | --------------------------------------------------------------- |
+| `TypewriterBaseType`    | `TypewriterInstance`                                            |
+| `TypewriterBaseOptions` | `TypewriterOptions`                                             |
+| `TextSegment`           | `TypewriterSegment`: `text` (was `content`), `background` (was `backgroundColor`), a number `id` |
+| `isNewLine` segments    | segments whose `text` is `'\n'`                                 |
+
+`TypewriterStateUpdater`, `isHighlighted` and the option, return and props types of the removed
+hooks and components are gone.
 
 ## Removed options
 

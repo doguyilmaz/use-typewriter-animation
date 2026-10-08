@@ -17,7 +17,7 @@
 
 .input {
   width: 100%;
-  padding: 0.95rem 4rem 0.95rem 2.85rem;
+  padding: 0.95rem 1rem 0.95rem 2.85rem;
   border: 1px solid light-dark(#e4e4e7, #27272a);
   border-radius: 14px;
   background: light-dark(#ffffff, #111113);
@@ -38,17 +38,4 @@
 .input:focus {
   border-color: #f43f5e;
   box-shadow: 0 0 0 4px rgb(244 63 94 / 0.15);
-}
-
-.kbd {
-  position: absolute;
-  right: 0.9rem;
-  padding: 0.15rem 0.45rem;
-  border: 1px solid light-dark(#e4e4e7, #3f3f46);
-  border-radius: 6px;
-  background: light-dark(#fafafa, #18181b);
-  color: light-dark(#71717a, #a1a1aa);
-  font-family: inherit;
-  font-size: 0.75rem;
-  box-shadow: none;
 }

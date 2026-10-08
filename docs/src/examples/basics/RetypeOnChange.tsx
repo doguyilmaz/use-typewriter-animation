@@ -8,8 +8,6 @@ export default function RetypeOnChange() {
   const [language, setLanguage] = useState<Language>('English');
   const { typewriter, elements, cursor } = useTypewriter({ typeSpeed: 50, deleteSpeed: 30 });
 
-  // Interrupt whatever is being typed, then type the new greeting. typeTo only changes the
-  // part that differs from the text on screen.
   useEffect(() => {
     typewriter.stop();
     typewriter.typeTo(GREETINGS[language]).start();

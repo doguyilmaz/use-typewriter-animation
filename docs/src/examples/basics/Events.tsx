@@ -6,7 +6,10 @@ export default function Events() {
   const { typewriter, elements, cursor } = useTypewriter({ typeSpeed: 50 });
 
   useEffect(() => {
-    const add = (entry: string) => setLog((entries) => [...entries, entry]);
+    let active = true;
+    const add = (entry: string) => {
+      if (active) setLog((entries) => [...entries, entry]);
+    };
     const onStart = () => add('start');
     const onEnd = () => add('end');
     typewriter.on('start', onStart);
@@ -18,6 +21,8 @@ export default function Events() {
       .start()
       .then(() => add('promise resolved'));
     return () => {
+      active = false;
+      setLog([]);
       typewriter.off('start', onStart);
       typewriter.off('end', onEnd);
     };

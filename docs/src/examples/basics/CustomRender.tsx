@@ -16,13 +16,17 @@ export default function CustomRender() {
 
   return (
     <p>
-      {state.segments.map((segment) =>
-        segment.color ? (
-          <mark key={segment.id}>{segment.text}</mark>
-        ) : (
-          <span key={segment.id}>{segment.text}</span>
-        ),
-      )}
+      {state.segments.map(({ id, text, color }) => {
+        if (text === '\n') return <br key={id} />;
+        if (color) {
+          return (
+            <strong key={id} style={{ color }}>
+              {text}
+            </strong>
+          );
+        }
+        return <span key={id}>{text}</span>;
+      })}
       {state.status === 'done' ? ' ✓' : '…'}
     </p>
   );

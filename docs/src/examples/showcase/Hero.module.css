@@ -39,6 +39,19 @@
   color: transparent;
 }
 
+.toggle {
+  display: block;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: light-dark(#52525b, #a1a1aa);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .lead {
   margin: 1.25rem 0 2rem;
   max-width: 28rem;
@@ -55,10 +68,14 @@
 .primary,
 .secondary {
   padding: 0.65rem 1.2rem;
+  border: 0;
   border-radius: 10px;
+  background: none;
+  color: inherit;
+  font: inherit;
   font-size: 0.95rem;
   font-weight: 600;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .primary {
@@ -68,12 +85,10 @@
 
 .secondary {
   border: 1px solid light-dark(#d4d4d8, #3f3f46);
-  color: inherit;
 }
 
 .primary:hover,
 .secondary:hover {
-  text-decoration: none;
   opacity: 0.85;
 }
 

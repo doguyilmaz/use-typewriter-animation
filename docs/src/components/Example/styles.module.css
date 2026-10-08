@@ -31,16 +31,15 @@
 }
 
 /* Basic examples use unstyled elements; give them sensible defaults here, not in their code. */
-.basic .preview :is(p, h1, h2, h3) {
+.basic .preview p {
   margin: 0;
 }
 
-.basic .preview :is(p, h1, h2, h3, ul) + :is(div, p, ul) {
+.basic .preview p + :is(div, p) {
   margin-top: 1rem;
 }
 
-.basic .preview button,
-.basic .preview select {
+.basic .preview button {
   margin: 0 0.5rem 0.5rem 0;
   padding: 0.35rem 0.75rem;
   border: 1px solid var(--site-border);
@@ -54,11 +53,6 @@
 
 .basic .preview button:hover {
   border-color: var(--site-muted);
-}
-
-.basic .preview label {
-  font-size: 0.875rem;
-  color: var(--site-muted);
 }
 
 .toolbar {
@@ -78,7 +72,8 @@
   overflow-x: auto;
 }
 
-.tab {
+.tab,
+.file {
   padding: 0.7rem 0.6rem;
   border: 0;
   border-bottom: 2px solid transparent;
@@ -86,6 +81,9 @@
   color: var(--site-muted);
   font: 500 0.8rem var(--ifm-font-family-monospace);
   white-space: nowrap;
+}
+
+.tab {
   cursor: pointer;
 }
 
@@ -93,7 +91,8 @@
   color: var(--ifm-font-color-base);
 }
 
-.tab[aria-selected="true"] {
+.tab[aria-selected="true"],
+.file {
   border-bottom-color: var(--ifm-color-primary);
   color: var(--ifm-font-color-base);
 }

@@ -19,10 +19,11 @@ import CursorsSource from '!!raw-loader!@site/src/examples/basics/Cursors.tsx';
 
 - `colorize(color)` sets the color of the text typed after it. `colorize()` goes back to the
   inherited color.
-- `highlight(start, length, style)` styles a range of the text already on screen.
+- `highlight(start, length, style)` styles `length` characters of the text already on screen,
+  counted like `deleteLetters` counts them.
 - `highlightWords(count, 'start' | 'end', style)` styles the first or last words.
 
-Each run of equally styled text becomes one `<span>`; plain text stays a plain text node.
+Plain text stays a plain text node, and styled text is rendered as `<span>`s, one per styled run.
 
 ## Cursor
 

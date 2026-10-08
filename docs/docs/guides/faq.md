@@ -39,16 +39,27 @@ The user prefers reduced motion, so typing and deleting are instant and only pau
 
 ## My Content Security Policy blocks the styles
 
-The cursor uses an inline `<style>` and an inline `style` attribute, and colored text uses inline
-`style` attributes. With a strict `style-src`, allow `'unsafe-inline'` for styles, or set
-`enableCursor: false`, render your own cursor with your stylesheet, and avoid `colorize` and
-`highlight`.
+Two things are inline: the cursor's `<style>` element and, in server-rendered HTML, the cursor's
+`style` attribute. Colors and highlights are set from JavaScript, which `style-src` does not block.
+The stylesheet never changes, so allow it by hash: the browser's CSP error shows the `'sha256-…'`
+value to add. A blocked attribute only loses a custom `cursorColor` and `cursorBlinkSpeed` on the
+server-rendered cursor; allow `'unsafe-inline'` in `style-src-attr` to keep them, or set
+`enableCursor: false` and draw your own cursor.
+
+## Which browsers are supported?
+
+Any browser React 18 supports. Characters are split with `Intl.Segmenter` (Chrome 87, Safari 14.1,
+Firefox 125). Without it, they fall back to code points, so some emoji and flags are typed in
+pieces.
 
 ## Can I use it with React Native?
 
-Not the hook or the component: they render DOM elements.
+`<Typewriter>` and the hook's `elements` and `cursor` render DOM elements. The hook's `state` does
+not: render `state.text` in a `<Text>` and set `enableCursor: false`. Reduced motion is not detected
+outside the browser, so set `typeSpeed: 0` yourself when it is on.
 
 ## Does it work without React?
 
-Yes. `createTypewriter` is a plain engine with `subscribe` and `getState`. See
-[Without React state](../basics/patterns.mdx#without-react-state).
+`createTypewriter` uses no React APIs: subscribe to it and render however you like. See
+[Without React state](../basics/patterns.mdx#without-react-state). The package still lists React as
+a peer dependency.

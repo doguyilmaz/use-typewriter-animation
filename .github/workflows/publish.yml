@@ -36,3 +36,11 @@ jobs:
         # Trusted publishing (OIDC) authenticates and adds provenance. `prepublishOnly` builds the package.
         run: npm publish --access public
       - run: git push --follow-tags
+      - name: GitHub release
+        # Release notes are the version's CHANGELOG section.
+        run: |
+          version=$(node -p "require('./package.json').version")
+          awk -v v="## $version " 'index($0, v) == 1 { on = 1; next } /^## / { on = 0 } on' CHANGELOG.md > notes.md
+          gh release create "v$version" --title "v$version" --notes-file notes.md --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}

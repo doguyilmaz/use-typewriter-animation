@@ -297,6 +297,29 @@ describe('styling', () => {
     expect(tw.getState().segments).toEqual([{ id: 0, text: 'abc', ...style('red', 'black') }]);
   });
 
+  it('highlight counts characters, so a style boundary never splits an emoji', () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    tw.type('a👩‍👩‍👧b🇹🇷c').highlight(1, 2, { background: 'yellow' }).start();
+    expect(tw.getState().segments.map((s) => [s.text, s.background])).toEqual([
+      ['a', undefined],
+      ['👩‍👩‍👧b', 'yellow'],
+      ['🇹🇷c', undefined],
+    ]);
+  });
+
+  it('highlight clamps indices to the text', () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    tw.type('héllo')
+      .highlight(-3, 5, { color: 'red' })
+      .highlight(3, Number.POSITIVE_INFINITY, { color: 'blue' })
+      .start();
+    expect(tw.getState().segments.map((s) => [s.text, s.color])).toEqual([
+      ['hé', 'red'],
+      ['l', undefined],
+      ['lo', 'blue'],
+    ]);
+  });
+
   it('highlight ignores empty and out-of-range ranges', () => {
     const { tw } = setup({ typeSpeed: 0 });
     tw.type('abc').start();
@@ -392,28 +415,43 @@ describe('events and loop', () => {
   });
 
   it('loops through the queue and emits loop', () => {
-    const { tw, text } = setup({ typeSpeed: 0, loop: true });
+    const { tw } = setup({ typeSpeed: 0, loop: true });
+    const texts = record(tw);
     const onLoop = vi.fn();
     const onEnd = vi.fn();
     tw.on('loop', onLoop).on('end', onEnd).type('ab').pauseFor(100).deleteAll({ speed: 0 }).start();
-    expect(text()).toBe('ab');
-    vi.advanceTimersToNextTimer();
-    expect(text()).toBe('');
+    vi.advanceTimersByTime(100);
     expect(onLoop).toHaveBeenCalledTimes(1);
-    vi.advanceTimersToNextTimer();
-    expect(text()).toBe('ab');
-    vi.advanceTimersToNextTimer();
+    vi.advanceTimersByTime(100);
     expect(onLoop).toHaveBeenCalledTimes(2);
+    expect(texts).toEqual(['ab', '', 'ab', '', 'ab']);
     expect(onEnd).not.toHaveBeenCalled();
   });
 
-  it('yields between passes of an instant queue', () => {
-    const { tw } = setup({ typeSpeed: 0, loop: true });
+  it('ends a loop whose steps never wait instead of spinning', () => {
+    const { tw, status } = setup({ typeSpeed: 0, loop: true });
     const pass = vi.fn();
-    tw.call(pass).start();
-    expect(pass).toHaveBeenCalledTimes(1);
-    vi.advanceTimersToNextTimer();
-    expect(pass).toHaveBeenCalledTimes(2);
+    const onLoop = vi.fn();
+    tw.on('loop', onLoop).call(pass).type('a').pauseFor(0).start();
+    vi.runAllTimers();
+    expect(pass).toHaveBeenCalledOnce();
+    expect(onLoop).not.toHaveBeenCalled();
+    expect(status()).toBe('done');
+  });
+
+  it('replays colors the same way on every pass', () => {
+    const { tw } = setup({ typeSpeed: 0, deleteSpeed: 0, loop: true });
+    const runs = () => tw.getState().segments.map((s) => [s.text, s.color]);
+    tw.deleteAll().type('a').colorize('red').type('b').pauseFor(10).start();
+    expect(runs()).toEqual([
+      ['a', undefined],
+      ['b', 'red'],
+    ]);
+    vi.advanceTimersByTime(10);
+    expect(runs()).toEqual([
+      ['a', undefined],
+      ['b', 'red'],
+    ]);
     tw.stop();
   });
 
@@ -427,7 +465,9 @@ describe('events and loop', () => {
     const { tw, status } = setup({ typeSpeed: 0, loop: true });
     tw.on('loop', () => tw.stop())
       .type('a')
+      .pauseFor(10)
       .start();
+    vi.advanceTimersByTime(10);
     expect(status()).toBe('idle');
     expect(vi.getTimerCount()).toBe(0);
   });
@@ -793,7 +833,11 @@ describe('robustness', () => {
 
   it('ignores highlights with invalid ranges', () => {
     const { tw } = setup({ typeSpeed: 0 });
-    tw.type('abc').highlight(Number.NaN, 2, { color: 'red' }).highlight(1, Number.NaN, {}).start();
+    tw.type('abc')
+      .highlight(Number.NaN, 2, { color: 'red' })
+      .highlight(1, Number.NaN, {})
+      .highlight(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, { color: 'red' })
+      .start();
     expect(tw.getState().segments).toEqual([{ id: 0, text: 'abc', ...style() }]);
   });
 
@@ -852,6 +896,42 @@ describe('robustness', () => {
     expect(status()).toBe('idle');
     tw.start();
     expect(text()).toBe('fresh');
+  });
+
+  it('recovers when a start listener throws', async () => {
+    const { tw, text, status } = setup({ typeSpeed: 0 });
+    const done = vi.fn();
+    const fail = () => {
+      throw new Error('boom');
+    };
+    tw.on('start', fail).type('a');
+    expect(() => tw.start()).toThrow('boom');
+    expect(status()).toBe('idle');
+    tw.off('start', fail).start().then(done);
+    expect(text()).toBe('a');
+    await Promise.resolve();
+    expect(done).toHaveBeenCalled();
+  });
+
+  it('a start listener can restart the queue without running it twice', () => {
+    const { tw, text } = setup();
+    let restarted = false;
+    tw.on('start', () => {
+      if (restarted) return;
+      restarted = true;
+      tw.stop();
+      tw.start();
+    });
+    tw.type('ab').start();
+    expect(text()).toBe('a');
+    expect(vi.getTimerCount()).toBe(1);
+  });
+
+  it('treats a NaN pause as no pause', () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    const timeout = vi.spyOn(globalThis, 'setTimeout');
+    tw.pauseFor(Number.NaN).type('a').start();
+    expect(timeout).toHaveBeenLastCalledWith(expect.any(Function), 0);
   });
 
   it('resolves start() promises even when a step throws', async () => {

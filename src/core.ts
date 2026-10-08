@@ -21,9 +21,9 @@ export interface TypewriterOptions {
   typeSpeed?: number | undefined;
   /** Milliseconds per deleted character. @default 30 */
   deleteSpeed?: number | undefined;
-  /** Replay the queue when it finishes. @default false */
+  /** Replay the queue when it finishes. A queue that never waits ends after one pass. @default false */
   loop?: boolean | undefined;
-  /** Random variation applied to every delay, from 0 (none) to 1 (±100%). @default 0 */
+  /** Random variation of typing and deleting delays, from 0 (none) to 1 (±100%). @default 0 */
   humanize?: number | undefined;
   /** Type and delete instantly when the user prefers reduced motion. Pauses are kept. @default true */
   respectReducedMotion?: boolean | undefined;
@@ -57,7 +57,7 @@ export interface TypewriterInstance {
   newLine(): TypewriterInstance;
   /** Sets the color of text typed after this step. Call without a value to reset it. */
   colorize(color?: string): TypewriterInstance;
-  /** Styles `length` characters starting at index `start` of the current text. */
+  /** Styles `length` characters, counted like `deleteLetters` counts them, from index `start`. */
   highlight(start: number, length: number, style: HighlightStyle): TypewriterInstance;
   /** Styles the first or last `count` words of the current text as one range. */
   highlightWords(count: number, from: 'start' | 'end', style: HighlightStyle): TypewriterInstance;
@@ -65,7 +65,10 @@ export interface TypewriterInstance {
   call(fn: () => void): TypewriterInstance;
   on(event: TypewriterEvent, callback: () => void): TypewriterInstance;
   off(event: TypewriterEvent, callback: () => void): TypewriterInstance;
-  /** Runs the queue from the current step. Resolves when it ends, or when it is stopped or reset. */
+  /**
+   * Runs the queue from the current step. Resolves when it ends, or when it is stopped or reset.
+   * A looping queue only resolves when it is stopped, reset or skipped.
+   */
   start(): Promise<void>;
   /** Halts the queue and keeps the text. `start()` continues with the next step. */
   stop(): void;
@@ -100,6 +103,14 @@ const graphemes = (text: string): string[] =>
 
 const lengthsFromEnd = (parts: string[]): number[] => parts.map((part) => part.length).reverse();
 
+/** UTF-16 offset of every character boundary in `text`, from 0 up to `text.length`. */
+const boundaries = (text: string): number[] => {
+  const offsets = [0];
+  for (const part of graphemes(text))
+    offsets.push((offsets[offsets.length - 1] as number) + part.length);
+  return offsets;
+};
+
 const isSpace = (char: string | undefined) => char !== undefined && /\s/.test(char);
 
 const prefersReducedMotion = () =>
@@ -122,6 +133,8 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
   let reducedMotion = false;
   /** Incremented whenever the queue halts, so re-entrant calls can detect that they are stale. */
   let generation = 0;
+  /** Whether a step waited since the queue last wrapped. A loop that never waits would spin. */
+  let passWaited = false;
   let statusBeforePause: TypewriterStatus = 'idle';
   let color: string | undefined;
   let waiters: (() => void)[] = [];
@@ -264,7 +277,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
 
   const schedule = (ms: number) => {
     const wait = Math.min(ms, MAX_DELAY);
-    due = Date.now() + wait;
+    due = performance.now() + wait;
     timer = setTimeout(tick, wait);
   };
 
@@ -286,19 +299,21 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
     emit('end');
   };
 
-  function tick() {
+  function tick(starting = false) {
     timer = undefined;
     const current = generation;
     try {
-      while (running && !paused) {
+      if (starting) emit('start');
+      // A step or a listener stopped, reset or skipped the queue while it ran.
+      while (running && !paused && current === generation) {
         if (!job) {
           if (index >= queue.length) {
-            if (config.loop && queue.length > 0 && !skipping) {
+            if (config.loop && passWaited && !skipping) {
               index = 0;
+              color = undefined;
+              passWaited = false;
               emit('loop');
-              // Yield between passes so a queue of instant steps cannot block the thread.
-              if (current === generation && !paused) schedule(0);
-              return;
+              continue;
             }
             finish();
             return;
@@ -306,9 +321,9 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
           job = (queue[index++] as () => Job)();
         }
         const wait = job();
-        // A step or a listener stopped, reset or skipped the queue while it ran.
         if (current !== generation) return;
         if (wait !== DONE) {
+          if (wait > 0) passWaited = true;
           if (paused) remaining = wait;
           else schedule(wait);
           return;
@@ -375,7 +390,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
           if (waited || skipping) return DONE;
           waited = true;
           setStatus('waiting');
-          return Math.max(ms, 0);
+          return Math.max(ms, 0) || 0;
         };
       }),
 
@@ -388,7 +403,16 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
         }),
       ),
 
-    highlight: (start, length, style) => enqueue(once(() => restyle(start, start + length, style))),
+    highlight: (start, length, style) =>
+      enqueue(
+        once(() => {
+          if (Number.isNaN(start) || Number.isNaN(length)) return;
+          const marks = boundaries(state.text);
+          const offsetOf = (index: number) =>
+            marks[Math.min(Math.max(Math.trunc(index), 0), marks.length - 1)] ?? 0;
+          restyle(offsetOf(start), offsetOf(start + length), style);
+        }),
+      ),
 
     highlightWords: (count, from, style) =>
       enqueue(
@@ -419,8 +443,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
       if (!running) {
         running = true;
         reducedMotion = config.respectReducedMotion !== false && prefersReducedMotion();
-        emit('start');
-        tick();
+        tick(true);
       }
       return finished;
     },
@@ -437,6 +460,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
       settle();
       queue = [];
       index = 0;
+      passWaited = false;
       color = undefined;
       events = { start: [], end: [], loop: [] };
       if (state !== INITIAL_STATE) commit(INITIAL_STATE);
@@ -446,7 +470,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
     pause: () => {
       if (!running || paused) return;
       paused = true;
-      remaining = timer === undefined ? 0 : Math.max(due - Date.now(), 0);
+      remaining = timer === undefined ? 0 : Math.max(due - performance.now(), 0);
       clearTimeout(timer);
       timer = undefined;
       statusBeforePause = state.status;

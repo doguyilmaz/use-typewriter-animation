@@ -155,9 +155,7 @@ describe('useTypewriter', () => {
       const step = vi.fn();
       render(<Sequence sequence={['a', step, 100, '']} typeSpeed={0} deleteSpeed={0} loop />);
       expect(step).toHaveBeenCalledTimes(1);
-      act(() => vi.advanceTimersToNextTimer());
-      expect(typed()).toBe('');
-      act(() => vi.advanceTimersToNextTimer());
+      act(() => vi.advanceTimersByTime(100));
       expect(typed()).toBe('a');
       expect(step).toHaveBeenCalledTimes(2);
     });

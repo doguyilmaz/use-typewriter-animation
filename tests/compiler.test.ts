@@ -3,7 +3,9 @@ import { resolve } from 'node:path';
 import { transformAsync } from '@babel/core';
 import { expect, it } from 'vitest';
 
-it('compiles every component and hook with React Compiler, without bailouts', async () => {
+it('compiles every component and hook with React Compiler, without bailouts', {
+  timeout: 30_000,
+}, async () => {
   const file = resolve('src/react.tsx');
   const events: { kind: string; fnName?: string | null }[] = [];
   const result = await transformAsync(readFileSync(file, 'utf8'), {

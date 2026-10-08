@@ -91,12 +91,15 @@ const randomStep = (next: () => number): Step => {
   }
 };
 
+const LONE_SURROGATE = /[\ud800-\udbff](?![\udc00-\udfff])|(?<![\ud800-\udbff])[\udc00-\udfff]/;
+
 const checkInvariants = (tw: TypewriterInstance) => {
   const { text, segments } = tw.getState();
   expect(segments.map((segment) => segment.text).join('')).toBe(text);
   const ids = new Set<number>();
   for (const segment of segments) {
     expect(segment.text).not.toBe('');
+    expect(segment.text).not.toMatch(LONE_SURROGATE);
     expect(ids.has(segment.id)).toBe(false);
     ids.add(segment.id);
     if (segment.text.includes('\n')) {
@@ -183,7 +186,9 @@ describe('random queues', () => {
   it.each(SEEDS.slice(0, 50))('seed %i: looping replays the same final text', (seed) => {
     const { tw, expected } = build(seed, { typeSpeed: 0, deleteSpeed: 0 });
     tw.configure({ loop: true });
-    tw.call(() => expect(tw.getState().text).toBe(expected)).deleteAll({ speed: 0 });
+    tw.call(() => expect(tw.getState().text).toBe(expected))
+      .deleteAll({ speed: 0 })
+      .pauseFor(1);
     let passes = 0;
     tw.on('loop', () => {
       passes++;

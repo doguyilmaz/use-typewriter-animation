@@ -1,5 +1,6 @@
 ---
 title: Accessibility
+description: What screen readers hear, reduced motion, and pausing long animations.
 ---
 
 # Accessibility
@@ -45,4 +46,4 @@ animation:
 Content that moves for more than five seconds needs a way to pause, stop or hide it
 ([WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)). Looping
 animations qualify. Wire a button to `pause()` and `resume()`, as in the
-[controls example](../examples/controls.mdx).
+[controls example](../basics/controls.mdx).

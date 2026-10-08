@@ -1,0 +1,66 @@
+.editor {
+  width: 100%;
+  max-width: 36rem;
+  overflow: hidden;
+  border: 1px solid #2c313a;
+  border-radius: 12px;
+  background: #282c34;
+  box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.35);
+  color: #abb2bf;
+  font-family: var(--ifm-font-family-monospace, ui-monospace, monospace);
+}
+
+.tabs {
+  display: flex;
+  background: #21252b;
+}
+
+.tab {
+  padding: 0.55rem 1rem;
+  border-top: 2px solid #61afef;
+  background: #282c34;
+  color: #d7dae0;
+  font-size: 0.78rem;
+}
+
+.body {
+  display: flex;
+  height: 17rem;
+  overflow: hidden;
+}
+
+.gutter,
+.code {
+  margin: 0;
+  padding: 1rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.gutter {
+  width: 3rem;
+  padding-right: 1rem;
+  color: #4b5263;
+  text-align: right;
+  user-select: none;
+}
+
+.code {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  color: #abb2bf;
+  white-space: pre;
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0.9rem;
+  background: #21252b;
+  color: #7f848e;
+  font-size: 0.72rem;
+}

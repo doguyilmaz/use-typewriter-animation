@@ -21,6 +21,7 @@ jobs:
       - name: Test the source compiled with React Compiler
         run: bun run test:compiler
       - run: bun run build
+      - run: bun run smoke
       - run: bun run size
       - name: React Compiler report
         run: bun run compiler
@@ -35,3 +36,5 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun add --dev react@18 react-dom@18
       - run: bun run test
+      - run: bun run build
+      - run: bun run smoke

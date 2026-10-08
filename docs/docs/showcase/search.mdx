@@ -1,0 +1,34 @@
+---
+title: Search placeholder
+description: Animate suggestions in a search field placeholder and pause on focus.
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/showcase/Search';
+import tsx from '!!raw-loader!@site/src/examples/showcase/Search.tsx';
+import css from '!!raw-loader!@site/src/examples/showcase/Search.module.css';
+
+# Search placeholder
+
+Suggestions typed into a search field placeholder. Click the field: the animation pauses until it loses focus.
+
+<Example
+  variant='showcase'
+  files={[
+    { name: 'Search.tsx', source: tsx },
+    { name: 'Search.module.css', source: css },
+  ]}
+>
+  <Demo />
+</Example>
+
+## How it works
+
+- The hook's `sequence` option plays the suggestions without an effect, and `enableCursor: false`
+  drops the cursor because the text goes into the `placeholder` attribute through `state.text`.
+- `typeTo` keeps `Search for “` on screen and retypes only the suggestion.
+- Focusing the field calls `pause()`, so nothing is scheduled or rendered while the user types, and
+  blurring it calls `resume()`.
+- Placeholder changes are not announced by screen readers, so the field keeps a fixed `aria-label`.
+- Colors use `light-dark()`, which follows the page's `color-scheme`. If your dark mode toggles a
+  class, set `color-scheme: dark` with it.

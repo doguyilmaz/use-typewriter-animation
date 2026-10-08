@@ -310,6 +310,52 @@ describe('server rendering', () => {
   });
 });
 
+describe('lifecycle', () => {
+  it('leaves no timers when unmounted while paused or waiting', () => {
+    const { result, unmount } = renderHook(() => useTypewriter({ typeSpeed: 0 }));
+    act(() => {
+      result.current.typewriter.type('a').pauseFor(5000).type('b').start();
+    });
+    expect(result.current.state.status).toBe('waiting');
+    act(() => result.current.typewriter.pause());
+    unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('stops looping when the loop option turns off', () => {
+    const { result, rerender } = renderHook(
+      ({ loop }) => useTypewriter({ loop, typeSpeed: 0, deleteSpeed: 0 }),
+      { initialProps: { loop: true } },
+    );
+    act(() => {
+      result.current.typewriter.type('a').pauseFor(100).deleteAll().start();
+    });
+    rerender({ loop: false });
+    act(() => vi.advanceTimersByTime(100));
+    expect(result.current.state.status).toBe('done');
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('blinks the cursor while waiting and paused', () => {
+    const { result } = renderHook(() => useTypewriter({ typeSpeed: 50 }));
+    const blinking = () => render(result.current.cursor).container.querySelector('[data-blink]');
+    act(() => {
+      result.current.typewriter.type('a').pauseFor(500).type('b').start();
+    });
+    expect(blinking()).toBeNull();
+    act(() => vi.advanceTimersByTime(50));
+    expect(result.current.state.status).toBe('waiting');
+    expect(blinking()).not.toBeNull();
+    act(() => result.current.typewriter.pause());
+    expect(blinking()).not.toBeNull();
+  });
+
+  it('forwards aria-hidden from <Typewriter>', () => {
+    const { container } = render(<Typewriter aria-hidden sequence={['x']} typeSpeed={0} />);
+    expect(container.firstElementChild?.getAttribute('aria-hidden')).toBe('true');
+  });
+});
+
 describe('re-render cost', () => {
   it('renders once per typed character', () => {
     let renders = 0;
@@ -326,5 +372,23 @@ describe('re-render cost', () => {
     for (let i = 0; i < 5; i++) advance(50);
     // One render per character after the first, plus one for the final "done" status.
     expect(renders - afterMount).toBe(5);
+  });
+
+  it('renders once at the start of a pause and not while it runs', () => {
+    let renders = 0;
+    function Paused() {
+      const { typewriter, elements } = useTypewriter({ typeSpeed: 0, enableCursor: false });
+      renders++;
+      useEffect(() => {
+        typewriter.type('a').pauseFor(1000).type('b').start();
+      }, [typewriter]);
+      return <p>{elements}</p>;
+    }
+    render(<Paused />);
+    const afterMount = renders;
+    for (let i = 0; i < 9; i++) advance(100);
+    expect(renders).toBe(afterMount);
+    advance(100);
+    expect(renders).toBe(afterMount + 1);
   });
 });

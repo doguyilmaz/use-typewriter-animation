@@ -1,0 +1,54 @@
+---
+title: Patterns
+description: Start on scroll, follow a changing value, render the text yourself, or skip React.
+---
+
+import Example from '@site/src/components/Example';
+import StartOnView from '@site/src/examples/basics/StartOnView';
+import StartOnViewSource from '!!raw-loader!@site/src/examples/basics/StartOnView.tsx';
+import RetypeOnChange from '@site/src/examples/basics/RetypeOnChange';
+import RetypeOnChangeSource from '!!raw-loader!@site/src/examples/basics/RetypeOnChange.tsx';
+import CustomRender from '@site/src/examples/basics/CustomRender';
+import CustomRenderSource from '!!raw-loader!@site/src/examples/basics/CustomRender.tsx';
+import Vanilla from '@site/src/examples/basics/Vanilla';
+import VanillaSource from '!!raw-loader!@site/src/examples/basics/Vanilla.tsx';
+
+# Patterns
+
+## Start when visible
+
+<Example files={[{ name: 'StartOnView.tsx', source: StartOnViewSource }]}>
+  <StartOnView />
+</Example>
+
+Queue the steps right away and call `start()` from an `IntersectionObserver`, so an animation below
+the fold does not finish before anyone sees it.
+
+## Retype when a value changes
+
+<Example files={[{ name: 'RetypeOnChange.tsx', source: RetypeOnChangeSource }]}>
+  <RetypeOnChange />
+</Example>
+
+`stop()` drops whatever is being typed and keeps the text, and `typeTo` then changes only what
+differs. Put both in an effect that depends on the value.
+
+## Render the text yourself
+
+<Example files={[{ name: 'CustomRender.tsx', source: CustomRenderSource }]}>
+  <CustomRender />
+</Example>
+
+`state.segments` holds the text as runs of equally styled characters, each with a stable `id` for a
+key. A segment whose `text` is `'\n'` is a line break. Use them instead of `elements` to render
+your own markup, or use `state.text` for plain text, such as an input's placeholder in the
+[search example](../showcase/search.mdx).
+
+## Without React state
+
+<Example files={[{ name: 'Vanilla.tsx', source: VanillaSource }]}>
+  <Vanilla />
+</Example>
+
+`createTypewriter` is the engine behind the hook. It has no React dependency: subscribe to it and
+render however you like.

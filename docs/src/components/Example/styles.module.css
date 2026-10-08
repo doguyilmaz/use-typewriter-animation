@@ -1,0 +1,134 @@
+.example {
+  margin: 1.75rem 0 2.5rem;
+  border: 1px solid var(--site-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--site-surface);
+}
+
+.preview {
+  position: relative;
+  padding: 2rem;
+  background-color: var(--site-canvas);
+  background-image: radial-gradient(var(--site-dot) 1px, transparent 1px);
+  background-size: 18px 18px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.showcase .preview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-items: center;
+  min-height: 18rem;
+  padding: 2.5rem 1.5rem;
+}
+
+.basic .preview {
+  min-height: 7.5rem;
+}
+
+/* Basic examples use unstyled elements; give them sensible defaults here, not in their code. */
+.basic .preview :is(p, h1, h2, h3) {
+  margin: 0;
+}
+
+.basic .preview :is(p, h1, h2, h3, ul) + :is(div, p, ul) {
+  margin-top: 1rem;
+}
+
+.basic .preview button,
+.basic .preview select {
+  margin: 0 0.5rem 0.5rem 0;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  background: var(--site-surface);
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.basic .preview button:hover {
+  border-color: var(--site-muted);
+}
+
+.basic .preview label {
+  font-size: 0.875rem;
+  color: var(--site-muted);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.5rem 0 0.75rem;
+  border-top: 1px solid var(--site-border);
+  border-bottom: 1px solid var(--site-border);
+  background: var(--site-surface);
+}
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 0.7rem 0.6rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--site-muted);
+  font: 500 0.8rem var(--ifm-font-family-monospace);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.tab[aria-selected="true"] {
+  border-bottom-color: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base);
+}
+
+.replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  background: var(--site-canvas);
+  color: var(--ifm-font-color-base);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.replay:hover {
+  border-color: var(--site-muted);
+}
+
+.tab:focus-visible,
+.replay:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: -2px;
+}
+
+.code :global(.theme-code-block) {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.code :global(pre) {
+  max-height: 32rem;
+}

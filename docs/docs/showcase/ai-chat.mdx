@@ -1,0 +1,36 @@
+---
+title: AI chat
+description: Stream a model response into a chat bubble, with stop and regenerate.
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/showcase/AiChat';
+import tsx from '!!raw-loader!@site/src/examples/showcase/AiChat.tsx';
+import css from '!!raw-loader!@site/src/examples/showcase/AiChat.module.css';
+
+# AI chat
+
+A chat answer typed out as it streams in, with a thinking state, a stop button and regenerate.
+
+<Example
+  variant='showcase'
+  files={[
+    { name: 'AiChat.tsx', source: tsx },
+    { name: 'AiChat.module.css', source: css },
+  ]}
+>
+  <Demo />
+</Example>
+
+## How it works
+
+- `streamAnswer` stands in for a model API. Each chunk is queued with `type(chunk).start()`;
+  `start()` does nothing while the typewriter is busy and resumes it after it has caught up.
+- After the stream ends, `call(() => setPhase('done'))` marks the answer done once the queued text
+  has been typed, not when the last chunk arrived.
+- Stop aborts the stream and calls `stop()`, which keeps what was typed. Regenerate calls `reset()`
+  and starts a new stream.
+- A low `typeSpeed` keeps the text close behind the stream. Below 16 ms per character the typewriter
+  writes several characters per frame, so a fast stream does not cause extra renders.
+- Colors use `light-dark()`, which follows the page's `color-scheme`. If your dark mode toggles a
+  class, set `color-scheme: dark` with it.

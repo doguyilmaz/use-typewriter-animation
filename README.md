@@ -1,7 +1,7 @@
 # use-typewriter-animation
 
 Typewriter animations for React 18 and 19: a component, a hook and a framework-agnostic engine.
-About 2.7 kB gzipped, no dependencies.
+About 2.8 kB gzipped, no dependencies.
 
 [![npm](https://img.shields.io/npm/v/use-typewriter-animation)](https://www.npmjs.com/package/use-typewriter-animation)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/use-typewriter-animation)](https://bundlephobia.com/package/use-typewriter-animation)
@@ -105,8 +105,8 @@ The component that calls the hook re-renders for every typed character. Keep it 
 | `cursorColor`          | `string`                           | text color |                                                                  |
 | `cursorBlinkSpeed`     | `number`                           | `1000`    | Duration of one blink, in milliseconds.                           |
 
-Options can change at any time and apply to the running animation, except `sequence`, which is
-read on mount.
+Options can change at any time. Speeds, `loop`, `humanize` and the cursor options apply to the
+running animation; `respectReducedMotion` is read when `start()` runs; `sequence` is read on mount.
 
 Returns:
 
@@ -148,6 +148,7 @@ These return the instance, so they chain. Nothing runs until `start()`.
 | `highlightWords(count, 'start' \| 'end', style)` | Styles the first or last `count` words.                             |
 | `call(fn)`                                     | Calls `fn` when reached.                                              |
 | `on('start' \| 'end' \| 'loop', fn)`           | Listens to an event.                                                  |
+| `off(event, fn)`                               | Removes a listener added with `on`.                                   |
 
 ### Control methods
 
@@ -272,7 +273,7 @@ v4 is a rewrite. The chainable API is the same; the rest got smaller.
 
 ```bash
 bun install
-bun run check   # lint, typecheck, tests (plain and compiled with React Compiler), build, size
+bun run check   # lint, typecheck, tests (plain and compiled with React Compiler), build, smoke, size
 bun run doctor  # react-doctor
 bun run compiler  # react-compiler-marker report
 ```

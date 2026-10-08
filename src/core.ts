@@ -64,6 +64,7 @@ export interface TypewriterInstance {
   /** Runs `fn` when the queue reaches this step. */
   call(fn: () => void): TypewriterInstance;
   on(event: TypewriterEvent, callback: () => void): TypewriterInstance;
+  off(event: TypewriterEvent, callback: () => void): TypewriterInstance;
   /** Runs the queue from the current step. Resolves when it ends, or when it is stopped or reset. */
   start(): Promise<void>;
   /** Halts the queue and keeps the text. `start()` continues with the next step. */
@@ -85,6 +86,8 @@ type Job = () => number;
 const DONE = -1;
 /** Steps are never scheduled faster than this; faster speeds write several characters per step. */
 const FRAME = 16;
+/** Longer timeouts overflow and fire immediately. */
+const MAX_DELAY = 2_147_483_647;
 
 const INITIAL_STATE: TypewriterState = { text: '', segments: [], status: 'idle' };
 
@@ -178,7 +181,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
   };
 
   const restyle = (from: number, to: number, style: HighlightStyle) => {
-    if (to <= from) return;
+    if (!(to > from)) return;
     const segments: TypewriterSegment[] = [];
     let position = 0;
     for (const segment of state.segments) {
@@ -220,7 +223,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
       if (done >= total) return DONE;
       const speed = speedOf();
       const instant = skipping || reducedMotion || !(speed > 0);
-      const step = instant ? total - done : Math.ceil(FRAME / speed);
+      const step = instant ? total - done : Math.max(Math.ceil(FRAME / speed), 1);
       const from = done;
       done = Math.min(done + step, total);
       apply(from, done);
@@ -260,8 +263,9 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
   };
 
   const schedule = (ms: number) => {
-    due = Date.now() + ms;
-    timer = setTimeout(tick, ms);
+    const wait = Math.min(ms, MAX_DELAY);
+    due = Date.now() + wait;
+    timer = setTimeout(tick, wait);
   };
 
   const halt = () => {
@@ -274,40 +278,51 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
     job = null;
   };
 
+  // Promises settle before listeners run, so a listener that starts again gets a new promise.
   const finish = () => {
     halt();
+    settle();
     setStatus('done');
     emit('end');
-    settle();
   };
 
   function tick() {
     timer = undefined;
     const current = generation;
-    while (running && !paused) {
-      if (!job) {
-        if (index >= queue.length) {
-          if (config.loop && queue.length > 0 && !skipping) {
-            index = 0;
-            emit('loop');
-            // Yield between passes so a queue of instant steps cannot block the thread.
-            if (current === generation && !paused) schedule(0);
+    try {
+      while (running && !paused) {
+        if (!job) {
+          if (index >= queue.length) {
+            if (config.loop && queue.length > 0 && !skipping) {
+              index = 0;
+              emit('loop');
+              // Yield between passes so a queue of instant steps cannot block the thread.
+              if (current === generation && !paused) schedule(0);
+              return;
+            }
+            finish();
             return;
           }
-          finish();
+          job = (queue[index++] as () => Job)();
+        }
+        const wait = job();
+        // A step or a listener stopped, reset or skipped the queue while it ran.
+        if (current !== generation) return;
+        if (wait !== DONE) {
+          if (paused) remaining = wait;
+          else schedule(wait);
           return;
         }
-        job = (queue[index++] as () => Job)();
+        job = null;
       }
-      const wait = job();
-      // A step or a listener stopped, reset or skipped the queue while it ran.
-      if (current !== generation) return;
-      if (wait !== DONE) {
-        if (paused) remaining = wait;
-        else schedule(wait);
-        return;
+    } catch (error) {
+      // A throwing callback must not leave the queue stuck in a running state.
+      if (current === generation) {
+        halt();
+        settle();
+        setStatus('idle');
       }
-      job = null;
+      throw error;
     }
   }
 
@@ -343,7 +358,7 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
       enqueue(() => {
         const { text } = state;
         let cut = text.length;
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count && cut > 0; i++) {
           while (isSpace(text[cut - 1])) cut--;
           while (cut > 0 && !isSpace(text[cut - 1])) cut--;
         }
@@ -394,6 +409,11 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
       return typewriter;
     },
 
+    off: (event, callback) => {
+      events[event] = events[event].filter((listener) => listener !== callback);
+      return typewriter;
+    },
+
     start: () => {
       const finished = new Promise<void>((resolve) => waiters.push(resolve));
       if (!running) {
@@ -408,18 +428,18 @@ export function createTypewriter(options: TypewriterOptions = {}): TypewriterIns
     stop: () => {
       const wasRunning = running;
       halt();
-      if (wasRunning) setStatus('idle');
       settle();
+      if (wasRunning) setStatus('idle');
     },
 
     reset: () => {
       halt();
+      settle();
       queue = [];
       index = 0;
       color = undefined;
       events = { start: [], end: [], loop: [] };
       if (state !== INITIAL_STATE) commit(INITIAL_STATE);
-      settle();
       return typewriter;
     },
 

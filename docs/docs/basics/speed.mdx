@@ -1,0 +1,38 @@
+---
+title: Speed
+description: Control typing speed, per-step speed and natural variation.
+---
+
+import Example from '@site/src/components/Example';
+import Speeds from '@site/src/examples/basics/Speeds';
+import SpeedsSource from '!!raw-loader!@site/src/examples/basics/Speeds.tsx';
+import StepSpeed from '@site/src/examples/basics/StepSpeed';
+import StepSpeedSource from '!!raw-loader!@site/src/examples/basics/StepSpeed.tsx';
+
+# Speed
+
+## Typing speed and humanize
+
+<Example files={[{ name: 'Speeds.tsx', source: SpeedsSource }]}>
+  <Speeds />
+</Example>
+
+`typeSpeed` and `deleteSpeed` are milliseconds per character (30 by default). `humanize` varies each
+delay at random, from `0` (even) to `1` (anywhere between 0 and twice the speed), which reads more
+like a person typing.
+
+These options can change while the animation runs; the next character uses the new value.
+
+## Per-step speed
+
+<Example files={[{ name: 'StepSpeed.tsx', source: StepSpeedSource }]}>
+  <StepSpeed />
+</Example>
+
+Every typing and deleting step takes `{ speed }`. A speed of `0` is instant, which is how you print
+output at once, as in the [terminal](../showcase/terminal.mdx).
+
+:::note Very fast speeds
+Below about 16 ms per character, the typewriter writes several characters per step instead of
+scheduling faster timers, so it never renders more than about once per frame.
+:::

@@ -7,8 +7,8 @@ const repo = 'https://github.com/doguyilmaz/use-typewriter-animation';
 
 const config: Config = {
   title: 'use-typewriter-animation',
-  tagline: 'Typewriter animations for React',
-  favicon: 'img/favicon.ico',
+  tagline: 'Typewriter effects for React 18 and 19',
+  favicon: 'img/logo.svg',
   url: 'https://doguyilmaz.github.io',
   baseUrl: '/use-typewriter-animation/',
   organizationName: 'doguyilmaz',
@@ -17,6 +17,21 @@ const config: Config = {
   onBrokenLinks: 'throw',
   markdown: { hooks: { onBrokenMarkdownLinks: 'throw' } },
   future: { v4: true },
+
+  headTags: [
+    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+  ],
+  stylesheets: [
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap',
+  ],
 
   presets: [
     [
@@ -49,24 +64,72 @@ const config: Config = {
   ],
 
   themeConfig: {
+    colorMode: { respectPrefersColorScheme: true },
     navbar: {
       title: 'use-typewriter-animation',
-      logo: { alt: '', src: 'img/logo.png' },
+      logo: { alt: '', src: 'img/logo.svg' },
+      hideOnScroll: false,
       items: [
-        { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },
-        { to: '/docs/examples/rotating-words', label: 'Examples', position: 'left' },
-        { href: `${repo}/blob/main/CHANGELOG.md`, label: 'Changelog', position: 'right' },
+        {
+          to: '/docs/intro',
+          label: 'Docs',
+          position: 'left',
+          activeBaseRegex: '/docs/(intro|guides)',
+        },
+        {
+          to: '/docs/basics/sequences',
+          label: 'Examples',
+          position: 'left',
+          activeBaseRegex: '/docs/basics',
+        },
+        {
+          to: '/docs/showcase/hero',
+          label: 'Showcase',
+          position: 'left',
+          activeBaseRegex: '/docs/showcase',
+        },
+        { to: '/docs/api', label: 'API', position: 'left' },
+        {
+          href: 'https://www.npmjs.com/package/use-typewriter-animation',
+          label: 'npm',
+          position: 'right',
+        },
         { href: repo, label: 'GitHub', position: 'right' },
       ],
     },
     footer: {
-      style: 'light',
-      copyright: `MIT License · <a href="${repo}">GitHub</a> · <a href="https://www.npmjs.com/package/use-typewriter-animation">npm</a>`,
+      links: [
+        {
+          title: 'Docs',
+          items: [
+            { label: 'Getting started', to: '/docs/intro' },
+            { label: 'API reference', to: '/docs/api' },
+            { label: 'Migrating from v3', to: '/docs/guides/migration' },
+          ],
+        },
+        {
+          title: 'Examples',
+          items: [
+            { label: 'Basics', to: '/docs/basics/sequences' },
+            { label: 'Showcase', to: '/docs/showcase/hero' },
+          ],
+        },
+        {
+          title: 'Project',
+          items: [
+            { label: 'GitHub', href: repo },
+            { label: 'npm', href: 'https://www.npmjs.com/package/use-typewriter-animation' },
+            { label: 'Changelog', href: `${repo}/blob/main/CHANGELOG.md` },
+          ],
+        },
+      ],
+      copyright: 'MIT License',
     },
     prism: {
-      theme: themes.github,
-      darkTheme: themes.dracula,
+      theme: themes.oneLight,
+      darkTheme: themes.oneDark,
     },
+    tableOfContents: { maxHeadingLevel: 3 },
   } satisfies Preset.ThemeConfig,
 };
 

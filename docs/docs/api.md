@@ -1,8 +1,11 @@
 ---
 title: API reference
+description: Every option, method and type of use-typewriter-animation.
 ---
 
 # API reference
+
+Everything the package exports. For runnable versions, see the [examples](./basics/sequences.mdx).
 
 ## `useTypewriter(options?)`
 
@@ -24,8 +27,8 @@ const { typewriter, state, elements, cursor } = useTypewriter(options);
 | `cursorColor`          | `string`                             | text color | Cursor color.                                                               |
 | `cursorBlinkSpeed`     | `number`                             | `1000`     | Duration of one blink in milliseconds.                                      |
 
-Options can change at any time and apply to the running animation, except `sequence`, which is read
-on mount.
+Options can change at any time. Speeds, `loop` and `humanize` apply to the running animation;
+`respectReducedMotion` is read when `start()` runs; `sequence` is read on mount.
 
 | Returns      | Type                   | Description                                                   |
 | ------------ | ---------------------- | ------------------------------------------------------------- |
@@ -86,6 +89,7 @@ the queue runs are appended to it.
 | `highlightWords(count, 'start' \| 'end', style)`  | Styles the first or last `count` words as one range.                |
 | `call(fn)`                                        | Calls `fn` when the queue reaches it.                               |
 | `on('start' \| 'end' \| 'loop', fn)`              | Adds an event listener.                                             |
+| `off(event, fn)`                                  | Removes a listener added with `on`.                                 |
 
 A "character" is what a reader sees as one: emoji, flags and letters with accents are typed and
 deleted whole.
@@ -137,6 +141,15 @@ blink when the user prefers reduced motion. Style it with CSS:
 ```
 
 React 19 hoists the cursor's stylesheet into `<head>` once. React 18 renders it next to each cursor.
+
+## Edge cases
+
+- Speeds of `0`, negative or `NaN` are instant. An infinite speed waits for the longest timeout
+  browsers allow (about 24 days).
+- `pauseFor` is capped at the same maximum instead of overflowing.
+- Counts larger than the text, such as `deleteWords(Infinity)`, delete everything.
+- If a `call()` callback or an event listener throws, the queue stops with status `idle` and the
+  error is rethrown. `start()` continues with the next step.
 
 ## Types
 

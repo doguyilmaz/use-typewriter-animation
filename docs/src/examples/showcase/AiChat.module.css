@@ -1,0 +1,136 @@
+.chat {
+  width: 100%;
+  max-width: 34rem;
+  overflow: hidden;
+  border: 1px solid light-dark(#e4e4e7, #27272a);
+  border-radius: 16px;
+  background: light-dark(#ffffff, #111113);
+  box-shadow: 0 20px 40px -16px rgb(0 0 0 / 0.2);
+  font-size: 0.95rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid light-dark(#f4f4f5, #1f1f23);
+  font-weight: 600;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+  color: white;
+  font-size: 0.85rem;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-height: 15rem;
+  padding: 1.1rem 1rem;
+}
+
+.user,
+.assistant {
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  border-radius: 14px;
+  line-height: 1.55;
+}
+
+.user {
+  align-self: flex-end;
+  max-width: 80%;
+  border-bottom-right-radius: 4px;
+  background: light-dark(#18181b, #f4f4f5);
+  color: light-dark(#fafafa, #18181b);
+}
+
+.assistant {
+  align-self: flex-start;
+  max-width: 90%;
+  border-bottom-left-radius: 4px;
+  background: light-dark(#f4f4f5, #1c1c1f);
+}
+
+.thinking {
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.35rem 0;
+}
+
+.thinking i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  animation: pulse 1.2s infinite;
+}
+
+.thinking i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.thinking i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  40% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinking i {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid light-dark(#f4f4f5, #1f1f23);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid light-dark(#e4e4e7, #3f3f46);
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: light-dark(#f4f4f5, #1c1c1f);
+}
+
+.stopIcon {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.note {
+  color: light-dark(#71717a, #a1a1aa);
+  font-size: 0.85rem;
+}

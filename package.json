@@ -55,12 +55,13 @@
     "doctor": "react-doctor . --no-telemetry --yes --blocking warning",
     "compiler": "react-compiler-marker --exclude-dirs node_modules,dist,build,.docusaurus,coverage,tests .",
     "size": "node scripts/size.js",
-    "check": "bun run lint && bun run typecheck && bun run test:all && bun run build && bun run size",
+    "check": "bun run lint && bun run typecheck && bun run test:all && bun run build && bun run smoke && bun run size",
     "preversion": "bun run check",
     "postversion": "git push --follow-tags",
     "prepublishOnly": "bun run build",
     "docs:dev": "cd docs && bun run start",
-    "docs:build": "cd docs && bun run build"
+    "docs:build": "cd docs && bun run build",
+    "smoke": "node scripts/smoke.js"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0"

@@ -1,5 +1,6 @@
 ---
 title: Migrating from v3
+description: Upgrade from use-typewriter-animation v3 to v4.
 ---
 
 # Migrating from v3

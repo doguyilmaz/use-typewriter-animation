@@ -1,0 +1,60 @@
+.window {
+  width: 100%;
+  max-width: 36rem;
+  overflow: hidden;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  background: #0a0a0b;
+  box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.35);
+  color: #e4e4e7;
+}
+
+.titleBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;
+  border-bottom: 1px solid #1f1f23;
+  background: #141416;
+}
+
+.lights {
+  position: absolute;
+  left: 0.9rem;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.lights i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.lights i:nth-child(2) {
+  background: #febc2e;
+}
+
+.lights i:nth-child(3) {
+  background: #28c840;
+}
+
+.title {
+  color: #71717a;
+  font-size: 0.75rem;
+}
+
+.screen {
+  min-height: 13rem;
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}

@@ -56,6 +56,7 @@ describe('initial state', () => {
       .highlightWords(1, 'end', {})
       .call(() => {})
       .on('end', () => {})
+      .off('end', () => {})
       .reset();
     expect(chained).toBe(tw);
   });
@@ -375,6 +376,19 @@ describe('events and loop', () => {
       .type('a')
       .start();
     expect(events).toEqual(['start', 'end']);
+  });
+
+  it('off() removes a listener, also while events are being emitted', () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    const kept = vi.fn();
+    const removed = vi.fn();
+    const removesItself = vi.fn(() => tw.off('end', removesItself));
+    tw.on('end', removed).on('end', removesItself).on('end', kept).off('end', removed);
+    tw.type('a').start();
+    tw.type('b').start();
+    expect(removed).not.toHaveBeenCalled();
+    expect(removesItself).toHaveBeenCalledOnce();
+    expect(kept).toHaveBeenCalledTimes(2);
   });
 
   it('loops through the queue and emits loop', () => {
@@ -751,5 +765,104 @@ describe('without Intl.Segmenter', () => {
     tw.type('a😀').start();
     vi.runAllTimers();
     expect(texts).toEqual(['a', 'a😀']);
+  });
+});
+
+describe('robustness', () => {
+  it('deleteWords(Infinity) clears the text and terminates', () => {
+    const { tw, text } = setup({ typeSpeed: 0, deleteSpeed: 0 });
+    tw.type('a few words').deleteWords(Number.POSITIVE_INFINITY).start();
+    expect(text()).toBe('');
+  });
+
+  it('an infinite speed waits instead of spinning', () => {
+    const { tw, text } = setup({ typeSpeed: Number.POSITIVE_INFINITY });
+    tw.type('ab').start();
+    expect(text()).toBe('a');
+    vi.advanceTimersByTime(1_000_000);
+    expect(text()).toBe('a');
+    expect(vi.getTimerCount()).toBe(1);
+  });
+
+  it('clamps very long pauses instead of letting the timer overflow', () => {
+    const { tw, text } = setup({ typeSpeed: 0 });
+    tw.pauseFor(Number.MAX_SAFE_INTEGER).type('late').start();
+    vi.advanceTimersByTime(24 * 60 * 60 * 1000);
+    expect(text()).toBe('');
+  });
+
+  it('ignores highlights with invalid ranges', () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    tw.type('abc').highlight(Number.NaN, 2, { color: 'red' }).highlight(1, Number.NaN, {}).start();
+    expect(tw.getState().segments).toEqual([{ id: 0, text: 'abc', ...style() }]);
+  });
+
+  it('a run started from an end listener gets its own promise', async () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    const second = vi.fn();
+    tw.on('end', () => {
+      if (tw.getState().text === 'one') tw.pauseFor(100).type(' two').start().then(second);
+    });
+    tw.type('one').start();
+    await Promise.resolve();
+    expect(second).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(100);
+    expect(second).toHaveBeenCalledOnce();
+  });
+
+  it('recovers when a step throws synchronously', () => {
+    const { tw, text, status } = setup({ typeSpeed: 0 });
+    tw.type('a')
+      .call(() => {
+        throw new Error('boom');
+      })
+      .type('b');
+    expect(() => tw.start()).toThrow('boom');
+    expect(status()).toBe('idle');
+    tw.start();
+    expect(text()).toBe('ab');
+    expect(status()).toBe('done');
+  });
+
+  it('recovers when a step throws from a timer', () => {
+    const { tw, text, status } = setup();
+    tw.type('a')
+      .call(() => {
+        throw new Error('boom');
+      })
+      .type('b')
+      .start();
+    expect(() => vi.advanceTimersByTime(50)).toThrow('boom');
+    expect(status()).toBe('idle');
+    expect(vi.getTimerCount()).toBe(0);
+    tw.start();
+    expect(text()).toBe('ab');
+  });
+
+  it('keeps the state a step set before throwing', () => {
+    const { tw, text, status } = setup({ typeSpeed: 0 });
+    tw.type('a')
+      .call(() => {
+        tw.reset().type('fresh');
+        throw new Error('boom');
+      })
+      .type('b');
+    expect(() => tw.start()).toThrow('boom');
+    expect(text()).toBe('');
+    expect(status()).toBe('idle');
+    tw.start();
+    expect(text()).toBe('fresh');
+  });
+
+  it('resolves start() promises even when a step throws', async () => {
+    const { tw } = setup({ typeSpeed: 0 });
+    const done = vi.fn();
+    tw.pauseFor(10).call(() => {
+      throw new Error('boom');
+    });
+    tw.start().then(done);
+    expect(() => vi.advanceTimersByTime(10)).toThrow('boom');
+    await Promise.resolve();
+    expect(done).toHaveBeenCalled();
   });
 });

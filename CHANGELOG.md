@@ -14,7 +14,8 @@ documented. See [Migrating from v3](./README.md#migrating-from-v3).
   prop. Re-renders stay inside the component.
 - `sequence` option for `useTypewriter`.
 - `typeTo(text)`: deletes back to the common prefix, then types the rest.
-- `call(fn)`, `humanize`, per-step `speed` for deletions, `deleteAll({ speed })`, `cursorChar`.
+- `call(fn)`, `off(event, fn)`, `humanize`, per-step `speed` for deletions, `deleteAll({ speed })`,
+  `cursorChar`.
 - `createTypewriter()` with `subscribe`, `getState` and `configure`, usable without React.
 - Unicode-aware typing and deleting: emoji, flags and combining marks are one character.
 - Steps can be queued while running; `start()` continues after the queue has ended.
@@ -33,7 +34,7 @@ documented. See [Migrating from v3](./README.md#migrating-from-v3).
   on unmount, so StrictMode never types twice.
 - `highlightWords()` highlights one continuous range.
 - Built with tsdown: ESM (`index.js`) and CommonJS (`index.cjs`) with matching type declarations.
-  2.7 kB gzipped, down from 5.3 kB.
+  2.8 kB gzipped, down from 5.3 kB.
 
 ### Fixed
 

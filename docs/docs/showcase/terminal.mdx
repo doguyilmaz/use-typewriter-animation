@@ -1,0 +1,30 @@
+---
+title: Terminal
+description: A terminal session with typed commands and instant output.
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/showcase/Terminal';
+import tsx from '!!raw-loader!@site/src/examples/showcase/Terminal.tsx';
+import css from '!!raw-loader!@site/src/examples/showcase/Terminal.module.css';
+
+# Terminal
+
+A shell session: commands are typed like a person types them, output appears at once.
+
+<Example
+  variant='showcase'
+  files={[
+    { name: 'Terminal.tsx', source: tsx },
+    { name: 'Terminal.module.css', source: css },
+  ]}
+>
+  <Demo />
+</Example>
+
+## How it works
+
+- `humanize: 0.6` makes the typing uneven, and `cursorStyle: 'block'` draws a terminal cursor.
+- `{ speed: 0 }` prints prompts and output instantly, with short `pauseFor` gaps between lines.
+- The `run` helper is plain code that queues steps; build scripts out of functions like it.
+- The text sits in a `<pre>`, and line breaks render as `<br>`.

@@ -1,88 +1,35 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vitest/config';
-import { resolve } from 'path';
+import { transformAsync } from '@babel/core';
+import { defineConfig, type Plugin, type ViteUserConfig } from 'vitest/config';
 
-export default defineConfig({
-  test: {
-    // Test environment
-    environment: 'jsdom',
-
-    // Setup files
-    setupFiles: ['./tests/setup.ts'],
-
-    // Global test configuration
-    globals: true,
-
-    // Coverage configuration
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html', 'lcov'],
-      reportsDirectory: './coverage',
-      exclude: [
-        'node_modules/',
-        'dist/',
-        'docs/',
-        'scripts/',
-        'tests/setup.ts',
-        '**/*.d.ts',
-        '**/*.config.*',
-        'coverage/**',
-      ],
-      thresholds: {
-        global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
-      },
-    },
-
-    // Test file patterns
-    include: [
-      'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-      'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-    ],
-
-    // Exclude patterns
-    exclude: ['node_modules/', 'dist/', 'docs/', '.git/'],
-
-    // Test timeout
-    testTimeout: 10000,
-
-    // Concurrent tests
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: false,
-      },
-    },
-
-    // Reporter configuration
-    reporters: ['verbose', 'json', 'html'],
-    outputFile: {
-      json: './coverage/test-results.json',
-      html: './coverage/test-results.html',
-    },
-
-    // Mock configuration
-    clearMocks: true,
-    restoreMocks: true,
-
-    // Watch configuration
-    watch: false,
-  },
-
-  // Resolve configuration
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-      '@tests': resolve(__dirname, './tests'),
-    },
-  },
-
-  // Define configuration for better TypeScript support
-  define: {
-    'import.meta.vitest': undefined,
+/** Compiles `src` with React Compiler and fails on any bailout (`REACT_COMPILER=1`). */
+const reactCompiler = (): Plugin => ({
+  name: 'react-compiler',
+  enforce: 'pre',
+  async transform(code, id) {
+    if (!/\/src\/.*\.tsx?$/.test(id)) return null;
+    const result = await transformAsync(code, {
+      filename: id,
+      babelrc: false,
+      configFile: false,
+      sourceMaps: true,
+      parserOpts: { plugins: ['typescript', 'jsx'] },
+      plugins: [['babel-plugin-react-compiler', { panicThreshold: 'all_errors' }]],
+    });
+    return result?.code ? { code: result.code, map: result.map ?? null } : null;
   },
 });
+
+const config: ViteUserConfig = defineConfig({
+  plugins: process.env.REACT_COMPILER ? [reactCompiler()] : [],
+  test: {
+    environment: 'happy-dom',
+    include: ['tests/**/*.test.{ts,tsx}'],
+    coverage: {
+      include: ['src'],
+      // The React 18 branch of the <style> props is covered by the React 18 CI job.
+      thresholds: { lines: 100, functions: 100, statements: 100, branches: 99 },
+    },
+  },
+});
+
+export default config;

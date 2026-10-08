@@ -1,0 +1,13 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "baseUrl": null,
+    "noEmit": true,
+    "strict": true,
+    "paths": {
+      "@site/*": ["./*"],
+      "use-typewriter-animation": ["../src/index.ts"]
+    }
+  },
+  "include": ["src", "docusaurus.config.ts", "sidebars.ts"]
+}

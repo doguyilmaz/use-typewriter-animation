@@ -1,294 +1,116 @@
 # use-typewriter-animation
 
-A modern, performant React hook for creating typewriter animation effects with full TypeScript support, accessibility features, and React 19 compatibility.
+Typewriter animations for React 18 and 19: a component, a hook and the engine behind them.
+About 2.8 kB gzipped, no dependencies.
 
-[![npm version](https://badge.fury.io/js/use-typewriter-animation.svg)](https://www.npmjs.com/package/use-typewriter-animation)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Downloads](https://img.shields.io/npm/dm/use-typewriter-animation.svg)](https://www.npmjs.com/package/use-typewriter-animation)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/use-typewriter-animation?label=gzipped)](https://bundlephobia.com/package/use-typewriter-animation)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-16.8+-61DAFB.svg)](https://reactjs.org/)
-[![GitHub Stars](https://img.shields.io/github/stars/doguyilmaz/use-typewriter-animation.svg?style=social)](https://github.com/doguyilmaz/use-typewriter-animation/stargazers)
+[![npm](https://img.shields.io/npm/v/use-typewriter-animation)](https://www.npmjs.com/package/use-typewriter-animation)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/use-typewriter-animation)](https://bundlephobia.com/package/use-typewriter-animation)
+[![license](https://img.shields.io/npm/l/use-typewriter-animation)](./LICENSE)
 
-## ✨ Features
+- One render per visible change, through `useSyncExternalStore`. Text is stored as styled runs, so
+  plain text is a single DOM text node.
+- Emoji, flags and accented letters are typed and deleted as one character.
+- Compiles with React Compiler without bailouts. Safe under StrictMode, SSR and Server Components.
+- Loops, pauses, colors, highlights, streaming text, pause/resume/skip, reduced motion.
 
-- 🎯 **Modern React**: Built for React 16.8+ with full React 19 support
-- 🔧 **TypeScript First**: Complete type safety and IntelliSense
-- ♿ **Accessibility**: WCAG 2.1 AA compliant with screen reader support
-- 🚀 **Performance**: Optimized with virtualization for large text (~15KB bundle)
-- 🎨 **Flexible**: Rich styling and animation control
-- 📱 **Responsive**: Mobile-friendly with touch support
-- 🔄 **Server-Side**: SSR and RSC compatible
-- 🎮 **Interactive**: Keyboard controls and event handling
-- 🌐 **Universal**: Works in all modern browsers
+**[Documentation and live examples](https://doguyilmaz.github.io/use-typewriter-animation/)**
 
-## 📦 Installation
+## Install
 
 ```bash
-# bun (recommended)
-bun add use-typewriter-animation
-
-# npm
 npm install use-typewriter-animation
-
-# yarn
-yarn add use-typewriter-animation
-
-# pnpm
-pnpm add use-typewriter-animation
 ```
 
-## 🚀 Quick Start
+## The component
 
-```jsx
-import { useEffect } from 'react';
-import { useTypewriter } from 'use-typewriter-animation';
+```tsx
+import { Typewriter } from 'use-typewriter-animation';
 
-function App() {
-  const { typewriter, elements, cursor, keyframes } = useTypewriter();
-
-  useEffect(() => {
-    typewriter.type('Hello, World!').pauseFor(1000).deleteLetters(6).type('React!').start();
-  }, []);
-
+export function Hero() {
   return (
-    <>
-      <style>{keyframes}</style>
-      <div>
-        {elements}
-        {cursor}
-      </div>
-    </>
+    <Typewriter
+      as='h1'
+      sequence={['I build websites', 1500, 'I build apps', 1500, 'I build games', 1500]}
+      loop
+    />
   );
 }
 ```
 
-## 🎯 Key Examples
+Strings are typed with `typeTo`: the current text is deleted back to the part both strings share
+(`I build `), then the rest is typed. Numbers are pauses in milliseconds, functions are called when
+reached. The sequence is read on mount; give the component a new `key` to start a different one.
 
-### Basic Animation
+A loop that runs longer than five seconds needs a pause control
+([WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)). `<Typewriter>` has
+none, so use the hook for that, as shown in [Accessibility](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/accessibility).
 
-```jsx
-const { typewriter, elements, cursor, keyframes } = useTypewriter({
-  typeSpeed: 50,
-  cursorStyle: 'bar',
-});
+## The hook
 
-useEffect(() => {
-  typewriter
-    .type('Welcome to React!')
-    .pauseFor(2000)
-    .deleteAll()
-    .type('Built with TypeScript!')
-    .start();
-}, []);
-```
+`useTypewriter` gives you the instance to queue steps on, and the elements to render.
 
-### Colorful Text
+```tsx
+import { useEffect } from 'react';
+import { useTypewriter } from 'use-typewriter-animation';
 
-```jsx
-useEffect(() => {
-  typewriter
-    .type('This is ')
-    .colorize('#3b82f6')
-    .type('blue text')
-    .colorize('#ef4444')
-    .type(' and red text')
-    .start();
-}, []);
-```
+export function Greeting() {
+  const { typewriter, elements, cursor } = useTypewriter({ typeSpeed: 50 });
 
-### Accessibility First
+  useEffect(() => {
+    typewriter
+      .type('Hello, World!')
+      .pauseFor(1000)
+      .deleteWords(1)
+      .colorize('#e11d48')
+      .type('React!')
+      .start();
+  }, [typewriter]);
 
-```jsx
-const { typewriter, elements, cursor, keyframes, accessibilityProps, screenReaderAnnouncement } =
-  useTypewriter({
-    respectReducedMotion: true,
-    ariaLabel: 'Welcome message',
-    announceCompletion: true,
-  });
-
-return (
-  <>
-    <style>{keyframes}</style>
-    <div {...accessibilityProps}>
+  return (
+    <p>
       {elements}
       {cursor}
-      {screenReaderAnnouncement}
-    </div>
-  </>
-);
+    </p>
+  );
+}
 ```
 
-## 📚 Documentation
+`typewriter` never changes, and the hook resets it when the component unmounts, so StrictMode does
+not type the text twice. The reset also removes `on()` listeners: add them in the effect that queues
+the steps. To start over when a prop changes, reset in the cleanup:
 
-### 🚀 Getting Started
-
-- 📖 [Quick Start Guide](https://doguyilmaz.github.io/use-typewriter-animation/docs/getting-started/quick-start) - Get up and running in minutes
-- ⚙️ [Installation & Setup](https://doguyilmaz.github.io/use-typewriter-animation/docs/getting-started/installation) - Detailed installation guide
-- 🎯 [Basic Usage](https://doguyilmaz.github.io/use-typewriter-animation/docs/getting-started/basic-usage) - Learn the fundamentals
-
-### 🔧 API Reference
-
-- 🎮 [useTypewriter Hook](https://doguyilmaz.github.io/use-typewriter-animation/docs/api/use-typewriter) - Complete API documentation
-- 📝 [Type Definitions](https://doguyilmaz.github.io/use-typewriter-animation/docs/api/types) - TypeScript types and interfaces
-- ⚛️ [React 19 Features](https://doguyilmaz.github.io/use-typewriter-animation/docs/api/configuration) - Modern React features
-
-### 🎯 Feature Guides
-
-- ♿ [Accessibility Guide](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/accessibility) - WCAG 2.1 compliance
-- ⚡ [Performance Guide](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/performance) - Optimization techniques
-- 🔧 [Troubleshooting](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/troubleshooting) - Common issues and solutions
-
-### 📚 Examples
-
-- 🎨 [Example Gallery](https://doguyilmaz.github.io/use-typewriter-animation/docs/examples) - Comprehensive examples
-- 💻 [Live Examples](https://doguyilmaz.github.io/use-typewriter-animation/examples) - Interactive examples you can run
-
-## ⚡ Performance
-
-Optimized for production use:
-
-- **Bundle Size**: 5.3KB gzipped (ESM) / 5.6KB gzipped (CJS)
-- **Memory Efficient**: Virtualization for large text
-- **Smooth Animations**: GPU-accelerated CSS
-- **Zero Dependencies**: No external runtime dependencies
-
-### Bundle Analysis
-
-- **ESM Bundle**: 15KB raw → 5.3KB gzipped
-- **CJS Bundle**: 16KB raw → 5.6KB gzipped
-
-_Measurements taken with our actual build output. Run `bun run analyze` to verify these numbers yourself._
-
-## ♿ Accessibility
-
-Built with accessibility as a first-class citizen:
-
-- ✅ WCAG 2.1 AA compliant
-- ✅ Screen reader support with ARIA live regions
-- ✅ Reduced motion support respects user preferences
-- ✅ Keyboard navigation with customizable shortcuts
-- ✅ Focus management for interactive elements
-- ✅ Semantic HTML with proper ARIA attributes
-
-## 🌐 Browser Support
-
-- **Modern Browsers**: Chrome 88+ | Firefox 85+ | Safari 14+ | Edge 88+
-- **Mobile**: iOS Safari 14+ | Android Chrome 88+
-- **React**: 16.8+ | 17+ | 18+ | 19+ (full compatibility)
-
-## 🔧 Essential Configuration
-
-```jsx
-const { typewriter } = useTypewriter({
-  // Visual Settings
-  typeSpeed: 50, // Typing speed (ms per character)
-  deleteSpeed: 30, // Delete speed (ms per character)
-  cursorStyle: 'bar', // 'bar' | 'block' | 'underline'
-  cursorColor: '#000', // CSS color value
-
-  // Accessibility
-  respectReducedMotion: true, // Honor user preferences
-  ariaLabel: 'Typewriter', // ARIA label
-  announceCompletion: true, // Screen reader announcements
-
-  // Performance
-  enableVirtualization: true, // For large text
-  maxVisibleSegments: 100, // Virtualization limit
-
-  // Interaction
-  enableKeyboardControls: true, // Keyboard shortcuts
-  loop: false, // Continuous loop
-});
+```tsx
+useEffect(() => {
+  typewriter.type(text).start();
+  return () => {
+    typewriter.reset();
+  };
+}, [typewriter, text]);
 ```
 
-## 🎮 Control Methods
+The component that calls the hook re-renders for every typed character. Keep it small, or use
+`<Typewriter>`, which keeps those renders to itself.
 
-```jsx
-typewriter
-  .type('Hello, World!') // Type text
-  .pauseFor(1000) // Pause for duration
-  .deleteLetters(5) // Delete characters
-  .deleteWords(2) // Delete words
-  .deleteAll() // Clear all text
-  .colorize('#ff0000') // Change color
-  .newLine() // Line break
-  .on('end', callback) // Event listener
-  .start(); // Start animation
+## Documentation
+
+- [Getting started](https://doguyilmaz.github.io/use-typewriter-animation/docs/intro)
+- [Examples](https://doguyilmaz.github.io/use-typewriter-animation/docs/basics/sequences) and [showcase](https://doguyilmaz.github.io/use-typewriter-animation/docs/showcase/hero)
+- [API reference](https://doguyilmaz.github.io/use-typewriter-animation/docs/api)
+- [Accessibility](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/accessibility), [SSR and Next.js](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/ssr),
+  [performance](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/performance) and [FAQ](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/faq)
+- [Migrating from v3](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/migration)
+
+## Development
+
+```bash
+bun install
+bun run check   # lint, typecheck, tests (plain and compiled with React Compiler), build, smoke, size
+bun run doctor  # react-doctor
+bun run compiler  # react-compiler-marker report
 ```
 
-## 🧪 Testing
+CI also runs the tests on React 18. Releases go through the `Publish` workflow.
 
-```jsx
-// Mock for tests
-Object.defineProperty(window, 'matchMedia', {
-  value: jest.fn(() => ({ matches: false })),
-});
+## License
 
-test('typewriter animation', async () => {
-  render(<TypewriterComponent />);
-  await waitFor(() => {
-    expect(screen.getByText('Hello, World!')).toBeInTheDocument();
-  });
-});
-```
-
-## 🚨 Common Issues
-
-### Animation Not Working?
-
-```jsx
-// ❌ Missing keyframes
-return (
-  <div>
-    {elements}
-    {cursor}
-  </div>
-);
-
-// ✅ Include keyframes
-return (
-  <>
-    <style>{keyframes}</style>
-    <div>
-      {elements}
-      {cursor}
-    </div>
-  </>
-);
-```
-
-### Performance Issues?
-
-```jsx
-// ✅ Enable virtualization for large text
-const { typewriter } = useTypewriter({
-  enableVirtualization: true,
-  maxVisibleSegments: 100,
-});
-```
-
-[See full troubleshooting guide →](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/troubleshooting)
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](https://doguyilmaz.github.io/use-typewriter-animation/docs/contributing/contributing) for details.
-
-- 🐛 [Report Issues](https://github.com/doguyilmaz/use-typewriter-animation/issues)
-- 💡 [Request Features](https://github.com/doguyilmaz/use-typewriter-animation/issues/new?template=feature_request.md)
-- 📖 [Improve Docs](https://github.com/doguyilmaz/use-typewriter-animation/tree/main/docs)
-
-## 📄 License
-
-MIT © [Dogu Yilmaz](https://github.com/doguyilmaz)
-
-## 🔗 Links
-
-- 📚 [Full Documentation](https://doguyilmaz.github.io/use-typewriter-animation/)
-- 🎯 [Examples](https://doguyilmaz.github.io/use-typewriter-animation/examples)
-- 🐙 [GitHub](https://github.com/doguyilmaz/use-typewriter-animation)
-- 📦 [npm](https://www.npmjs.com/package/use-typewriter-animation)
-
----
-
-_Made with ❤️ for the React community_
+[MIT](./LICENSE)

@@ -1,0 +1,47 @@
+---
+title: Chaining steps
+description: Queue typing, deleting and pauses with the useTypewriter hook.
+---
+
+import Example from '@site/src/components/Example';
+import Chain from '@site/src/examples/basics/Chain';
+import ChainSource from '!!raw-loader!@site/src/examples/basics/Chain.tsx';
+import TypeTo from '@site/src/examples/basics/TypeTo';
+import TypeToSource from '!!raw-loader!@site/src/examples/basics/TypeTo.tsx';
+import Deleting from '@site/src/examples/basics/Deleting';
+import DeletingSource from '!!raw-loader!@site/src/examples/basics/Deleting.tsx';
+
+# Chaining steps
+
+Queue methods return the typewriter, so they chain. Nothing happens until `start()`, and steps run in
+the order they were queued.
+
+## Type, pause and delete
+
+<Example files={[{ name: 'Chain.tsx', source: ChainSource }]}>
+  <Chain />
+</Example>
+
+`newLine()` is the same as `type('\n')` and renders a `<br>`.
+
+## Retype with typeTo
+
+<Example files={[{ name: 'TypeTo.tsx', source: TypeToSource }]}>
+  <TypeTo />
+</Example>
+
+`typeTo(text)` compares the text on screen with `text`, deletes back to the part they share and types
+the rest. It is what `<Typewriter>` uses for every string in a sequence.
+
+## Deleting
+
+<Example files={[{ name: 'Deleting.tsx', source: DeletingSource }]}>
+  <Deleting />
+</Example>
+
+- `deleteLetters(count)` removes characters from the end.
+- `deleteWords(count)` removes words and keeps the space before them, ready for the next word.
+- `deleteAll()` removes everything at `deleteSpeed`; `deleteAll({ speed: 0 })` clears at once.
+
+A character is what a reader sees as one: emoji, flags and accented letters are typed and deleted
+whole.

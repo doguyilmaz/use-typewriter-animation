@@ -1,102 +1,44 @@
 import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
-  tutorialSidebar: [
+  docs: [
     'intro',
     {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Examples',
+      collapsed: false,
       items: [
-        'getting-started/installation',
-        'getting-started/quick-start',
-        'getting-started/basic-usage',
+        'basics/sequences',
+        'basics/chaining',
+        'basics/speed',
+        'basics/styling',
+        'basics/controls',
+        'basics/patterns',
       ],
     },
     {
       type: 'category',
-      label: 'API Reference',
-      items: ['api/use-typewriter', 'api/types', 'api/configuration'],
+      label: 'Showcase',
+      collapsed: false,
+      items: [
+        'showcase/hero',
+        'showcase/terminal',
+        'showcase/ai-chat',
+        'showcase/code-editor',
+        'showcase/search',
+      ],
     },
+    'api',
     {
       type: 'category',
       label: 'Guides',
-      items: ['guides/accessibility', 'guides/performance', 'guides/troubleshooting'],
-    },
-    {
-      type: 'category',
-      label: 'Contributing',
+      collapsed: false,
       items: [
-        'contributing/contributing',
-        'contributing/development', 
-        'contributing/testing',
-        'contributing/releases'
-      ],
-    },
-    'changelog',
-    'ROADMAP',
-    'examples',
-    {
-      type: 'category',
-      label: 'Live Examples',
-      items: [
-        {
-          type: 'category',
-          label: 'Basic',
-          items: [
-            'examples/basic/simple-typewriter',
-            'examples/basic/colorful-text',
-            'examples/basic/looping-animation',
-            'examples/basic/comprehensive-basic',
-            'examples/basic/speed-variations',
-            'examples/basic/character-effects',
-            'examples/basic/text-replacement',
-            'examples/basic/multi-line-poetry',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Creative',
-          items: [
-            'examples/creative/terminal-simulation',
-            'examples/creative/code-editor',
-            'examples/creative/loading-states',
-            'examples/creative/storytelling-demo',
-            'examples/creative/glitch-effect',
-            'examples/creative/music-player',
-            'examples/creative/recipe-builder',
-            'examples/creative/password-generator',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Interactive',
-          items: [
-            'examples/interactive/keyboard-controls',
-            'examples/interactive/voice-command-simulator',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Performance',
-          items: [
-            'examples/performance/virtualization-demo',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Advanced',
-          items: [
-            'examples/advanced/hero-section',
-            'examples/advanced/accessibility-showcase',
-            'examples/advanced/ai-chat-interface',
-            'examples/advanced/data-visualization',
-            'examples/advanced/ecommerce-checkout',
-            'examples/advanced/scientific-calculator',
-            'examples/advanced/code-review-simulator',
-            'examples/advanced/weather-dashboard',
-            'examples/advanced/chat-simulation',
-          ],
-        },
+        'guides/accessibility',
+        'guides/ssr',
+        'guides/performance',
+        'guides/faq',
+        'guides/migration',
       ],
     },
   ],

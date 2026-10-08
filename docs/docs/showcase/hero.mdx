@@ -1,0 +1,36 @@
+---
+title: Hero headline
+description: A landing page headline with rotating, gradient-colored words.
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/showcase/Hero';
+import tsx from '!!raw-loader!@site/src/examples/showcase/Hero.tsx';
+import css from '!!raw-loader!@site/src/examples/showcase/Hero.module.css';
+
+# Hero headline
+
+A headline whose last words rotate. Copy both files into a project that supports CSS Modules (Vite, Next.js, Docusaurus).
+
+<Example
+  variant='showcase'
+  files={[
+    { name: 'Hero.tsx', source: tsx },
+    { name: 'Hero.module.css', source: css },
+  ]}
+>
+  <Demo />
+</Example>
+
+## How it works
+
+- The rotating part is typed by `useTypewriter` with a looping `sequence`, inside the heading, so the
+  heading text never moves. Every role is reached with `typeTo`, which deletes only what differs.
+- A button pauses and resumes the loop, as WCAG 2.2.2 asks of animations that run longer than five
+  seconds. That is why this uses the hook: `<Typewriter>` has no controls.
+- The gradient uses `background-clip: text`. The cursor gets its own `cursorColor`, because the
+  text color is transparent.
+- Screen readers get the full sentence from a visually hidden span, and the animation is
+  `aria-hidden`. See [Accessibility](../guides/accessibility.md).
+- Colors use `light-dark()`, which follows the page's `color-scheme`. If your dark mode toggles a
+  class, set `color-scheme: dark` with it.

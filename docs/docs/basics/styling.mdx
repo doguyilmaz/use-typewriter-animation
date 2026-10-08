@@ -1,0 +1,43 @@
+---
+title: Colors and cursor
+description: Color text as it is typed, highlight words and customize the cursor.
+---
+
+import Example from '@site/src/components/Example';
+import Colors from '@site/src/examples/basics/Colors';
+import ColorsSource from '!!raw-loader!@site/src/examples/basics/Colors.tsx';
+import Cursors from '@site/src/examples/basics/Cursors';
+import CursorsSource from '!!raw-loader!@site/src/examples/basics/Cursors.tsx';
+
+# Colors and cursor
+
+## Colors and highlights
+
+<Example files={[{ name: 'Colors.tsx', source: ColorsSource }]}>
+  <Colors />
+</Example>
+
+- `colorize(color)` sets the color of the text typed after it. `colorize()` goes back to the
+  inherited color.
+- `highlight(start, length, style)` styles `length` characters of the text already on screen,
+  counted like `deleteLetters` counts them.
+- `highlightWords(count, 'start' | 'end', style)` styles the first or last words.
+
+Plain text stays a plain text node, and styled text is rendered as `<span>`s, one per styled run.
+
+## Cursor
+
+<Example files={[{ name: 'Cursors.tsx', source: CursorsSource }]}>
+  <Cursors />
+</Example>
+
+The cursor is a `<span class="uta-cursor" aria-hidden="true">`. It stays solid while characters are
+typed or deleted, blinks otherwise, and stops blinking when the user prefers reduced motion. It takes
+the text color unless you set `cursorColor`. Style it like any element:
+
+```css
+.uta-cursor {
+  margin-left: 1px;
+  font-weight: 300;
+}
+```

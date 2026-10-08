@@ -1,0 +1,54 @@
+---
+title: Sequences
+description: Declarative typewriter effects with the Typewriter component.
+---
+
+import Example from '@site/src/components/Example';
+import Sequence from '@site/src/examples/basics/Sequence';
+import SequenceSource from '!!raw-loader!@site/src/examples/basics/Sequence.tsx';
+import Loop from '@site/src/examples/basics/Loop';
+import LoopSource from '!!raw-loader!@site/src/examples/basics/Loop.tsx';
+import SequenceCallbacks from '@site/src/examples/basics/SequenceCallbacks';
+import SequenceCallbacksSource from '!!raw-loader!@site/src/examples/basics/SequenceCallbacks.tsx';
+
+# Sequences
+
+`<Typewriter>` takes a `sequence` and plays it once it mounts. It renders a `<span>` by default; pass
+`as` to render another element, and any other prop goes to that element.
+
+## Type, pause, retype
+
+<Example files={[{ name: 'Sequence.tsx', source: SequenceSource }]}>
+  <Sequence />
+</Example>
+
+Strings go through `typeTo`, which deletes back to the common prefix and types the rest. Going from
+`Hello` to `Hello, world!` deletes nothing.
+
+## Loop
+
+<Example files={[{ name: 'Loop.tsx', source: LoopSource }]}>
+  <Loop />
+</Example>
+
+With `loop`, the sequence starts over after its last step. The first string is reached with `typeTo`
+from the last one, so there is no need to clear the text in between. A loop needs at least one
+pause: one that never waits, which is what happens under reduced motion when there are no pauses,
+stops after one pass. Looping for more than five seconds also needs a
+[pause button](../guides/accessibility.md#let-people-pause-long-animations).
+
+## Callbacks
+
+<Example files={[{ name: 'SequenceCallbacks.tsx', source: SequenceCallbacksSource }]}>
+  <SequenceCallbacks />
+</Example>
+
+A function in the sequence runs when the typewriter reaches it. Here it counts the passes, and the
+empty string after it deletes everything before the loop restarts. Functions are captured on mount
+and see the props and state of that render, so use functional updates, as here, or refs.
+
+:::tip The sequence is read once
+Changing `sequence` after mount does nothing, so an inline array does not restart the animation on
+every render. Give the component a new `key` to start a different sequence, or use the hook with
+[`typeTo`](./patterns.mdx#retype-when-a-value-changes) to follow a changing value.
+:::

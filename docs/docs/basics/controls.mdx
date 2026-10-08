@@ -1,0 +1,40 @@
+---
+title: Controls and events
+description: Pause, resume, skip and reset the typewriter, and react to its progress.
+---
+
+import Example from '@site/src/components/Example';
+import Controls from '@site/src/examples/basics/Controls';
+import ControlsSource from '!!raw-loader!@site/src/examples/basics/Controls.tsx';
+import Events from '@site/src/examples/basics/Events';
+import EventsSource from '!!raw-loader!@site/src/examples/basics/Events.tsx';
+
+# Controls and events
+
+## Pause, resume, skip, reset
+
+<Example files={[{ name: 'Controls.tsx', source: ControlsSource }]}>
+  <Controls />
+</Example>
+
+| Method     | What it does                                                                       |
+| ---------- | ---------------------------------------------------------------------------------- |
+| `pause()`  | Freezes the animation and keeps the remaining delay.                               |
+| `resume()` | Continues after `pause()`.                                                         |
+| `skip()`   | Runs the remaining steps instantly, without pausing, and ends without looping.     |
+| `stop()`   | Halts and keeps the text. `start()` continues with the next step.                  |
+| `reset()`  | Clears the text, the queue, the color and the listeners. It returns the typewriter, so you can chain new steps. |
+
+`state.status` is one of `idle`, `typing`, `deleting`, `waiting`, `paused` and `done`.
+
+## Events and promises
+
+<Example files={[{ name: 'Events.tsx', source: EventsSource }]}>
+  <Events />
+</Example>
+
+`on('start' | 'end' | 'loop', fn)` adds a listener and `off(event, fn)` removes it, `call(fn)` runs
+a function at a point in the queue, and `start()` returns a promise that resolves when the queue
+ends, stops or resets. A looping queue resolves only when it is stopped, reset or skipped; check
+`getState().status === 'done'` to tell a finished run from a stopped one. The hook's reset on unmount
+removes listeners, so add them in the effect that queues the steps, as here.

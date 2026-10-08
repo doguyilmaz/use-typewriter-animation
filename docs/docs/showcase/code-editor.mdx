@@ -1,0 +1,31 @@
+---
+title: Code editor
+description: Type code with syntax highlighting, line numbers and a cursor position.
+---
+
+import Example from '@site/src/components/Example';
+import Demo from '@site/src/examples/showcase/CodeEditor';
+import tsx from '!!raw-loader!@site/src/examples/showcase/CodeEditor.tsx';
+import css from '!!raw-loader!@site/src/examples/showcase/CodeEditor.module.css';
+
+# Code editor
+
+Code typed into an editor, with syntax colors, a line number gutter and a status bar.
+
+<Example
+  variant='showcase'
+  files={[
+    { name: 'CodeEditor.tsx', source: tsx },
+    { name: 'CodeEditor.module.css', source: css },
+  ]}
+>
+  <Demo />
+</Example>
+
+## How it works
+
+- `tokenize` splits the snippet into strings, keywords, tags and so on. Each token is queued with
+  `colorize(color).type(text)`; consecutive tokens of the same color share a `<span>`.
+- A line break and its indentation are one token typed at `{ speed: 0 }`, like an editor that
+  indents for you.
+- The gutter and the status bar are derived from `state.text` on every render.

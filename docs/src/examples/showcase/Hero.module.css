@@ -1,0 +1,102 @@
+.hero {
+  width: 100%;
+  max-width: 40rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid light-dark(#e4e4e7, #27272a);
+  border-radius: 999px;
+  color: light-dark(#52525b, #a1a1aa);
+  font-size: 0.85rem;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgb(34 197 94 / 0.25);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+/* The gradient is clipped to the text; the cursor keeps its own color. */
+.role {
+  background: linear-gradient(90deg, #f43f5e, #a855f7 60%, #6366f1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.toggle {
+  display: block;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: light-dark(#52525b, #a1a1aa);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.lead {
+  margin: 1.25rem 0 2rem;
+  max-width: 28rem;
+  color: light-dark(#52525b, #a1a1aa);
+  font-size: 1.05rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.primary,
+.secondary {
+  padding: 0.65rem 1.2rem;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary {
+  background: light-dark(#18181b, #fafafa);
+  color: light-dark(#fafafa, #18181b);
+}
+
+.secondary {
+  border: 1px solid light-dark(#d4d4d8, #3f3f46);
+}
+
+.primary:hover,
+.secondary:hover {
+  opacity: 0.85;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

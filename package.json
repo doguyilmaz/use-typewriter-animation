@@ -1,114 +1,89 @@
 {
   "name": "use-typewriter-animation",
   "version": "3.5.2",
-  "description": "A modern, performant React hook for creating typewriter animation effects with full TypeScript support and SSR compatibility.",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "sideEffects": false,
-  "files": [
-    "dist",
-    "CHANGELOG.md",
-    "README.md"
-  ],
-  "scripts": {
-    "build": "bun run clean && bun run scripts/esbuild.ts && bun run types",
-    "types": "tsc",
-    "pack": "bun run build && bun pm pack",
-    "clean": "rm -rf dist",
-    "watch": "tsc --watch",
-    "format": "prettier --write 'src/**/*.ts'",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest --watch",
-    "test:ui": "vitest --ui",
-    "version": "bun run scripts/version-bump.ts",
-    "publish": "bun run pack && npm publish",
-    "release": "bun run version && bun run build && bun run publish",
-    "analyze": "bun run build && bun run scripts/bundle-analysis.ts",
-    "docs:dev": "cd docs && bun run start",
-    "docs:build": "bun run build && cd docs && bun install && bun run build",
-    "docs:serve": "cd docs && bun run serve"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react-dom": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^1.9.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^22.0.0",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
-    "@vitest/coverage-v8": "^3.2.3",
-    "@vitest/ui": "3.2.3",
-    "esbuild": "^0.25.5",
-    "esbuild-node-externals": "^1.18.0",
-    "inquirer": "^12.0.0",
-    "jsdom": "^26.1.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "semver": "^7.6.3",
-    "typescript": "^5.8.3",
-    "vitest": "^3.2.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/doguyilmaz/use-typewriter-animation.git"
-  },
-  "keywords": [
-    "react",
-    "hook",
-    "typewriter",
-    "animation",
-    "typescript",
-    "ssr",
-    "rsc",
-    "server-components",
-    "react-19",
-    "text-animation",
-    "typing-effect",
-    "use-typewriter-animation",
-    "use-typewriter",
-    "modern-react",
-    "performance"
-  ],
+  "description": "Tiny, fast typewriter animations for React 18 and 19: a component, a hook and the engine behind them.",
   "license": "MIT",
   "author": {
     "name": "Dogu Yilmaz",
     "url": "https://github.com/doguyilmaz"
   },
-  "engines": {
-    "node": ">=18.0.0",
-    "bun": ">=1.0.0",
-    "npm": ">=8.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doguyilmaz/use-typewriter-animation.git"
   },
-  "browserslist": [
-    "defaults",
-    "not ie 11",
-    "not op_mini all"
-  ],
   "bugs": {
     "url": "https://github.com/doguyilmaz/use-typewriter-animation/issues"
   },
   "homepage": "https://doguyilmaz.github.io/use-typewriter-animation",
-  "trustedDependencies": [
-    "@biomejs/biome"
-  ]
+  "keywords": [
+    "react",
+    "hook",
+    "typewriter",
+    "typing",
+    "animation",
+    "text-animation",
+    "react-compiler"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:compiler": "REACT_COMPILER=1 vitest run",
+    "test:all": "bun run test && bun run test:compiler",
+    "doctor": "react-doctor . --no-telemetry --no-supply-chain --yes --blocking warning",
+    "compiler": "react-compiler-marker --exclude-dirs node_modules,dist,build,.docusaurus,coverage,tests .",
+    "size": "node scripts/size.js",
+    "check": "bun run lint && bun run typecheck && bun run test:all && bun run build && bun run smoke && bun run size",
+    "preversion": "bun run check",
+    "prepublishOnly": "bun run build",
+    "docs:dev": "cd docs && bun run start",
+    "docs:build": "cd docs && bun run build",
+    "smoke": "node scripts/smoke.js"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/core": "^0.18.5",
+    "@babel/core": "^7.28.0",
+    "@biomejs/biome": "^2.5.15",
+    "@testing-library/react": "^16.3.3",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "happy-dom": "^20.14.5",
+    "publint": "^0.3.25",
+    "react": "^19.3.0",
+    "react-compiler-marker": "^0.2.0",
+    "react-doctor": "^0.9.17",
+    "react-dom": "^19.3.0",
+    "tsdown": "^0.23.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
 }

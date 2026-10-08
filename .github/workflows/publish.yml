@@ -23,7 +23,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
       - run: bun install --frozen-lockfile
       - name: Bump version
         # `preversion` runs all checks.
@@ -34,8 +33,6 @@ jobs:
         env:
           RELEASE: ${{ inputs.release }}
       - name: Publish
-        # `prepublishOnly` builds the package.
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # Trusted publishing (OIDC) authenticates and adds provenance. `prepublishOnly` builds the package.
+        run: npm publish --access public
       - run: git push --follow-tags

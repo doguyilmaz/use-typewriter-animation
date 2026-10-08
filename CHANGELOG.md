@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. The project follows
 [Semantic Versioning](https://semver.org/).
 
-## 4.0.0 - Unreleased
+## 4.0.0 - 2026-10-09
 
 A rewrite of the library. The chainable API stays; everything around it is smaller and works as
 documented. See [Migrating from v3](https://doguyilmaz.github.io/use-typewriter-animation/docs/guides/migration).

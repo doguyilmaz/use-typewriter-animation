@@ -1,6 +1,6 @@
 {
   "name": "use-typewriter-animation",
-  "version": "3.5.2",
+  "version": "4.0.0",
   "description": "Tiny, fast typewriter animations for React 18 and 19: a component, a hook and the engine behind them.",
   "license": "MIT",
   "author": {

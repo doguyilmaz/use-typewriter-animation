@@ -26,13 +26,16 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: bun install --frozen-lockfile
       - name: Bump version
-        # `preversion` runs all checks, `postversion` pushes the commit and the tag.
+        # `preversion` runs all checks.
         run: |
           git config user.name "Dogu Yilmaz"
           git config user.email "dogukyilmaz@gmail.com"
-          npm version ${{ inputs.release }} -m "Bump version to v%s"
+          npm version "$RELEASE" -m "Bump version to v%s"
+        env:
+          RELEASE: ${{ inputs.release }}
       - name: Publish
         # `prepublishOnly` builds the package.
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: git push --follow-tags

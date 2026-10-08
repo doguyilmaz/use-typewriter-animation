@@ -10,3 +10,4 @@ coverage
 
 docs/build
 docs/.docusaurus
+.claude/settings.local.json

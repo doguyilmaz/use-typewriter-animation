@@ -1,3 +1,6 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
 /* Ink on paper, with the red of a typewriter ribbon as the accent. */
 :root {
   --ifm-color-primary: #e11d48;
@@ -8,8 +11,9 @@
   --ifm-color-primary-lighter: #fb7185;
   --ifm-color-primary-lightest: #fda4af;
 
-  --ifm-font-family-base: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ifm-font-family-base: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ifm-font-family-monospace:
+    "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --ifm-heading-font-weight: 700;
   --ifm-code-font-size: 88%;
   --ifm-global-radius: 10px;

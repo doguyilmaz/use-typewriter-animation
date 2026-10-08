@@ -1,7 +1,7 @@
 {
   "name": "use-typewriter-animation",
   "version": "3.5.2",
-  "description": "Tiny, fast typewriter animations for React 18 and 19. Hook, component and framework-agnostic engine.",
+  "description": "Tiny, fast typewriter animations for React 18 and 19: a component, a hook and the engine behind them.",
   "license": "MIT",
   "author": {
     "name": "Dogu Yilmaz",
@@ -52,12 +52,11 @@
     "test:coverage": "vitest run --coverage",
     "test:compiler": "REACT_COMPILER=1 vitest run",
     "test:all": "bun run test && bun run test:compiler",
-    "doctor": "react-doctor . --no-telemetry --yes --blocking warning",
+    "doctor": "react-doctor . --no-telemetry --no-supply-chain --yes --blocking warning",
     "compiler": "react-compiler-marker --exclude-dirs node_modules,dist,build,.docusaurus,coverage,tests .",
     "size": "node scripts/size.js",
     "check": "bun run lint && bun run typecheck && bun run test:all && bun run build && bun run smoke && bun run size",
     "preversion": "bun run check",
-    "postversion": "git push --follow-tags",
     "prepublishOnly": "bun run build",
     "docs:dev": "cd docs && bun run start",
     "docs:build": "cd docs && bun run build",
